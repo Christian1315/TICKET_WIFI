@@ -31,6 +31,7 @@ Route::get("/", HomeController::class);
 /** */
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    
     Route::get('/administration', function () {
         return view('administration');
     })->name('administration');

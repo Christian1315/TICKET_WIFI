@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="navbar-fixed bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="font-bold">
-                        {{ config('app.name') }}
+                        <img src="{{asset('images/logo.png')}}" class="img-fluid" alt="log" style="width: 100px;height:auto">
                     </a>
                 </div>
             </div>
@@ -28,7 +28,7 @@
 
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
+                            <i class="bi bi-person-circle"></i> {{ __('Mon Compte') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -38,7 +38,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                <i class="bi bi-person-fill-slash"></i> {{ __('Déconnexion') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -61,7 +61,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Tableau de bord') }}
             </x-responsive-nav-link>
         </div>
 
@@ -69,7 +69,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    <i class="bi bi-person-circle"></i> {{ __('Mon Compte') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -79,7 +79,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        <i class="bi bi-person-fill-slash"></i> {{ __('Déconnexion') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

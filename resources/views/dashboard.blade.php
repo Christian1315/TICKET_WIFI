@@ -1,10 +1,12 @@
 <x-app-layout>
+    <x-slot name="title">{{__('Tableau de bord')}}</x-slot>
+
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-8 border-b-2 border-slate-100 pb-4">
-                        {{ __('Dashboard') }}
+                        {{ __('Tableau de bord') }}
                     </h2>
                     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 mb-6">
                         <div class="border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
@@ -71,7 +73,7 @@
                                     @foreach ($recentUsers as $user)
                                         <tr>
                                             <td class="border-b border-slate-300 p-2">{{ $user->name }}</td>
-                                            <td class="border-b border-slate-300 p-2">{{ $user->detail->package_name }}</td>
+                                            <td class="border-b border-slate-300 p-2">{{ $user->detail?->package_name }}</td>
                                             <td class="border-b border-slate-300 p-2">{{ date('Y-m-d', strtotime($user->created_at)) }}</td>
                                         </tr>
                                     @endforeach
@@ -118,7 +120,7 @@
                                     @foreach ($usersWithDueList as $user)
                                         <tr>
                                             <td class="border-b border-slate-300 p-2">{{ $user->name }}</td>
-                                            <td class="border-b border-slate-300 p-2">{{ $user->detail->package_name }}</td>
+                                            <td class="border-b border-slate-300 p-2">{{ $user->detail?->package_name }}</td>
                                             <td class="border-b border-slate-300 p-2">{{ config('app.currency') . $user->due_amount($user->id) }}</td>
                                         </tr>
                                     @endforeach

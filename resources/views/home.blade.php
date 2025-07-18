@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{env('APP_NAME')}}</title>
+    <title>{{str_replace("_","-",env('APP_NAME'))}}</title>
 
     <link rel="shortcut icon" href="{{asset('images/logo.png')}}" type="image/x-icon">
 
@@ -21,10 +21,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
 
-<body class="antialiased bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900">
+<body class="home-body antialiased bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900">
     <div class="container-fluid">
         <!-- NAV BAR -->
-        <div class="row bg-light nav-div">
+        <div class="row bg-light nav-div p-0 m-0 shadow">
             <div class="col-12">
                 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
                     <div class="container-fluid">
@@ -42,13 +42,13 @@
                             <div>
                                 <ul class="navbar-nav align-items-center">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="#">Accueil</a>
+                                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">A propos</a>
+                                        <a class="nav-link" href="#about">A propos</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#">Contact</a>
+                                        <a class="nav-link" href="#contact">Contact</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#">Récupérer mon ticket</a>
@@ -59,10 +59,6 @@
                                         <a href="{{ url('/dashboard') }}" class="btn btn-sm border bg-blue text-white btn-hover">Tableau de board</a>
                                         @else
                                         <a href="{{ route('login') }}" class="btn btn-sm border bg-blue text-white btn-hover shadow"><i class="bi bi-person-fill-lock"></i> Se connecter</a>
-
-                                        @if (Route::has('register'))
-                                        <a href="{{ route('register') }}" class="btn btn-sm border bg-blue text-white btn-hover">Register</a>
-                                        @endif
                                         @endauth
                                         @endif
                                     </li>
@@ -78,8 +74,8 @@
         <div class="row" id="header">
             <div class="col-md-12 content-blok">
                 <div class="row">
-                    <div class="col-md-4 col-sm-12"></div>
-                    <div class="col-md-8 col-sm-12 ">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
                         <div class="content p-2 bg-layer">
                             <h1 class="text-white title animate__animated  animate__fadeInDown">BIENVENUE SUR TICKETWIFI</h1>
                             <p class="description">La plateforme qui vous permet d'automatiser la vente de vos tickets wifizone via des moyens de paiement mobile money et cartes bancaires</p>
@@ -87,7 +83,7 @@
 
                         <!-- Créer un compte -->
                         <div class="text-center">
-                            <a href="#" class="btn btn-lg bg-orange btn-hover animate__animated  animate__fadeInUp">Créer un compte</a>
+                            <a href="{{route('register')}}" class="btn btn-lg bg-orange btn-hover animate__animated  animate__fadeInUp"><i class="bi bi-person-plus"></i> Créer un compte</a>
                         </div>
                     </div>
                 </div>
@@ -95,17 +91,104 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container section"  id="about">
         <!-- Section1 -->
-        <div class="row section">
-            <div class="col-6">
+        <div class="row">
+            <div class="col-md-6">
                 <h3 class="title"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Qu'est-ce que ticketwifi?</h3>
                 <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
-                    Ipsam, iste sint aperiam nulla corporis fugiat adipisci quibusdam nemo impedit omnis neque voluptatem dolore! Iusto maxime fugit aut nisi dolore molestias, accusantium repellat facilis in, sunt eum ut pariatur.
-                    Obcaecati recusandae id voluptatibus totam eveniet. Molestias pariatur enim perspiciatis repudiandae incidunt rem ipsum est soluta, veniam laudantium error nulla sed explicabo fugiat. Alias deserunt asperiores eos, doloribus possimus impedit!</p>
+                    Ipsam, </p>
+
+                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
+                    Ipsam, </p>
+
+                <p class="">Les moyens de paiement autorisé:</p>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 1</li>
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 2</li>
+                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 3</li>
+                </ul>
             </div>
-            <div class="col-6"></div>
+            <div class="col-md-6 about-section-img">
+                <!--  -->
+            </div>
         </div>
+    </div>
+
+    <!-- footer -->
+    <div class="container-fluid section" id="contact" style="position: relative;">
+        <div class="footer-circle"></div>
+        <div class="row" id="header">
+            <div class="col-md-12 content-blok">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="title text-center"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Contactez-nous!</h3>
+                        <p class="text-center text-light">Laissez-nous un message pour plus d'informations!</p>
+                    </div>
+                </div>
+                <br><br>
+                <div class="row">
+                    <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                        <ol class="list-group list-group-numbered">
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Adresse</div>
+                                    Rue 313 AGP | Cotonou | Bénin
+                                </div>
+                                <span class="badge bg-blue rounded-pill"><i class="bi bi-geo-alt"></i></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Email</div>
+                                    admin@gmail.com
+                                </div>
+                                <span class="badge bg-blue rounded-pill"><i class="bi bi-envelope-check"></i></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                <div class="ms-2 me-auto">
+                                    <div class="fw-bold">Télephone</div>
+                                    +22901876543
+                                </div>
+                                <span class="badge bg-blue rounded-pill"><i class="bi bi-telephone-inbound"></i></span>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-md-8">
+                        <form action="#" method="POST">
+                            <div class="mb-3 rounded p-3 shadow">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <input type="name" class="form-control" placeholder="Nom & Prénom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <input type="email" class="form-control" placeholder="name@example.com">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control" placeholder="Prendre un abonnment">
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <input type="phone" class="form-control" placeholder="Telephone">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" placeholder="Laissez un commentaire ici ..." rows="3"></textarea>
+                                </div>
+                                <button class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-send-check-fill"></i> Envoyer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="text-center">@Copyright <strong class="badge bg-light text-blue border">{{date("Y")}}</strong> | Tous droits réservés | Réalisé par <strong class="badge bg-light text-blue border">Code4Christ</strong> </p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
