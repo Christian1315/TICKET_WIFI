@@ -39,9 +39,7 @@
                                 @endif
                             </div>
                         </div>
-                        <!-- <livewire:package-table /> -->
                         @if (auth()->user()->isUser())
-                        <!-- <livewire:user-package-table /> -->
                         @endif
                     </div>
                 </div>

@@ -16,7 +16,7 @@ class PackageTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             ->setAdditionalSelects(['packages.id as id'])
-            ->setTableRowUrl(function($row) {
+            ->setTableRowUrl(function ($row) {
                 return route('packages.show', $row);
             });
     }
@@ -26,7 +26,7 @@ class PackageTable extends DataTableComponent
         return [
             Column::make("ID", "id")
                 ->sortable(),
-            Column::make("Router","router.name")
+            Column::make("Router", "router.name")
                 ->searchable(),
             Column::make("Package name", "name")
                 ->sortable()
@@ -37,7 +37,7 @@ class PackageTable extends DataTableComponent
                 ->format(function ($value) {
                     return Carbon::parse($value)->format('Y-m-d');
                 }),
-                Column::make("Updated at", "updated_at")
+            Column::make("Updated at", "updated_at")
                 ->format(function ($value) {
                     return Carbon::parse($value)->format('Y-m-d');
                 }),

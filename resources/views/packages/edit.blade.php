@@ -6,44 +6,71 @@
             <div class="bg-white shadow sm:rounded-lg">
                 <div class="p-4 sm:p-8">
                     @if(session('error'))
-                        <div class="alert alert-danger text-red-600">
-                            {{ session('error') }}
-                        </div>
+                    <div class="alert alert-danger text-red-600">
+                        {{ session('error') }}
+                    </div>
                     @endif
 
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">
-                            {{ __('Edit Package') }}
-                        </h2>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">
+                        {{ __('Modifier le package') }}
+                    </h2>
 
-                    <form method="post" action="{{ route('packages.update', $package->id) }}" class="mt-6 space-y-6">
+                    <!-- Retour sur liste -->
+                    <div class="flex justify-content-center">
+                        <a href="{{route('packages.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                            <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
+                        </a>
+                    </div>
+
+                    <br>
+                    <!-- Formulaire d'ajout -->
+                    <form method="post" action="{{ route('packages.update',$package->id) }}" class="space-y-6">
                         @csrf
-                        @method('patch')
+                        @method("PATCH")
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="router_id" :value="__('Choix du router')" class=""></x-input-label>
+                                    <select name="router_id" value="{{old('router_id')}}" id="router_id" class="block w-full rounded-md border border-gray-300">
+                                        <option value="">{{ __('Choississez un router') }}</option>
+                                        @foreach ($routers as $router)
+                                        <option @selected($package->router_id==$router->id) value="{{ $router->id }}">{{ $router->name }}</option>
+                                        @endforeach
+                                    </select>
 
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <h2 class="text-lg font-medium text-gray-900">{{ __('Package') }}</h2>
-                                <p class="mt-1 text-sm text-gray-600">{{ __("Edit package price") }}</p>
+                                    @error("router_id")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
 
-                            <div>
-                                <div>
-                                    <x-input-label for="name" :value="__('Router name')"></x-input-label>
-                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full bg-gray-100" value="{{ $package->router->name }}" disabled></x-text-input>
-                                </div>
-                                <div>
-                                    <x-input-label for="name" :value="__('Package name')" class="mt-4"></x-input-label>
-                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full bg-gray-100" value="{{ $package->name }}" disabled></x-text-input>
-                                </div>
-                                <div>
-                                    <x-input-label for="price" :value="__('Package price')" class="mt-4"></x-input-label>
-                                    <x-text-input id="price" name="price" type="text" class="mt-1 block w-full" value="{{ $package->price }}" required></x-text-input>
-                                    <x-input-error class="mt-2" :messages="$errors->get('price')"></x-input-error>
-                                </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="name" :value="__('Nom du package')"></x-input-label>
+                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')??$package->name" placeholder="Package 1" required></x-text-input>
 
-                                <div class="flex items-center gap-4 mt-4">
-                                    <x-primary-button>{{ __('Update') }}</x-primary-button>
+                                    @error("name")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="price" :value="__('Prix du package')"></x-input-label>
+                                    <x-text-input id="price" name="price" type="number" class="mt-1 block w-full" :value="old('price')??$package->price" placeholder="800500" required></x-text-input>
+
+                                    @error("price")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-content-center items-center gap-4 mt-4">
+                            <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
+                                <i class="bi bi-pencil"></i> &nbsp; {{ __('Modifier') }}
+                            </button>
                         </div>
                     </form>
                 </div>

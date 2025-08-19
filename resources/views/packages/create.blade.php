@@ -15,9 +15,10 @@
                         <i class="bi bi-node-plus"></i> &nbsp; {{ __('Ajouter un Package') }}
                     </h2>
                     <br>
+
                     <!-- Retour sur liste -->
                     <div class="flex justify-content-center">
-                        <a href="{{route('router.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                        <a href="{{route('packages.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
                             <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
                         </a>
                     </div>
@@ -30,10 +31,10 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <x-input-label for="router_id" :value="__('Choix du router')" class=""></x-input-label>
-                                    <select name="router_id" id="router_id" class="block w-full rounded-md border border-gray-300">
+                                    <select name="router_id" value="{{old('router_id')}}" id="router_id" class="block w-full rounded-md border border-gray-300">
                                         <option value="">{{ __('Choississez un router') }}</option>
                                         @foreach ($routers as $router)
-                                        <option value="{{ $router->id }}">{{ $router->name }}</option>
+                                        <option @selected($router->id==old('router_id')) value="{{ $router->id }}">{{ $router->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -57,7 +58,7 @@
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <x-input-label for="price" :value="__('Prix du package')"></x-input-label>
-                                    <x-text-input id="price" name="price" type="number" class="mt-1 block w-full" :value="old('name')" placeholder="800500" required></x-text-input>
+                                    <x-text-input id="price" name="price" type="number" class="mt-1 block w-full" :value="old('price')" placeholder="800500" required></x-text-input>
 
                                     @error("price")
                                     <span class="text-orange">{{ $message }}</span>

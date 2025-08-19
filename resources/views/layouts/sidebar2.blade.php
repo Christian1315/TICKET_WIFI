@@ -7,7 +7,7 @@
             <x-sidebar-item class="shadow" :href="route('router.index')" :active="request()->routeIs('router.index') || 
             request()->routeIs('router.create') || 
             request()->routeIs('router.show') || 
-            request()->routeIs('packages.edit')">{{ __('Router') }}</x-sidebar-item>
+            request()->routeIs('router.edit')">{{ __('Routers') }}</x-sidebar-item>
             @endif
 
             <x-sidebar-item class="shadow" :href="route('packages.index')" :active="request()->routeIs('packages.index') || 
