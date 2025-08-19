@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Billing
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Billing extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'invoice',
@@ -21,17 +22,21 @@ class Billing extends Model
         'package_price',
         'package_start',
         'user_id',
-        ];
+        'deleted_at'
+    ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function payment(){
+    public function payment()
+    {
         return $this->hasOne(Payment::class);
     }
 
-    public function generateRandomNumber() {
+    public function generateRandomNumber()
+    {
         try {
             $number = random_int(100000, 999999);
         } catch (\Exception $e) {

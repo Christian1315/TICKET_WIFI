@@ -1,13 +1,6 @@
 <x-guest-layout>
     <x-slot name="title">Connexion</x-slot>
 
-    @if(session()->has("register_success"))
-    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Vous y êtes presque!</strong> {{session()->get("register_success")}}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    @endif
-
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

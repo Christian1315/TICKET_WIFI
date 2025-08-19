@@ -9,50 +9,50 @@
                         {{ __('Tableau de bord') }}
                     </h2>
                     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 mb-6">
-                        <div class="border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
+                        <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
                             <p class="text-2xl mt-2 font-bold">{{ config('app.currency') . $totalBills }}</p>
-                            <h2 class="text-l">{{ __('Total Bills') }}</h2>
+                            <h2 class="text-l">{{ __('Total des factures') }}</h2>
                         </div>
-                        <div class="border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
+                        <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
                             <p class="text-2xl mt-2 font-bold">{{ config('app.currency') . $totalPayments }}</p>
-                            <h2 class="text-l">{{ __('Total Payments') }}</h2>
+                            <h2 class="text-l">{{ __('Total des paiements') }}</h2>
                         </div>
-                        <div class="border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
+                        <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
                             <p class="text-2xl mt-2 font-bold">{{ config('app.currency') . $billsThisMonth }}</p>
-                            <h2 class="text-l">{{ __('Bills This Month') }}</h2>
+                            <h2 class="text-l">{{ __('Factures de ce mois-ci') }}</h2>
                         </div>
-                        <div class="border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
+                        <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
                             <p class="text-2xl mt-2 font-bold">{{ config('app.currency') . $paymentsThisMonth }}</p>
-                            <h2 class="text-l">{{ __('Payments This Month') }}</h2>
+                            <h2 class="text-l">{{ __('Paiements ce mois-ci') }}</h2>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <h3 class="mt-6 mb-6 font-semibold">{{ __('Billing and payment per month') }}</h3>
+                            <h3 class="mt-6 mb-6 font-semibold">{{ __('Facturation et paiement mensuels') }}</h3>
                             <canvas id="monthlyChart"></canvas>
                         </div>
                         <div>
-                            <h3 class="mt-6 mb-6 font-semibold">{{ __('Billing and payment per day') }}</h3>
+                            <h3 class="mt-6 mb-6 font-semibold">{{ __('Facturation et paiement journaliers') }}</h3>
                             <canvas id="dailyChart"></canvas>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mt-6">
                         <div class="border-l-2 bg-neutral-50 border-neutral-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Total Users') }}</h2>
+                            <h2 class="text-l font-bold">{{ __('Total des utilisateurs') }}</h2>
                             <p class="text-xl mt-2 font-bold">{{ $totalUsers }}</p>
                         </div>
                         <div class="border-l-2 bg-neutral-50 border-neutral-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Users With Due') }}</h2>
+                            <h2 class="text-l font-bold">{{ __('Utilisateur en retard de paiement') }}</h2>
                             <p class="text-xl mt-2 font-bold">{{ $usersWithDueCount }}</p>
                         </div>
                         <div class="border-l-2 bg-neutral-50 border-neutral-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Bills This Year') }}</h2>
+                            <h2 class="text-l font-bold">{{ __('Factures de cette année') }}</h2>
                             <p class="text-xl mt-2 font-bold">{{ config('app.currency') . $billsThisYear }}</p>
                         </div>
                         <div class="border-l-2 bg-neutral-50 border-neutral-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Payments This Year') }}</h2>
+                            <h2 class="text-l font-bold">{{ __('Paiements de cette année') }}</h2>
                             <p class="text-xl mt-2 font-bold">{{ config('app.currency') . $paymentsThisYear }}</p>
                         </div>
                     </div>
@@ -60,13 +60,13 @@
                     <div class="mt-8">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <h3 class="font-semibold">{{ __('Recent Users') }}</h3>
+                                <h3 class="font-semibold">{{ __('Utilisateurs récents') }}</h3>
                                 <table class="table-auto border-collapse border-b border-slate-400 mt-4 w-full">
                                     <thead>
                                     <tr>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Name') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Nom') }}</th>
                                         <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Package') }}</th>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Joined') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Crée le') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -81,12 +81,12 @@
                                 </table>
                             </div>
                             <div>
-                                <h3 class="font-semibold">{{ __('Recent Payments') }}</h3>
+                                <h3 class="font-semibold">{{ __('Paiements recents') }}</h3>
                                 <table class="table-auto border-collapse border-b border-slate-400 mt-4 w-full">
                                     <thead>
                                     <tr>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('User') }}</th>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Amount') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Utilisateur') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Montant') }}</th>
                                         <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Date') }}</th>
                                     </tr>
                                     </thead>
@@ -107,13 +107,13 @@
                     <div class="mt-8">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <h3 class="font-semibold">{{ __('Users With Due') }}</h3>
+                                <h3 class="font-semibold">{{ __('Utilisateurs impayés') }}</h3>
                                 <table class="table-auto border-collapse border-b border-slate-400 mt-4 w-full">
                                     <thead>
                                     <tr>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Name') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Nom') }}</th>
                                         <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Package') }}</th>
-                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Due') }}</th>
+                                        <th class="border-b border-slate-300 p-2 text-left bg-slate-50">{{ __('Dette') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -128,7 +128,7 @@
                                 </table>
                             </div>
                             <div>
-                                <h3 class="font-semibold">{{ __('Recent Tickets') }}</h3>
+                                <h3 class="font-semibold">{{ __('Billets récents') }}</h3>
                                 <table class="table-auto border-collapse border-b border-slate-400 mt-4 w-full">
                                     <thead>
                                     <tr>

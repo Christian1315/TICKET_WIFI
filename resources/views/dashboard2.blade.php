@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="title">Créer un compte</x-slot>
+    <x-slot name="title">Tableau de board</x-slot>
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -11,7 +11,7 @@
                     @endif
                     <div class="border-b-2 border-slate-100 pb-4">
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                            {{ __('Dashboard') }}
+                            {{ __('Tableau de board') }}
                         </h2>
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-6">

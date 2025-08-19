@@ -17,7 +17,12 @@ return new class extends Migration
             $table->string('package_name');
             $table->unsignedInteger('package_price');
             $table->date('package_start');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

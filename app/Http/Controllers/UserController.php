@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use RouterOS\Client;
 use RouterOS\Query;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -51,7 +52,7 @@ class UserController extends Controller
             "dob" => "required",
             "package_name" => "required",
             "router_password" => "required",
-            "router_name"=> "required",
+            "router_name" => "required",
         ]);
 
         $package = Package::where("id", $request->package_name)->firstOrFail();
@@ -69,11 +70,14 @@ class UserController extends Controller
             $query->equal("password", $request->router_password);
             $query->equal("service", 'any');
             $query->equal("profile", $package->name);
-
             $client->query($query)->read();
         } catch (\Exception $e) {
-            return back()->with("error", __("Mikrotik connection fails"));
+            alert()->error("Opération échouée!", "Echec de connexion au mikrotik");
+            return back()->withInput();
+            // return back()->with("error", __("Mikrotik connection fails"));
         }
+
+        DB::beginTransaction();
 
         $user = new User();
         $user->name = $request->name;
@@ -105,7 +109,12 @@ class UserController extends Controller
         $billing->user_id = $user->id;
         $billing->save();
 
-        return redirect("users")->with("success", __("User added successfully"));
+        DB::commit();
+
+        alert()->success("Opération réussie!", "Utilisateur ajouter avec succès");
+
+        return redirect()->route("users");
+        // return redirect("users")->with("success", __("User added successfully"));
     }
 
     public function show(User $user)

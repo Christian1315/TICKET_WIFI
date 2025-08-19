@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
 
 
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Config;
  */
 class Setting extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'router_ip',
@@ -29,6 +30,7 @@ class Setting extends Model
         'app_name',
         'timezone',
         'currency',
+        'deleted_at'
     ];
 
     public static function loadSettings()

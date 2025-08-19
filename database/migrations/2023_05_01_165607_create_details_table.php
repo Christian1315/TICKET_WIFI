@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('details', function (Blueprint $table) {
             $table->id();
+            $table->string('router_name');
             $table->string('address');
             $table->string('phone');
             $table->date('dob');
@@ -23,7 +24,12 @@ return new class extends Migration
             $table->date('package_start');
             $table->unsignedInteger('due');
             $table->string('status')->default('active');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -22,6 +22,9 @@
 </head>
 
 <body class="home-body antialiased bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900">
+    <!-- Alert2 -->
+    @include('sweetalert::alert')
+
     <div class="container-fluid">
         <!-- NAV BAR -->
         <div class="row bg-light nav-div p-0 m-0 shadow">
@@ -91,8 +94,8 @@
         </div>
     </div>
 
-    <div class="container section"  id="about">
-        <!-- Section1 -->
+    <!-- Section1 -->
+    <div class="container section" id="about">
         <div class="row">
             <div class="col-md-6">
                 <h3 class="title"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Qu'est-ce que ticketwifi?</h3>
@@ -154,34 +157,52 @@
                         </ol>
                     </div>
                     <div class="col-md-8">
-                        <form action="#" method="POST">
+                        <form action="/" method="POST">
+                            @csrf
                             <div class="mb-3 rounded p-3 shadow">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <input type="name" class="form-control" placeholder="Nom & Prénom">
+                                            <input type="text" name="name" value="{{old('name')}}" class="form-control" placeholder="Nom & Prénom">
                                         </div>
+                                        @error("name")
+                                        <div class="text-danger">{{$message}}</div>
+                                        @enderror
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            <input type="email" class="form-control" placeholder="name@example.com">
+                                            <input type="email" name="email" value="{{old('email')}}" class="form-control" placeholder="name@example.com">
                                         </div>
+                                        @error("email")
+                                        <div class="text-danger">{{$message}}</div>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control" placeholder="Prendre un abonnment">
+                                        <input type="text" name="objet" value="{{old('objet')}}" class="form-control" placeholder="Objet: Prendre un abonnment">
                                     </div>
+                                    @error("objet")
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-12">
-                                        <input type="phone" class="form-control" placeholder="Telephone">
+                                        <input type="phone" name="phone" value="{{old('phone')}}" class="form-control" placeholder="Telephone">
                                     </div>
+                                    @error("phone")
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <textarea class="form-control" placeholder="Laissez un commentaire ici ..." rows="3"></textarea>
+                                    <div class="col-12">
+                                        <textarea name="message" value="{{old('message')}}" class="form-control" placeholder="Laissez un commentaire ici ..." rows="3"></textarea>
+                                    </div>
+                                    @error("message")
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
                                 </div>
-                                <button class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-send-check-fill"></i> Envoyer</button>
+                                <button type="submit" class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-send-check-fill"></i> Envoyer</button>
                             </div>
                         </form>
                     </div>

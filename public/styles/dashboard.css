@@ -4,12 +4,63 @@
     left: 0;
     width: 100%;
     z-index: 50;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     background: #fff;
-    border-bottom: solid 2px #0773d3!important;
+    border-bottom: solid 2px #0773d3 !important;
 }
 
 body {
-    padding-top: 4.5rem; /* Ajuste selon la hauteur de ta nav */
+    padding-top: 4.5rem;
+    /* Ajuste selon la hauteur de ta nav */
 }
 
+.bg-orange {
+    background-color: #e49c5c!important;
+    color: white!important;
+}
+
+.profil-img {
+    width: 100px !important;
+    height: 100px !important;
+    border-radius: 50%;
+    border: 3px #0773d3 solid;
+}
+
+.profil-img-icon {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    border: 3px #0773d3 solid;
+}
+
+.border-orange {
+    border-color: #e49c5c !important;
+}
+
+.swal2-confirm {
+    background-color: #e49c5c !important;
+    color: #fff !important;
+}
+
+.swal2-cancel {
+    background-color: red !important;
+    color: #fff !important;
+}
+
+/* les dataTables */
+.dt-buttons button {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #fff!important;
+}
+
+.dt-buttons button:hover {
+    background-color: #e49c5c !important;
+    border: 4px #fff solid !important;
+    color: white !important;
+    transition-duration: 0.5 !important;
+}
+
+table{
+    font-size: 15px!important;
+}

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 
 /** REDIRECT TO HOMECONTROLLER*/
 Route::get("/", HomeController::class);
+Route::post("/", [HomeController::class,"contactMe"]);
 
 /** */
 Route::middleware('auth')->group(function () {

@@ -1,4 +1,6 @@
 <x-app-layout>
+    <x-slot name="title">Modifier un utilisateur</x-slot>
+
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg">

@@ -12,6 +12,10 @@ class PackageController extends Controller
 {
     public function index()
     {
+        $title = 'Supprimer le package!';
+        $text = "Etes-vous sûr de supprimer ce package?";
+        confirmDelete($title, $text);
+
         if (auth()->user()->isUser()) {
             $user = auth()->user();
             $router_name = $user->detail->router_name;
@@ -24,7 +28,6 @@ class PackageController extends Controller
             $packages = Package::orderBy('name')->get();
             return view('packages.index', compact('packages'));
         }
-        
     }
 
     public function create()
@@ -35,8 +38,13 @@ class PackageController extends Controller
         
         $routers = Router::orderBy('name')->get();
 
-        if (count($routers) == 0) {
-            return redirect('packages')->with('error', __('Add a router first'));
+        // if (count($routers) == 0) {
+        //     return redirect('packages')->with('error', __('Add a router first'));
+        // }
+
+        if ($routers->isEmpty()) {
+            alert()->error("Opération échouée!","Veuillez bien ajouter d'abord un router!");
+            return back();
         }
 
         return view('packages.create', compact('routers'));

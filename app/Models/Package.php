@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Package
@@ -13,11 +14,17 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Package extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'price', 'router_id'];
+    protected $fillable = [
+        'name',
+        'price',
+        'router_id',
+        'deleted_at'
+    ];
 
-    public function router() {
+    public function router()
+    {
         return $this->belongsTo(Router::class);
     }
 }

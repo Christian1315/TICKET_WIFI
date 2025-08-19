@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Comment
@@ -13,9 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['comment', 'user_id', 'ticket_id'];
+    protected $fillable = ['comment', 'user_id', 'ticket_id','deleted_at'];
 
     public function ticket()
     {

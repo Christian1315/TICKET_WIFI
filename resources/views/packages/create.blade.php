@@ -1,56 +1,80 @@
 <x-app-layout>
+    <x-slot name="title">Packages | Créer</x-slot>
+
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 sm:p-8">
                     @if(session('error'))
-                        <div class="alert alert-danger text-red-600">
-                            {{ session('error') }}
-                        </div>
+                    <div class="alert alert-danger text-red-600">
+                        {{ session('error') }}
+                    </div>
                     @endif
 
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">
-                        {{ __('Create Package') }}
+                        <i class="bi bi-node-plus"></i> &nbsp; {{ __('Ajouter un Package') }}
                     </h2>
+                    <br>
+                    <!-- Retour sur liste -->
+                    <div class="flex justify-content-center">
+                        <a href="{{route('router.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                            <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
+                        </a>
+                    </div>
 
+                    <br>
+                    <!-- Formulaire d'ajout -->
                     <form method="post" action="{{ route('packages.store') }}" class="space-y-6">
                         @csrf
-
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <h2 class="text-lg font-medium text-gray-900">{{ __('Package') }}</h2>
-                                <p class="mt-1 text-sm text-gray-600">{{ __("Add package name and price") }}</p>
-                            </div>
-
-                            <div>
-                                <div>
-                                    <x-input-label for="router_id" :value="__('select router')" class="mt-4"></x-input-label>
-                                    <select name="router_id" id="router_id" class="mt-1 block w-full rounded-md border border-gray-300">
-                                        <option value="">{{ __('Select Mikrotik router') }}</option>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="router_id" :value="__('Choix du router')" class=""></x-input-label>
+                                    <select name="router_id" id="router_id" class="block w-full rounded-md border border-gray-300">
+                                        <option value="">{{ __('Choississez un router') }}</option>
                                         @foreach ($routers as $router)
-                                            <option value="{{ $router->id }}">{{ $router->name }}</option>
-                                        @endforeach 
+                                        <option value="{{ $router->id }}">{{ $router->name }}</option>
+                                        @endforeach
                                     </select>
-                                </div>
-                                <div>
-                                    <x-input-label for="name" :value="__('Package name')" class="mt-4"></x-input-label>
-                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required></x-text-input>
-                                    <x-input-error class="mt-2" :messages="$errors->get('name')"></x-input-error>
-                                </div>
-                                <div>
-                                    <x-input-label for="price" :value="__('Package price')" class="mt-4"></x-input-label>
-                                    <x-text-input id="price" name="price" type="text" class="mt-1 block w-full" :value="old('price')" required></x-text-input>
-                                    <x-input-error class="mt-2" :messages="$errors->get('price')"></x-input-error>
-                                </div>
 
-                                <div class="flex items-center gap-4 mt-4">
-                                    <x-primary-button>{{ __('Save') }}</x-primary-button>
+                                    @error("router_id")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="name" :value="__('Nom du package')"></x-input-label>
+                                    <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" placeholder="Package 1" required></x-text-input>
+
+                                    @error("name")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="price" :value="__('Prix du package')"></x-input-label>
+                                    <x-text-input id="price" name="price" type="number" class="mt-1 block w-full" :value="old('name')" placeholder="800500" required></x-text-input>
+
+                                    @error("price")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-content-center items-center gap-4 mt-4">
+                            <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
+                                <i class="bi bi-check-circle"></i> &nbsp; {{ __('Enregistrer') }}
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 </x-app-layout>

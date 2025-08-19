@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class PasswordResetLinkController extends Controller
@@ -38,7 +39,10 @@ class PasswordResetLinkController extends Controller
             return back()->withInput();
         }
 
-        return redirect()->route("password.reset", ["userId" => $user->id, "userEmail" => $user->email]);
+        Session::put("userId",$user->id);
+        Session::put("userEmail",$user->email);
+
+        return redirect()->route("password.reset");
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we

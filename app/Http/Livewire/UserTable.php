@@ -27,7 +27,7 @@ class UserTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Name", "name")
+            Column::make("Nom & Prénom", "name")
                 ->sortable()
             ->searchable(),
             Column::make("Email", "email")
@@ -49,7 +49,7 @@ class UserTable extends DataTableComponent
                 ->label(function ($row){
                     return $row->due_amount($row->id);
                 }),
-            Column::make("Member Since", "created_at")
+            Column::make("Membre depuis", "created_at")
                 ->format(function ($value) {
                     return Carbon::parse($value)->format('Y-m-d');
                 }),

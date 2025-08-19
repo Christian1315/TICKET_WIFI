@@ -25,15 +25,15 @@ p {
 }
 
 .bg-orange {
-    background-color: #e49c5c;
-    color: white;
+    background-color: #e49c5c!important;
+    color: white!important;
 }
 
 .btn-hover:hover {
-    background-color: #e49c5c;
-    border: 4px #fff solid;
-    color: white;
-    transition-duration: 0.5;
+    background-color: #e49c5c!important;
+    border: 4px #fff solid!important;
+    color: white!important;
+    transition-duration: 0.5!important;
 }
 
 ul .nav-item {
@@ -64,9 +64,6 @@ ul .nav-item .nav-link:hover {
     /* Pour éviter la transparence sur le contenu */
 }
 
-.text-orange {
-    background-color: #e49c5c;
-}
 
 .relative {
     position: relative

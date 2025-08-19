@@ -16,8 +16,17 @@ return new class extends Migration
             $table->string('invoice');
             $table->string('payment_method');
             $table->unsignedInteger('package_price');
-            $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('billing_id')->constrained('billings');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->foreignId('billing_id')
+                ->nullable()
+                ->constrained('billings')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

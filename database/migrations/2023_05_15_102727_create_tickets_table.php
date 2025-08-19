@@ -18,7 +18,12 @@ return new class extends Migration
             $table->longText('message');
             $table->string('status');
             $table->string('priority');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

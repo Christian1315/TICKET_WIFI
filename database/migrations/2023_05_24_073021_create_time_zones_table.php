@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('time_zones', function (Blueprint $table) {
             $table->id();
             $table->string('timezone');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

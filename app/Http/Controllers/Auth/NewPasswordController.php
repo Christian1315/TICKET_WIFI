@@ -19,9 +19,9 @@ class NewPasswordController extends Controller
     /**
      * Display the password reset view.
      */
-    public function create(Request $request, $userId, $userEmail): View
+    public function create(Request $request): View
     {
-        return view('auth.reset-password', ["userId" => $userId, "userEmail" => $userEmail]);
+        return view('auth.reset-password', ["userId" => session("userId"), "userEmail" => session("userEmail")]);
     }
 
     /**
@@ -35,14 +35,14 @@ class NewPasswordController extends Controller
         try {
             DB::beginTransaction();
 
+            // dd($request->userId);
             $request->validate([
                 // 'token' => ['required'],
                 'email' => ['required', 'email'],
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
             ]);
 
-            $user = User::find($request->userId);
-
+            $user = User::firstWhere($request->email);
             if (!$user) {
                 alert()->info("Information", "Cet utilisateur n'existe pas!");
                 return back()->withInput();
@@ -50,13 +50,12 @@ class NewPasswordController extends Controller
 
             $user->update([
                 "password" => Hash::make($request->password),
-                "email" => $request->email
             ]);
 
             alert()->success("Succès", "Mot de passe modifié avec succès! Connectez-vous mainteant.");
             DB::commit();
             return redirect()->route("login");
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             alert()->success("Succès", "Mot de passe modifié avec succès! Connectez-vous mainteant.");
             return redirect()->route("login");
         }
@@ -75,9 +74,6 @@ class NewPasswordController extends Controller
         //         event(new PasswordReset($user));
         //     }
         // );
-
-
-
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can

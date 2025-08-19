@@ -18,6 +18,8 @@ return new class extends Migration
             $table->ipAddress('ip');
             $table->string('username');
             $table->string('password');
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }

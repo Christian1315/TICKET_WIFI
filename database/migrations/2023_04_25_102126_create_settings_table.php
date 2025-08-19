@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('currency')->nullable();
             $table->unsignedInteger('bill_at')->default(0)->nullable();
             $table->unsignedInteger('disconnect_at')->default(0)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

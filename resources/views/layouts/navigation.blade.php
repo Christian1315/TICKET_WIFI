@@ -27,18 +27,22 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="bi bi-person-circle"></i> {{ __('Mon Compte') }}
+                        <x-dropdown-link :href="route('profile.edit')" class="d-flex align-center">
+                            <img src="{{$user->profile??asset('images/bg1.png')}}" alt="Image de profile" class="profil-img-icon img-fluid shadow"> &nbsp; {{ __('Mon Compte') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" id="logoutForm" action="{{ route('logout') }}">
                             @csrf
 
                             <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                <i class="bi bi-person-fill-slash"></i> {{ __('Déconnexion') }}
+                                class="d-flex align-center"
+                                onclick="
+                                        event.preventDefault();
+                                        alert('Voulez-vous vraiment vous déconnecter?')
+                                        this.closest('form').submit();
+                                        ">
+                                <img src="{{$user->profile??asset('images/bg1.png')}}" alt="Image de profile" class="profil-img-icon img-fluid shadow border-orange"> &nbsp; {{ __('Déconnexion') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -77,7 +81,7 @@
                     @csrf
 
                     <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
+                        onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         <i class="bi bi-person-fill-slash"></i> {{ __('Déconnexion') }}
                     </x-responsive-nav-link>
@@ -86,3 +90,10 @@
         </div>
     </div>
 </nav>
+
+@push("scripts")
+<!-- Swal -->
+<script type="text/javascript">
+    Swal.bindClickHandler();
+</script>
+@endpush

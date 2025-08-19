@@ -6,6 +6,11 @@ use App\Http\Requests\StoreRouterRequest;
 use App\Http\Requests\UpdateRouterRequest;
 use Illuminate\Http\Request;
 use App\Models\Router;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class RouterController extends Controller
 {
@@ -17,8 +22,12 @@ class RouterController extends Controller
         if (!auth()->user()->isAdmin()) {
             redirect('/');
         }
-        
-        $routers = Router::orderBy("name","asc")->get();
+
+        $title = 'Supprimer le router!';
+        $text = "Etes-vous sûr de supprimer ce router?";
+        confirmDelete($title, $text);
+
+        $routers = Router::orderBy("name", "asc")->get();
         return view("router.index", compact("routers"));
     }
 
@@ -39,19 +48,49 @@ class RouterController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:routers',
-            'location' => 'required',
-            'ip'=> 'required|ip',
-            'username'=> 'required',
-            'password'=> 'required',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255|unique:routers',
+                'location' => 'required',
+                'ip' => 'required|ip|unique:routers',
+                'username' => 'required',
+                'password' => 'required',
+            ], [
+                'name.required' => "Le nom du router est réquis",
+                'name.string' => "Le nom du être un texte",
+                'name.max' => "Le caractère maximal doit être 225",
+                'name.unique' => "Ce router existe déjà",
 
-        $router = new Router();
-        $router->fill($validated);
-        $router->save();
+                'location.required' => "L'emplacement du router est réquis!",
 
-        return redirect('router')->with('success', __('Router successfully added'));
+                'ip.required' => "L'IP est réquis!",
+                'ip.ip' => "L'adresse Ip n'est pas valide!",
+                'ip.unique' => "L'adresse Ip exisyte déjà!",
+
+                'username.required' => "L'identifiant est réquis'",
+                'password.required' => "Le mot de passe est réquis!",
+            ]);
+
+            DB::beginTransaction();
+
+            $router = new Router();
+            $router->fill($validated);
+            $router->save();
+
+            alert()->success("Opération réussie!", "Router crée avec succès!");
+            DB::commit();
+            return redirect()->route("router.index"); // redirect('router')->with('success', __('Router successfully added'));
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Erreure de validation des données");
+            return back()->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::debug("Erreure lors de la création du router", ["error" => $e->getMessage()]);
+            alert()->error("Opération échouée!", "Erreure lors de la création du router ");
+            return back()->withInput();
+        }
     }
 
     /**
@@ -78,20 +117,46 @@ class RouterController extends Controller
      */
     public function update(Request $request, Router $router)
     {
-        $validated = $request->validate([
-            'location'=> 'nullable|string',
-            'ip'=> 'required|ip',
-            'username'=> 'required',
-            'password'=> 'required',
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => ['required', 'string', 'max:255', Rule::unique("routers")->ignore($router->id)],
+                'location' => 'required',
+                'ip' => ['required', 'ip', Rule::unique("routers")->ignore($router->id)],
+                'username' => 'required',
+                'password' => 'required',
+            ], [
+                'name.required' => "Le nom du router est réquis",
+                'name.string' => "Le nom du être un texte",
+                'name.max' => "Le caractère maximal doit être 225",
+                'name.unique' => "Ce router existe déjà",
 
-        $router->location = $validated['location'] ? $request->location : $router->location;
-        $router->ip = $validated['ip'] ? $request->ip : $router->ip;
-        $router->username = $validated['username'] ? $request->username : $router->username;
-        $router->password = $validated['password'] ? $request->password : $router->password;
-        $router->save();
+                'location.required' => "L'emplacement du router est réquis!",
 
-        return redirect('router')->with('success', __('Router updated successfully'));
+                'ip.required' => "L'IP est réquis!",
+                'ip.ip' => "L'adresse Ip n'est pas valide!",
+                'ip.unique' => "L'adresse Ip exisyte déjà!",
+
+                'username.required' => "L'identifiant est réquis'",
+                'password.required' => "Le mot de passe est réquis!",
+            ]);
+
+            DB::beginTransaction();
+
+            $router->update($validated);
+
+            DB::commit();
+            alert()->success("Opération réussie!", "Modification éffectuée avec succès!");
+            return redirect()->route("router.index"); // redirect('router')->with('success', __('Router updated successfully'));
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Erreure de validation!");
+            return back()->withErrors($e->errors())
+                ->withInput();
+        } catch (Exception $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Erreure lors de la modification " . $e->getMessage());
+            return back();
+        }
     }
 
     /**
@@ -99,6 +164,21 @@ class RouterController extends Controller
      */
     public function destroy(Router $router)
     {
-        //
+        try {
+            DB::beginTransaction();
+            if (!$router) {
+                alert()->info("Information", "Ce router n'existe pas.");
+                return back();
+            }
+            $router->delete();
+
+            DB::commit();
+            alert()->success("Opération réussie!", "Router supprimé avec succès!");
+            return back();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Une erreure est survenue lors de la suppression :" . $e->getMessage());
+            return back();
+        }
     }
 }

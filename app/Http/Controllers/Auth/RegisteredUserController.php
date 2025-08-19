@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\SendRegisterNotification;
 use App\Providers\RouteServiceProvider;
 use DB;
 use Illuminate\Auth\Events\Registered;
@@ -68,11 +69,28 @@ class RegisteredUserController extends Controller
 
             event(new Registered($user));
 
-            // SendNotification($user, "Création de compte", "Compte crée avec succès. Voici vos accès: Identifiant: $user->email | Mot de passe : $user->password ");
+            /**
+             * Sending mail
+             */
+            $data = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password,
+                "message" => "Compte crée avec succès. Connectez-vous maintenant avec les identifiants ci-joint!",
+                "subject" => "Création de compte"
+            ];
 
+            Log::debug("Data of register", ["data" => $user]);
+
+            SendNotificationViaMail(
+                $data,
+                new SendRegisterNotification($data)
+            );
+
+            Log::debug("Data of register", ["data" => $user]);
             // Auth::login($user);
 
-            alert()->success("Succès", "Compte crée avec succès. Connectez-vous maintenant!");
+            alert()->success("Succès", "Compte crée avec succès Vos identifiants vous sont envoyés par mail! Connectez-vous maintenant!");
             DB::commit();
             return redirect('/login')
                 ->with("register_success", "Compte crée avec succès. Voici vos accès: Identifiant: $user->email | Mot de passe : $request->password ");
