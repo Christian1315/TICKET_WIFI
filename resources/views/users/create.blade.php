@@ -81,7 +81,7 @@
 
                             <div class="col-md-4">
                                 <x-input-label for="pin" :value="__('Numéro Personnel d\'Identification')" class="mt-4"> <span class="text-danger">*</span></x-input-label>
-                                <x-text-input id="pin" name="pin" type="text" class="mt-1 block w-full" :value="old('pin')" required></x-text-input>
+                                <x-text-input id="pin" name="pin" type="text" class="mt-1 block w-full" :value="old('pin')" required placeholder="00456789"></x-text-input>
                                 @error("pin")
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -101,7 +101,10 @@
                                     <select name="router_id" value="{{old('router_id')}}" id="router_id" required class="block w-full rounded-md border border-gray-300">
                                         <option value="">{{ __('Choisissez un router') }}</option>
                                         @foreach ($routers as $router)
-                                        <option @selected($router->id==old('router_id')) value="{{ $router->id }}">{{ $router->name }}</option>
+                                        <option
+                                            value="{{ $router->id }}"
+                                            data-packages="{{$router->packages}}"
+                                            @selected($router->id==old('router_id'))>{{ $router->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -110,22 +113,22 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <x-input-label for="router_id" :value="__('Choix du router')" class=""> <span class="text-danger">*</span> </x-input-label>
-                                    <select name="router_id" value="{{old('router_id')}}" id="router_id" required class="block w-full rounded-md border border-gray-300">
-                                        <option value="">{{ __('Choisissez un package') }}</option>
-                                        @foreach ($packages as $package)
-                                        <option @selected($package->id==old('router_id')) value="{{ $package->id }}">{{ $package->name }}</option>
-                                        @endforeach
+                                    <x-input-label for="package_id" :value="__('Choix du tarif(package)')" class=""> <span class="text-danger">*</span> </x-input-label>
+                                    <select name="package_id" value="{{old('package_id')}}" id="package_id" required class="block w-full rounded-md border border-gray-300">
+                                        <!-- js -->
                                     </select>
 
-                                    @error("router_id")
+                                    @error("package_id")
                                     <span class="text-orange">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div>
-                                    <x-input-label for="router_password" :value="__('Mikrotik password')" class="mt-4"></x-input-label>
-                                    <x-text-input id="router_password" name="router_password" type="text" class="mt-1 block w-full" :value="old('router_password')" required></x-text-input>
-                                    <x-input-error class="mt-2" :messages="$errors->get('router_password')"></x-input-error>
+                                    <x-input-label for="router_password" :value="__('Mot de passe du router')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                    <x-text-input id="router_password" name="router_password" type="password" class="mt-1 block w-full" :value="old('router_password')" required placeholder="*****"></x-text-input>
+
+                                    @error("router_password")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="flex justify-content-center items-center gap-4 mt-4">
@@ -140,4 +143,28 @@
             </div>
         </div>
     </div>
+
+    @push("scripts")
+    <script>
+        $(document).ready(function() {
+            $("#router_id").on("select2:select", function(e) {
+
+                const selected = $(this).find(':selected');
+                const packages = selected.data("packages");
+
+                let rows = `<option value="">{{ __('Choisissez un package') }}</option>`
+                
+                $("#package_id").html('')
+
+                if (packages.length > 0) {
+                    packages.forEach(package => {
+                        rows += `<option value="${package.id}">${package.name}</option>`
+                    });
+                }
+
+                $("#package_id").html(rows)
+            })
+        })
+    </script>
+    @endpush
 </x-app-layout>
