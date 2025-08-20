@@ -1,14 +1,71 @@
 <x-app-layout>
+    <x-slot name="title">Packages | Modifier</x-slot>
+
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <div class="flex justify-between items-center mb-6 border-b-2 border-slate-100 pb-4">
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        {{ $package->name . __(' Package Detail') }}
-                    </h2>
+            <div class="bg-white shadow sm:rounded-lg">
+                <div class="p-4 sm:p-8">
+                    @if(session('error'))
+                    <div class="alert alert-danger text-red-600">
+                        {{ session('error') }}
                     </div>
-                    <livewire:package-show package="{{ $package->name }}" />
+                    @endif
+
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">
+                        <i class="bi bi-eye"></i> &nbsp; {{ __('Modifier le package') }}
+                    </h2>
+
+                    <!-- Retour sur liste -->
+                    <div class="flex justify-content-center">
+                        <a href="{{route('packages.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                            <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
+                        </a>
+                    </div>
+
+                    <br>
+                    <!-- Formulaire d'ajout -->
+                    <form method="post" action="{{ route('packages.update',$package->id) }}" class="space-y-6">
+                        @csrf
+                        @method("PATCH")
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="router_id" :value="__('Choix du router')" class=""></x-input-label>
+                                    <x-text-input id="router_id" readonly name="router_id" type="text" class="mt-1 block w-full" :value="old('name')??$package->router?->name" placeholder="Package 1" required></x-text-input>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="name" :value="__('Nom du package')"></x-input-label>
+                                    <x-text-input readonly name="name" type="text" class="mt-1 block w-full" :value="old('name')??$package->name" placeholder="Package 1" required></x-text-input>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <x-input-label for="price" :value="__('Prix du package')"></x-input-label>
+                                    <x-text-input id="price" readonly name="price" type="number" class="mt-1 block w-full" :value="old('price')??$package->price" placeholder="800500" required></x-text-input>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="description" :value="__('Description du tarif')"></x-input-label>
+                                    <x-text-input id="description" readonly name="description" type="text" class="mt-1 block w-full" :value="old('description')??$package->description" placeholder="Ex: Tarif standard"></x-text-input>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="validation_time" :value="__('Durée de validité')"> <span class="text-danger">*</span></x-input-label>
+                                    <x-text-input readonly id="validation_time" name="validation_time" type="text" class="mt-1 block w-full" :value="old('validation_time')??$package->validation_time" placeholder="Ex: 1H, 2H, 7J" required></x-text-input>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

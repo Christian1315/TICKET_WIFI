@@ -17,7 +17,7 @@
                     @endif
                     <div class="flex justify-between items-center mb-6 border-b-2 border-slate-100 pb-4">
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                            {{ __('Packages') }}
+                            <i class="bi bi-box-seam"></i> &nbsp; {{ __('Packages') }}
                         </h2>
                         @if (auth()->user()->isAdmin())
                         <a href="{{ route('packages.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
@@ -46,7 +46,6 @@
             </div>
         </div>
     </div>
-
 
     @push('scripts')
     <script>

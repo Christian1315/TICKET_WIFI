@@ -17,7 +17,7 @@
                     @endif
                     <div class="flex justify-between items-center mb-6 border-b-2 border-slate-100 pb-4">
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                            {{ __('Routers Mikrotik') }}
+                            <i class="bi bi-router"></i> &nbsp; {{ __('Routers Mikrotik') }}
                         </h2>
                         @if (auth()->user()->isAdmin())
                         <a href="{{ route('router.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
@@ -58,6 +58,8 @@
                                             <div name="btn-group" role="group">
                                                 <!-- Update -->
                                                 <a href="{{route('router.edit', $router->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> Modifier</a>
+                                                <!-- Show -->
+                                                <a href="{{route('router.show', $router->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark"><i class="bi bi-eye"></i> Détail</a>
                                                 <!-- Form delete -->
                                                 <a href="{{route('router.destroy', $router->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> Supprimer</a>
                                             </div>

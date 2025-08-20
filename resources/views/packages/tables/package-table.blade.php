@@ -4,7 +4,7 @@
             <th>N°</th>
             <th>Router</th>
             <th>Nom</th>
-            <th>Prix {{env(config('app.currency'))}}</th>
+            <th>Prix ({{env('CURRENCY')}})</th>
             <th>Crée le</th>
             <th>Modifiée le</th>
             <th>Action</th>
@@ -25,6 +25,8 @@
                 <div name="btn-group" role="group">
                     <!-- Update -->
                     <a href="{{route('packages.edit', $package->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> Modifier</a>
+                    <!-- Show -->
+                    <a href="{{route('packages.show', $package->id)}}" class="btn btn-sm btn-light border text-dark"><i class="bi bi-eye"></i> Détail</a>
                     <!-- Form delete -->
                     <a href="{{route('packages.destroy', $package->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> Supprimer</a>
                 </div>

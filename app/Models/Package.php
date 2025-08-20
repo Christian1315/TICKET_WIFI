@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin Eloquent
  */
+
 class Package extends Model
 {
     use HasFactory, SoftDeletes;
@@ -20,7 +21,9 @@ class Package extends Model
         'name',
         'price',
         'router_id',
-        'deleted_at'
+        'deleted_at',
+        "description",
+        "validation_time"
     ];
 
     public function router()

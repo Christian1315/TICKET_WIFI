@@ -8,11 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Router extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'location', 'ip', 'username', 'password','deleted_at'];
+    protected $fillable = [
+        'name',
+        'location',
+        'ip','username','password',
+        'contact','type','description',
+        'map_adress','map_long',
+        'map_lat','deleted_at',
+    ];
 
-    public function packages() {
+    public function packages()
+    {
         return $this->hasMany(Package::class);
     }
 }

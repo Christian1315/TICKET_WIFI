@@ -20,6 +20,8 @@ return new class extends Migration
                 ->constrained("routers")
                 ->onUpdate("CASCADE")
                 ->onDelete('CASCADE');
+            $table->text('description')->nullable();
+            $table->text('validation_time')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

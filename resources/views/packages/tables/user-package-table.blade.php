@@ -3,7 +3,7 @@
         <tr>
             <th>N°</th>
             <th>Nom</th>
-            <th>Prix {{env(config('app.currency'))}}</th>
+            <th>Prix ({{env('CURRENCY')}})</th>
             <th>Crée le</th>
         </tr>
     </thead>

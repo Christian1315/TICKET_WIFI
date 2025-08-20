@@ -28,6 +28,7 @@ class UserController extends Controller
         }
 
         $users = User::with('detail')->where('role', 'user')->get();
+
         return view('users.index', compact('users'));
     }
 
@@ -38,7 +39,9 @@ class UserController extends Controller
         }
 
         $packages = Package::orderBy('name')->get();
-        return view('users.create', compact('packages'));
+        $routers = Router::with('packages')->get();
+
+        return view('users.create', compact('packages','routers'));
     }
 
     public function store(Request $request)

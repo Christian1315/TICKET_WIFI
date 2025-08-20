@@ -18,6 +18,12 @@ return new class extends Migration
             $table->ipAddress('ip');
             $table->string('username');
             $table->string('password');
+            $table->string('contact')->nullable();
+            $table->enum("type",["Mikrotik","PfSence","Omada"])->nullable();
+            $table->text("description")->nullable();
+            $table->text("map_adress")->nullable();
+            $table->text("map_long")->nullable();
+            $table->text("map_lat")->nullable();
             $table->softDeletes();
 
             $table->timestamps();

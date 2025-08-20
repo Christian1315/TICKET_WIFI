@@ -7,13 +7,13 @@
             <x-sidebar-item class="shadow" :href="route('router.index')" :active="request()->routeIs('router.index') || 
             request()->routeIs('router.create') || 
             request()->routeIs('router.show') || 
-            request()->routeIs('router.edit')">{{ __('Routers') }}</x-sidebar-item>
+            request()->routeIs('router.edit')">{{ __('Mes wifi zone') }} (Routers) </x-sidebar-item>
             @endif
 
             <x-sidebar-item class="shadow" :href="route('packages.index')" :active="request()->routeIs('packages.index') || 
             request()->routeIs('packages.create') || 
             request()->routeIs('packages.show') || 
-            request()->routeIs('packages.edit')">{{ __('Packages') }}</x-sidebar-item>
+            request()->routeIs('packages.edit')">{{ __('Tarifs') }} (Packages)</x-sidebar-item>
 
             @if(auth()->user()->isAdmin())
             <x-sidebar-item class="shadow" :href="route('users.index')" :active="request()->routeIs('users.index') || request()->routeIs('users.create')">{{ __('Users') }}</x-sidebar-item>

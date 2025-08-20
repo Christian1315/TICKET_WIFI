@@ -25,10 +25,15 @@
                     <form method="post" action="{{ route('router.store') }}" class="space-y-6">
                         @csrf
 
+                        <!-- Info -->
+                        <div class="alert alert-warning border-left border-bold">
+                            <i class="bi bi-info-circle"></i> Les champs portant le signe (<span class="text-danger">*</span>) sont réquis!
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <x-input-label for="name" :value="__('Nom du router')"></x-input-label>
+                                    <x-input-label for="name" :value="__('Nom du router')"><span class="text-danger">*</span> </x-input-label>
                                     <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" placeholder="Router 1" required></x-text-input>
 
                                     @error("name")
@@ -36,8 +41,8 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <x-input-label for="location" :value="__('Emplacement')" class="mt-4"></x-input-label>
-                                    <x-text-input id="location" name="location" type="text" class="mt-1 block w-full" :value="old('location')"  placeholder="Zone 1"></x-text-input>
+                                    <x-input-label for="location" :value="__('Emplacement')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                    <x-text-input id="location" name="location" type="text" class="mt-1 block w-full" :value="old('location')" placeholder="Zone 1"></x-text-input>
 
                                     @error("location")
                                     <span class="text-orange">{{ $message }}</span>
@@ -47,7 +52,7 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <x-input-label for="ip" :value="__('Adresse IP')" class=""></x-input-label>
+                                    <x-input-label for="ip" :value="__('Adresse IP')" class=""><span class="text-danger">*</span></x-input-label>
                                     <x-text-input id="ip" name="ip" type="text" class="mt-1 block w-full" :value="old('ip')" required placeholder="192.168.1.1"></x-text-input>
 
                                     @error("ip")
@@ -55,7 +60,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <x-input-label for="username" :value="__('Identifiant du router')" class="mt-4"></x-input-label>
+                                    <x-input-label for="username" :value="__('Identifiant du router')" class="mt-4"><span class="text-danger">*</span></x-input-label>
                                     <x-text-input id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username')" required placeholder="username1"></x-text-input>
 
                                     @error("username")
@@ -63,18 +68,68 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-12">
-                            <div class="mb-3">
-                                <x-input-label for="password" :value="__('Mot de passe du router')" class="mt-4"></x-input-label>
-                                <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" :value="old('password')" required placeholder="*********"></x-text-input>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="password" :value="__('Mot de passe du router')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                    <x-text-input id="password" name="password" type="password" class="mt-1 block w-full" :value="old('password')" required placeholder="*********"></x-text-input>
 
-                                @error("password")
-                                <span class="text-orange">{{ $message }}</span>
-                                @enderror
+                                    @error("password")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="contact" :value="__('Contact whatsapp du client')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                    <x-text-input id="contact" name="contact" type="tel" class="mt-1 block w-full" :value="old('contact')" required placeholder="+2290156453423"></x-text-input>
+
+                                    @error("contact")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <x-input-label for="type" :value="__('Type de router')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+
+                                    <select name="type" id="type" class="form-control">
+                                        <option @selected(old('type')=='Mikrotik' ) value="Mikrotik">Mikrotik</option>
+                                        <option @selected(old('type')=='PfSence' ) value="PfSence">PfSence</option>
+                                        <option @selected(old('type')=='Omada' ) value="Omada">Omada</option>
+                                    </select>
+                                    @error("type")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <x-input-label for="description" :value="__('Description')" class="mt-4"></x-input-label>
+                                    <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description')" placeholder="Wifi haute vitesse situé au centre ville"></x-text-input>
+
+                                    @error("description")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <x-input-label for="map" :value="__('Emplacement de la zone sur le map')" class="mt-4"><span class="text-danger"><i class="bi bi-geo-alt-fill"></i></span></x-input-label>
+
+                                    <div id="map" class="mt-4" style="height: 400px;">
+                                        <x-maps-leaflet :zoomLevel="4"></x-maps-leaflet>
+                                    </div>
+                                    <input type="hidden" name="map_lat" id="latitude">
+                                    <input type="hidden" name="map_long" id="longitude">
+                                </div>
                             </div>
                         </div>
+
 
                         <div class="flex justify-content-center items-center gap-4 mt-4">
                             <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
@@ -86,4 +141,38 @@
             </div>
         </div>
     </div>
+
+    @push("scripts")
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let map = L.map('map').setView([0, 0], 4);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+            }).addTo(map);
+
+            let marker;
+
+            map.on('click', function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+
+                // Mettre à jour les champs cachés
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+
+                // Ajouter un marqueur ou le déplacer
+                if (marker) {
+                    marker.setLatLng(e.latlng);
+                } else {
+                    marker = L.marker(e.latlng).addTo(map);
+                }
+            });
+        });
+    </script>
+    @endpush
 </x-app-layout>

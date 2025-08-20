@@ -12,7 +12,7 @@
                     @endif
 
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">
-                        {{ __('Modifier le package') }}
+                        <i class="bi bi-node-plus"></i> &nbsp; {{ __('Modifier le package') }}
                     </h2>
 
                     <!-- Retour sur liste -->
@@ -61,6 +61,28 @@
                                     <x-text-input id="price" name="price" type="number" class="mt-1 block w-full" :value="old('price')??$package->price" placeholder="800500" required></x-text-input>
 
                                     @error("price")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="description" :value="__('Description du tarif')"></x-input-label>
+                                    <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description')??$package->description" placeholder="Ex: Tarif standard"></x-text-input>
+
+                                    @error("description")
+                                    <span class="text-orange">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <x-input-label for="validation_time" :value="__('Durée de validité')"> <span class="text-danger">*</span></x-input-label>
+                                    <x-text-input id="validation_time" name="validation_time" type="text" class="mt-1 block w-full" :value="old('validation_time')??$package->validation_time" placeholder="Ex: 1H, 2H, 7J" required></x-text-input>
+
+                                    @error("validation_time")
                                     <span class="text-orange">{{ $message }}</span>
                                     @enderror
                                 </div>

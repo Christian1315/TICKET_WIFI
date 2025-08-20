@@ -54,12 +54,17 @@ class PackageController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string|max:255|unique:packages',
                 'router_id' => 'required',
+                'description' => 'nullable|string',
+                'validation_time' => 'required',
                 'price' => ['required', 'numeric', 'regex:/^\d+(\.\d{1,2})?$/'],
             ], [
                 "name.required" => "Le nom est requis!",
                 "name.string" => "Le nom n'est pas valide",
                 "name.max" => "Le nom ne doit pas dépasser 255 caractères!",
                 "name.unique" => "Ce nom existe déjà",
+
+                "validation_time.required" => "La durée de validité est réquise!",
+                // "validation_time.time" => "Ce champ doit être de format date",
 
                 "router_id.required" => "Selectionner un router",
                 "name.integer" => "Ce champ doit être un entier",
@@ -117,12 +122,13 @@ class PackageController extends Controller
         if (!auth()->user()->isAdmin()) {
             return redirect('/');
         }
-        return view('packages.show', compact('package'));
+        $routers = Router::all();
+
+        return view('packages.show', compact('package','routers'));
     }
 
     public function edit(Package $package)
     {
-
         if (!auth()->user()->isAdmin()) {
             return redirect('/');
         }
@@ -168,6 +174,7 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->load("router");
+
         try {
             DB::beginTransaction();
             if (!$package) {

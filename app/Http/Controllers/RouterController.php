@@ -55,6 +55,13 @@ class RouterController extends Controller
                 'ip' => 'required|ip|unique:routers',
                 'username' => 'required',
                 'password' => 'required',
+
+                'type' => "required|in:Mikrotik,PfSence,Omada",
+                'contact' => "required",
+                'description' => "nullable|string",
+
+                'map_lat' => "nullable|numeric",
+                'map_long' => "nullable|numeric",
             ], [
                 'name.required' => "Le nom du router est réquis",
                 'name.string' => "Le nom du être un texte",
@@ -69,6 +76,14 @@ class RouterController extends Controller
 
                 'username.required' => "L'identifiant est réquis'",
                 'password.required' => "Le mot de passe est réquis!",
+
+                'type.required' => "Préciser le type du router",
+                'type.enum' => "Le type doit être 'Mikrotik','PfSence' ou 'Omada'",
+
+                'contact.required' => "Le contact est réquis!",
+
+                'map_lat.numeric' => "Ce champ doit être de type numérique",
+                'map_long.numeric' => "Ce champ doit être de type numérique",
             ]);
 
             DB::beginTransaction();
@@ -98,7 +113,7 @@ class RouterController extends Controller
      */
     public function show(Router $router)
     {
-        //
+        return view('router.show', compact('router'));
     }
 
     /**
@@ -124,6 +139,14 @@ class RouterController extends Controller
                 'ip' => ['required', 'ip', Rule::unique("routers")->ignore($router->id)],
                 'username' => 'required',
                 'password' => 'required',
+
+                'contact' => "required",
+                'description' => "nullable|string",
+
+                'type' => "required|in:Mikrotik,PfSence,Omada",
+                'map_long' => "nullable|numeric",
+                'map_lat' => "nullable|numeric",
+
             ], [
                 'name.required' => "Le nom du router est réquis",
                 'name.string' => "Le nom du être un texte",
@@ -132,12 +155,22 @@ class RouterController extends Controller
 
                 'location.required' => "L'emplacement du router est réquis!",
 
+
+                'contact.required' => "Le contact est réquis!",
+
                 'ip.required' => "L'IP est réquis!",
                 'ip.ip' => "L'adresse Ip n'est pas valide!",
                 'ip.unique' => "L'adresse Ip exisyte déjà!",
 
                 'username.required' => "L'identifiant est réquis'",
                 'password.required' => "Le mot de passe est réquis!",
+
+                'type.required' => "Préciser le type du router",
+                'type.enum' => "Le type doit être 'Mikrotik','PfSence' ou 'Omada'",
+
+                'map_lat.numeric' => "Ce champ doit être de type numérique",
+                'map_long.numeric' => "Ce champ doit être de type numérique",
+                'type.in' => "Ce champ doit être de type numérique",
             ]);
 
             DB::beginTransaction();
@@ -170,6 +203,7 @@ class RouterController extends Controller
                 alert()->info("Information", "Ce router n'existe pas.");
                 return back();
             }
+
             $router->delete();
 
             DB::commit();

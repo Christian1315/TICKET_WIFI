@@ -15,8 +15,12 @@ body {
 }
 
 .bg-orange {
-    background-color: #e49c5c!important;
-    color: white!important;
+    background-color: #e49c5c !important;
+    color: white !important;
+}
+
+.border-bold {
+    border-width: 5px !important;
 }
 
 .profil-img {
@@ -51,7 +55,7 @@ body {
 .dt-buttons button {
     background-color: #000 !important;
     color: #fff !important;
-    border-color: #fff!important;
+    border-color: #fff !important;
 }
 
 .dt-buttons button:hover {
@@ -61,6 +65,6 @@ body {
     transition-duration: 0.5 !important;
 }
 
-table{
-    font-size: 15px!important;
+table {
+    font-size: 15px !important;
 }
