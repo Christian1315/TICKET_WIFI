@@ -15,13 +15,18 @@ class PaymentController extends Controller
 
     public function create($param)
     {
-        if (auth()->user()->isUser()){
-            $bill = Billing::where('id', $param)->firstOrFail();
+        if (!auth()->user()->isUser()) {
+            $bill = Billing::find($param);
 
+            if (!$bill) {
+                alert()->error("Opération échouée!", "Cette facture n'existe pas!");
+                return back();
+            }
             return view('payments.create', compact('bill'));
         }
 
-        return redirect('dashboard');
+        alert()->error("Opération échouée!", "Vous n'êtes pas autorisé.e à éffectuer cette opération");
+        return redirect()->back();
     }
 
     public function store(Request $request)

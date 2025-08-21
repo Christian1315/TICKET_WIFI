@@ -41,7 +41,7 @@
 
                             <div class="col-md-4">
                                 <x-input-label for="password" :value="__('Mot de passe')" class="mt-4"><span class="text-danger">*</span> </x-input-label>
-                                <x-text-input name="password" type="password" class="mt-1 block w-full" value=""></x-text-input>
+                                <x-text-input name="password" type="password" class="mt-1 block w-full" :value="old('password')" required placeholder="*****"></x-text-input>
                                 @error("password")
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -49,7 +49,7 @@
 
                             <div class="col-md-4">
                                 <x-input-label for="password_confirmation" :value="__('Confirmation du mot de passe')" class="mt-4"><span class="text-danger">*</span></x-input-label>
-                                <x-text-input name="password_confirmation" type="password" class="mt-1 block w-full" value="" required></x-text-input>
+                                <x-text-input name="password_confirmation" type="password" class="mt-1 block w-full" :value="old('password_confirmation')" required placeholder="*****"></x-text-input>
                                 @error("password_confirmation")
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
@@ -58,7 +58,7 @@
                             <div class="col-md-4">
                                 <x-input-label for="address" :value="__('Address')" class="mt-4"><span class="text-danger">*</span></x-input-label>
                                 <x-text-input id="address" name="address" type="text" class="mt-1 block w-full" :value="old('address')" required placeholder="Ex: Cotonou | Rue 229"></x-text-input>
-                                @error("password_confirmation")
+                                @error("address")
                                 <span class="text-danger">{{$message}}</span>
                                 @enderror
                             </div>
@@ -122,14 +122,6 @@
                                     <span class="text-orange">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div>
-                                    <x-input-label for="router_password" :value="__('Mot de passe du router')" class="mt-4"><span class="text-danger">*</span></x-input-label>
-                                    <x-text-input id="router_password" name="router_password" type="password" class="mt-1 block w-full" :value="old('router_password')" required placeholder="*****"></x-text-input>
-
-                                    @error("router_password")
-                                    <span class="text-orange">{{ $message }}</span>
-                                    @enderror
-                                </div>
 
                                 <div class="flex justify-content-center items-center gap-4 mt-4">
                                     <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
@@ -153,7 +145,7 @@
                 const packages = selected.data("packages");
 
                 let rows = `<option value="">{{ __('Choisissez un package') }}</option>`
-                
+
                 $("#package_id").html('')
 
                 if (packages.length > 0) {

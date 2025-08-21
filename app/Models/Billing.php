@@ -41,6 +41,7 @@ class Billing extends Model
             $number = random_int(100000, 999999);
         } catch (\Exception $e) {
         }
+
         if (self::where('invoice', $number)->exists()) {
             return $this->generateRandomNumber();
         }

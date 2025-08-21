@@ -16,7 +16,11 @@
             request()->routeIs('packages.edit')">{{ __('Tarifs') }} (Packages)</x-sidebar-item>
 
             @if(auth()->user()->isAdmin())
-            <x-sidebar-item class="shadow" :href="route('users.index')" :active="request()->routeIs('users.index') || request()->routeIs('users.create')">{{ __('Users') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('users.index')" :active="request()->routeIs('users.index') || 
+            request()->routeIs('users.create') ||
+            request()->routeIs('users.edit') || 
+            request()->routeIs('users.show') ||
+            request()->routeIs('payment.create')">{{ __('Users') }}</x-sidebar-item>
             <x-sidebar-item class="shadow" :href="route('company.edit')" :active="request()->routeIs('company.edit')">{{ __('ISP') }}</x-sidebar-item>
             @endif
 

@@ -20,7 +20,6 @@
                             <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
                         </a>
                     </div>
-
                     <br>
 
                     <form method="post" action="{{ route('router.update', $router->id) }}" class="mt-6 space-y-6">
