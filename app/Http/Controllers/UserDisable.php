@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Router;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use RouterOS\Client;
 use RouterOS\Query;
 
@@ -11,24 +12,37 @@ class UserDisable extends Controller
 {
     public function __invoke(User $user)
     {
-        $router_name = $user->detail->router_name;
-        $router = Router::where("name", $router_name)->firstOrFail();
-        
         try {
-            $client = new Client([
-                "host" => $router->ip,
-                "user" => $router->username,
-                "pass" => $router->password,
-            ]);
+            DB::beginTransaction();
 
-            $query = new Query("/ppp/secret/disable");
-            $query->equal("numbers", $user->name);
-            $client->query($query)->read();
+            $router_name = $user->detail->router_name;
+            $router = Router::firstWhere("name", $router_name);
+
+            if (!$router) {
+                throw new \Exception("Ce router n'existe pas!");
+            }
+
+            // try {
+            //     $client = new Client([
+            //         "host" => $router->ip,
+            //         "user" => $router->username,
+            //         "pass" => $router->password,
+            //     ]);
+            //     $query = new Query("/ppp/secret/disable");
+            //     $query->equal("numbers", $user->name);
+            //     $client->query($query)->read();
+            // } catch (\Exception $e) {
+            //     return back()->with("error", __("Mikrotik connection fails"));
+            // }
+
+            DB::commit();
+            $user->detail->update(["status" => 'inactive']);
+            alert()->success("Opération réussie!","Compte désactivé avec succès!");
+            return back(); //->with("success", __("User disabled successfully"));
         } catch (\Exception $e) {
-            return back()->with("error", __("Mikrotik connection fails"));
+            DB::rollBack();
+            alert()->error("Opération échouée!","Erreure lors de la désactivation du compte");
+            return back();
         }
-
-        $user->detail->update(["status" => 'inactive']);
-        return back()->with("success", __("User disabled successfully"));
     }
 }

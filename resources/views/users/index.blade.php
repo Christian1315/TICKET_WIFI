@@ -72,11 +72,15 @@
                                             <td class="text-center">
                                                 @if($user->detail)
                                                 <div name="btn-group" role="group">
-                                                    <form action="{{$user->detail?->status? route('user.disable',$user->id):route('user.enable',$user->id) }}" method="post">
+                                                    <form action="{{$user->detail->status=='active'? route('user.disable',$user->id):route('user.enable',$user->id) }}" method="post" id="userStatutHandle_{{$user->id}}">
                                                         @csrf
                                                         @method("PATCH")
                                                     </form>
-                                                    <button type="button" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-shield-x"></i> &nbsp;{{$user->detail->status? __('Désactiver'):__('Activer') }}</button>
+                                                    <!--  -->
+                                                    <!-- <button type="button" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-shield-x"></i> &nbsp;{{$user->detail->status? __('Désactiver'):__('Activer') }}</button> -->
+                                                    <a class="btn btn-sm bg-orange text-white btn-hover"
+                                                        onclick="document.getElementById('userStatutHandle_{{$user->id}}').submit()"><i class="bi bi-shield-x"></i> &nbsp;{{$user->detail->status=='active'? __('Désactiver'):__('Activer') }}</a>
+
                                                     <!-- Update -->
                                                     <a href="{{route('users.edit', $user->id)}}" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-pencil"></i> Modifier</a>
                                                     <!-- Show -->
@@ -315,7 +319,7 @@
                     }
                 },
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-           
+
         });
     </script>
     @endpush

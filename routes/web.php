@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/router', RouterController::class);
 
     Route::get('/payment/create/{param}', [PaymentController::class, 'create'])->name('payment.create');
+    Route::get('/handle-payment-after-process/{bill}', [PaymentController::class, 'handlePayementAfterProcess'])->name('payment.handlePayementAfterProcess');
     Route::post('/payment/process', [PaymentController::class, 'process'])->name('payment.process');
 
     Route::get('/isp', [CompanyController::class, 'edit'])->name('company.edit');

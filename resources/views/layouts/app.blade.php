@@ -126,6 +126,9 @@
             });
         });
     </script>
+
+    <!-- Kkiappay -->
+    <script src="https://cdn.kkiapay.me/k.js"></script>
 </body>
 
 </html>

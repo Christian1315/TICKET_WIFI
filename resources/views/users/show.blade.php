@@ -25,17 +25,17 @@
 
                         <!-- Retour sur liste -->
                         <div class="flex justify-content-center">
-                            <a href="{{route('router.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                            <a href="{{route('users.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
                                 <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
                             </a>
                         </div>
 
                         <div class="flex items-center">
-                            <a href="{{ route('package-change', $user->id) }}" class="ml-2 inline-flex items-center px-4 py-2 bg-sky-500 text-white dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs rounded uppercase">
+                            <!-- <a href="{{ route('package-change', $user->id) }}" class="ml-2 inline-flex items-center px-4 py-2 bg-sky-500 text-white dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs rounded uppercase">
                                 {{ __('Change package') }}
-                            </a>
+                            </a> -->
 
-                            <a href="{{ route('users.edit', $user->id) }}" class="ml-2 inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white rounded uppercase">
+                            <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-hover btn-primary p-1">
                                 <i class="bi bi-pencil"></i> &nbsp; {{ __('Modifier') }}
                             </a>
 
@@ -91,7 +91,7 @@
                                             <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($bill->package_start)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
                                             <td class="text-center">
                                                 @if($bill->payment)
-                                                <span class="badge bg-light text-dark border">{{$bill->payment}}</span>
+                                                <span class="badge bg-light text-primary border">{{$bill->payment?->payment_method}}</span>
                                                 @else
                                                 <a href="{{route('payment.create',$bill->id)}}" class="btn btn-sm btn-primary text-dark border text-white"><i class="bi bi-wallet2"></i> &nbsp;Marquer comme payé</a>
                                                 @endif

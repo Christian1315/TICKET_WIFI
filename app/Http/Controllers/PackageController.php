@@ -177,6 +177,7 @@ class PackageController extends Controller
 
         try {
             DB::beginTransaction();
+            
             if (!$package) {
                 alert()->info("Information", "Ce package n'existe pas.");
                 return back();
