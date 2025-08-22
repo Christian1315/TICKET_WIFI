@@ -16,7 +16,6 @@
                     </div>
                     @endif
 
-
                     <div class="flex justify-between items-center mb-6 border-b-2 border-slate-100 pb-4">
 
                         <h2 class="font-semibold text-uppercase text-gray-800 leading-tight border-b-2 border-slate-100 pb-4">

@@ -12,7 +12,15 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        return view('payments.index');
+        $user = auth()->user();
+        if ($user->isUser()) {
+            $payments = $user->payment;
+        } else {
+            $payments = Payment::with(["user", "billing"])->get();
+        }
+
+        /** */
+        return view('payments.index', compact("payments"));
     }
 
     public function create($param)

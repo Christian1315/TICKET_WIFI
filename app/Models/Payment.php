@@ -13,11 +13,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin Eloquent
  */
+
 class Payment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['billing_id', 'user_id', 'invoice', 'payment_method', 'package_price','deleted_at'];
+    protected $fillable = ['billing_id', 'user_id', 'invoice', 'payment_method', 'package_price', 'deleted_at'];
 
     public function user()
     {

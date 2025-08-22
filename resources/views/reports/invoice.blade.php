@@ -56,25 +56,25 @@
     </style>
 </head>
 <body>
-<h3>{{ __('Invoice #') . $invoice->invoice }}</h3>
-<p>{{ __('Invoice date: ') . date('Y-m-d') }}</p>
+<h3>{{ __('Facture #') . $invoice->invoice }}</h3>
+<p>{{ __('Facture date: ') . date('Y-m-d') }}</p>
 
 
 <div class="details-row">
     <div class="details-column">
-        <h5>{{ __('ISP Details:') }}</h5>
+        <h5>{{ __('Details de la FAI:') }}</h5>
         <p>{{ $company->name }}</p>
-        <p>{{ __('Address: ') . $company->address }}</p>
-        <p>{{ __('Phone: ') . $company->phone }}</p>
+        <p>{{ __('Adresse: ') . $company->address }}</p>
+        <p>{{ __('Télephone: ') . $company->phone }}</p>
         <p>{{ __('Email: ') . $company->email }}</p>
     </div>
 
     <div class="details-column">
-        <h5>{{ __('Invoice Details:') }}</h5>
-        <p>{{ __('Customer: ') . $invoice->user->name }}</p>
-        <p>{{ __('Address: ') . $invoice->user->detail->address }}</p>
-        <p>{{ __('Phone: ') . $invoice->user->detail->phone }}</p>
-        <p>{{ __('Email: ') . $invoice->user->email }}</p>
+        <h5>{{ __('Facture Details:') }}</h5>
+        <p>{{ __('Utilisateur: ') . $invoice->user?->name }}</p>
+        <p>{{ __('Addresse: ') . $invoice->user?->detail->address }}</p>
+        <p>{{ __('Télephone: ') . $invoice->user?->detail->phone }}</p>
+        <p>{{ __('Email: ') . $invoice->user?->email }}</p>
     </div>
 </div>
 
@@ -83,18 +83,18 @@
 <table>
     <tr>
         <th>{{ __('Description') }}</th>
-        <th>{{ __('Amount') }}</th>
+        <th>{{ __('Montant') }}</th>
     </tr>
     <tr>
         <td>
-            {{ __('Package name ') . $invoice->billing->package_name }}<br>
-            {{ __('(Started on ') . $invoice->billing->package_start . __(')') }}
+            {{ __('Tarif :') . $invoice->billing?->package_name }}<br>
+            {{ __('(Début :') . $invoice->billing?->package_start . __(')') }}
         </td>
-        <td>{{ config('app.currency') . $invoice->package_price }}</td>
+        <td>{{ $invoice->package_price }} {{config('app.currency')}} </td>
     </tr>
     <tr class="invoice-line">
         <td colspan="1" style="text-align: right;">{{ __('Total:') }}</td>
-        <td>{{ config('app.currency') . $invoice->package_price }}</td>
+        <td>{{ $invoice->package_price  }} {{config('app.currency')}} </td>
     </tr>
 </table>
 

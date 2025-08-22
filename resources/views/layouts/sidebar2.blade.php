@@ -24,7 +24,8 @@
             <x-sidebar-item class="shadow" :href="route('company.edit')" :active="request()->routeIs('company.edit')">{{ __('FAI') }}</x-sidebar-item>
             @endif
 
-            <x-sidebar-item class="shadow" :href="route('billing.index')" :active="request()->routeIs('billing.index')">{{ __('Billing') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('billing.index')" :active="request()->routeIs('billing.index') ||
+            request()->routeIs('billing.create')">{{ __('Facturation') }}</x-sidebar-item>
             <x-sidebar-item class="shadow" :href="route('payment.index')" :active="request()->routeIs('payment.index')">{{ __('Payment') }}</x-sidebar-item>
             <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">{{ __('Ticket') }}</x-sidebar-item>
 

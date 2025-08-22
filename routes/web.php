@@ -73,7 +73,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/billing-download', BillingDownload::class)->name('billing.download');
     Route::get('/payment-download', PaymentDownload::class)->name('payment.download');
     Route::get('/single-download/{user}', ShowUser::class)->name('single.download');
-    Route::get('/invoice-download/{row}', InvoiceDownload::class)->name('invoice.download');
+    Route::get('/invoice-download/{id}', InvoiceDownload::class)->name('invoice.download');
 
     Route::group(['middleware' => ['web']], function () {
         // Payment Routes for bKash
