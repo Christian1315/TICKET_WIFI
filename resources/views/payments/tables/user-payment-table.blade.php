@@ -17,7 +17,6 @@
             <td>REF_{{$payment->invoice}}</td>
             <td class="text-center">{{$payment->billing?->package_name}}</td>
             <td class="text-center">{{$payment->package_price}}</td>
-            <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($payment->package_start)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
             <td class="text-center">
                 <span class="badge bg-light text-primary border">{{$payment->payment_method}}</span>
             </td>

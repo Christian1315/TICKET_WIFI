@@ -11,7 +11,7 @@
                         </h2>
                         <div class="flex items-center">
                             <a href="{{ route('billing.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
-                                <i class="bi bi-person-plus"></i> &nbsp; {{ __('Create') }}
+                                <i class="bi bi-person-plus"></i> &nbsp; {{ __('Ajouter') }}
                             </a>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
     <script type="text/javascript">
         $(function() {
             $("#example1").DataTable({
-                "paging": false,
+                // "paging": false,
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,

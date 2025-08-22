@@ -1,5 +1,6 @@
-<x-app-layout>
-    <x-slot name="title">Payement de facture</x-slot>
+<x-app-layout>    
+    <x-slot name="title">Payement | Créer</x-slot>
+
     <div class="py-6">
         <div class="max-w-8xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
