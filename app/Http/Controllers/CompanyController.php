@@ -6,13 +6,18 @@ use App\Http\Requests\CompanyRequest;
 use App\Models\Comment;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class CompanyController extends Controller
 {
     public function edit()
     {
         if (!auth()->user()->isAdmin()) {
-            return redirect('/');
+            alert()->info("Accès réfusé!", "Vous n'êtes pas autorisé à accéder à ce panel!");
+            return back();
         }
 
         $company = Company::firstOrNew();
@@ -21,10 +26,48 @@ class CompanyController extends Controller
 
     public function update(CompanyRequest $request)
     {
-        $company = Company::firstOrNew();
-        $company->fill($request->validated());
-        $company->save();
+        try {
+            DB::beginTransaction();
 
-        return back()->with('success', __('Update successful'));
+            $request->validate([
+                'name' => 'required|string|unique:companies',
+                'address' => 'required',
+                'email' => 'required|email|unique:companies',
+                'phone' => ['required', Rule::unique("companies"), 'regex:/^\+?[0-9]{8,15}$/'],
+            ], [
+                'name.required' => 'Le nom est réquis!',
+                'name.unique' => 'Ce nom existe déjà!',
+
+                'address.required' => 'L\adresse est réquise!',
+
+                'email.required' => 'Le mail est réquis!',
+                'email.email' => 'Le mail n\'est pas valide',
+                'email.unique' => 'Ce mail existe déjà!',
+
+                'phone.required' => 'Le phone est réquis!',
+                'phone.unique' => 'Ce phone existe déjà',
+                'phone.regex' => 'Ce phone n\'est pas valide!',
+            ]);
+
+            /** */
+            $company = Company::firstOrNew();
+            $company->fill($request->validated());
+            $company->save();
+
+            DB::commit();
+            alert()->success("Opération réussie!", "Modification éffectuée avec succès!");
+            return back(); //->with('success', __('Update successful'));
+        } catch (ValidationException $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Erreure de validation des données!");
+            Log::debug("Erreure de validation", ["data" => $e->errors()]);
+
+            return back()->withErrors($e->errors())
+                ->withInput();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            alert()->error("Opération échouée!", "Erreure lors de la modification du FAI");
+            return back()->withInput();
+        }
     }
 }

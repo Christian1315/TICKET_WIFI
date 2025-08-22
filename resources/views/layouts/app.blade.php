@@ -86,6 +86,11 @@
             @include('layouts.sidebar2')
             <main class="flex-1 flex flex-col overflow-hidden bg-indigo-50 bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 shadow">
                 {{ $slot }}
+
+                <br>
+                <div class="bg-light p-2 fixed-bottom">
+                    <p class="text-center">@Copyright <strong class="badge bg-light text-primary border">{{date("Y")}}</strong> | Tous droits réservés | Réalisé par <strong class="badge bg-light text-primary border">Code4Christ</strong> </p>
+                </div>
             </main>
         </div>
     </div>

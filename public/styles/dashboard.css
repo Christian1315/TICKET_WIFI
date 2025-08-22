@@ -23,6 +23,14 @@ body {
     border-width: 5px !important;
 }
 
+.text-blue {
+    color: #0773d3;
+}
+
+.bg-blue {
+    background-color: #0773d3!important;
+}
+
 .profil-img {
     width: 100px !important;
     height: 100px !important;

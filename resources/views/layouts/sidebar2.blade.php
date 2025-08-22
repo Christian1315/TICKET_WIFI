@@ -21,7 +21,7 @@
             request()->routeIs('users.edit') || 
             request()->routeIs('users.show') ||
             request()->routeIs('payment.create')">{{ __('Users') }}</x-sidebar-item>
-            <x-sidebar-item class="shadow" :href="route('company.edit')" :active="request()->routeIs('company.edit')">{{ __('ISP') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('company.edit')" :active="request()->routeIs('company.edit')">{{ __('FAI') }}</x-sidebar-item>
             @endif
 
             <x-sidebar-item class="shadow" :href="route('billing.index')" :active="request()->routeIs('billing.index')">{{ __('Billing') }}</x-sidebar-item>

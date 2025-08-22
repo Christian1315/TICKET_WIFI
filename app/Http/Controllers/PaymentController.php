@@ -17,7 +17,7 @@ class PaymentController extends Controller
 
     public function create($param)
     {
-        if (!auth()->user()->isUser()) {
+        if (auth()->user()->isUser()) {
             $bill = Billing::find($param);
 
             if (!$bill) {

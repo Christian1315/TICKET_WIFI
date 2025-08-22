@@ -22,6 +22,13 @@
                             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __("Détails d'ajout des utilisateurs") }}</p>
                         </div>
 
+                        <!-- Retour sur liste -->
+                        <div class="flex justify-content-center">
+                            <a href="{{route('users.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                                <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
+                            </a>
+                        </div>
+
                         <div class="row">
                             <div class="col-md-4">
                                 <x-input-label for="name" :value="__('Nom & Prénom')" class="mt-4"> <span class="text-danger">*</span> </x-input-label>
