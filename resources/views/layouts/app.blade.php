@@ -88,7 +88,7 @@
                 {{ $slot }}
 
                 <br>
-                <div class="bg-light p-2 fixed-bottom">
+                <div class="bg p-2 ">
                     <p class="text-center">@Copyright <strong class="badge bg-light text-primary border">{{date("Y")}}</strong> | Tous droits réservés | Réalisé par <strong class="badge bg-light text-primary border">Code4Christ</strong> </p>
                 </div>
             </main>

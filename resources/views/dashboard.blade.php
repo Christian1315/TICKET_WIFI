@@ -74,7 +74,7 @@
                                         <tr>
                                             <td class="border-b border-slate-300 p-2">{{ $user->name }}</td>
                                             <td class="border-b border-slate-300 p-2">{{ $user->detail?->package_name }}</td>
-                                            <td class="border-b border-slate-300 p-2">{{ date('Y-m-d', strtotime($user->created_at)) }}</td>
+                                            <td class="border-b border-slate-300 p-2">{{\Carbon\carbon::parse($user->created_at)->locale("fr")->isoFormat("D MMMM YYYY")}}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -95,7 +95,7 @@
                                         <tr>
                                             <td class="border-b border-slate-300 p-2">{{ $payment->user->name }}</td>
                                             <td class="border-b border-slate-300 p-2">{{ $payment->package_price .' '. config('app.currency') }}</td>
-                                            <td class="border-b border-slate-300 p-2">{{ date('Y-m-d', strtotime($payment->created_at)) }}</td>
+                                            <td class="border-b border-slate-300 p-2">{{ \Carbon\carbon::parse($payment->created_at)->locale("fr")->isoFormat("D MMMM YYYY") }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -128,7 +128,7 @@
                                 </table>
                             </div>
                             <div>
-                                <h3 class="font-semibold">{{ __('Billets récents') }}</h3>
+                                <h3 class="font-semibold">{{ __('Tickets récents') }}</h3>
                                 <table class="table-auto border-collapse border-b border-slate-400 mt-4 w-full">
                                     <thead>
                                         <tr>
@@ -142,7 +142,7 @@
                                         <tr>
                                             <td class="border-b border-slate-300 p-2">{{ $ticket->subject }}</td>
                                             <td class="border-b border-slate-300 p-2">{{ $ticket->status }}</td>
-                                            <td class="border-b border-slate-300 p-2">{{ date('Y-m-d', strtotime($ticket->created_at)) }}</td>
+                                            <td class="border-b border-slate-300 p-2">{{ \Carbon\carbon::parse($ticket->created_at)->locale("fr")->isoFormat("D MMMM YYYY")}}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

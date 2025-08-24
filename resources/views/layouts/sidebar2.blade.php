@@ -1,4 +1,4 @@
-<div class="w-64 min-h-screen bg-white hidden md:block">
+<div class="w-64 mb min-h-screen bg-white hidden md:block">
     <nav class="">
         <div x-data="{ open: false }">
             <!--  -->
@@ -32,9 +32,9 @@
             request()->routeIs('ticket.show')">{{ __('Ticket') }}</x-sidebar-item>
 
             <!-- <input type="text" placeholder="Search.." class="w-100" id="myInput" onkeyup="filterFunction()"> -->
-            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">{{ __('Base') }}</x-sidebar-item>
-            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">{{ __('Blog') }}</x-sidebar-item>
-            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">{{ __('Contact') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('_ticket.index')">{{ __('Base') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('_ticket.index')">{{ __('Blog') }}</x-sidebar-item>
+            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('_ticket.index')">{{ __('Contact') }}</x-sidebar-item>
 
         </div>
 

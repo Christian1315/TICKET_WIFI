@@ -26,6 +26,7 @@
                                     <th>Priorité</th>
                                     <th>Crée par</th>
                                     <th>Crée le</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
 
@@ -34,10 +35,15 @@
                                 <tr>
                                     <td>{{$ticket->number}}</td>
                                     <td>{{$ticket->subject}}</td>
-                                    <td> <span class="badge bg-light text-dark border">{{$ticket->status}}</span></td>
+                                    <td> <span class="badge text-white bg-{{$ticket->status=='Open'?'success':'danger'}} text-dark border">{{$ticket->status}}</span></td>
                                     <td class="text-center">{{$ticket->priority}}</td>
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{$ticket->user?->name}}</span></td>
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($ticket->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <a href="{{route('ticket.show', $ticket->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark btn-hover"><i class="bi bi-eye"></i> Détail</a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
