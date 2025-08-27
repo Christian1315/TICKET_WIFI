@@ -38,6 +38,7 @@
                         </div>
                     </div>
 
+                    @if(auth()->user()->isAdmin())
                     <div class="grid grid-cols-2 gap-4 mt-6">
                         <div class="border-l-2 bg-neutral-50 border-neutral-500 p-4">
                             <h2 class="text-l font-bold">{{ __('Total des utilisateurs') }}</h2>
@@ -150,6 +151,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

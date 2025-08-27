@@ -31,6 +31,11 @@
                         </div>
                         <br>
 
+                        <!-- Info -->
+                        <div class="alert alert-warning border-left border-bold">
+                            <i class="bi bi-info-circle"></i> Les champs portant le signe (<span class="text-danger">*</span>) sont réquis!
+                        </div>
+                        
                         <div class="row">
                             <div class="">
                                 <x-input-label for="subject" :value="__('Sujet')"> <span class="text-danger">*</span> </x-input-label>
@@ -43,9 +48,9 @@
                             <div>
                                 <x-input-label for="priority" :value="__('Priorité')" class="mt-4"><span class="text-danger">*</span></x-input-label>
                                 <select name="priority" id="priority" class="mt-1 block w-full rounded-md border border-gray-300" required>
-                                    <option @selected(old('priority')=='Elevée') value="Elevée">{{ __('Elevé') }}</option>
-                                    <option @selected(old('priority')=='Normale') value="Normale">{{ __('Normal') }}</option>
-                                    <option @selected(old('priority')=='Faible') value="Faible">{{ __('Faible') }}</option>
+                                    <option @selected(old('priority')=='Elevée' ) value="Elevée">{{ __('Elevé') }}</option>
+                                    <option @selected(old('priority')=='Normale' ) value="Normale">{{ __('Normal') }}</option>
+                                    <option @selected(old('priority')=='Faible' ) value="Faible">{{ __('Faible') }}</option>
                                 </select>
                                 @error("priority")
                                 <span class="text-orange">{{ $message }}</span>

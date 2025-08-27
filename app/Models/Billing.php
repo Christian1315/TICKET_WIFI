@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -18,9 +19,10 @@ class Billing extends Model
 
     protected $fillable = [
         'invoice',
-        'package_name',
-        'package_price',
-        'package_start',
+        // 'package_name',
+        // 'package_price',
+        // 'package_start',
+        'package_id',
         'user_id',
         'deleted_at'
     ];
@@ -33,6 +35,11 @@ class Billing extends Model
     public function payment()
     {
         return $this->hasOne(Payment::class);
+    }
+
+    public function package(): BelongsTo
+    {
+        return $this->belongsTo(Package::class, "package_id");
     }
 
     public function generateRandomNumber()

@@ -14,9 +14,15 @@ return new class extends Migration
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
             $table->string('invoice');
-            $table->string('package_name');
-            $table->unsignedInteger('package_price');
-            $table->date('package_start');
+            // $table->string('package_name');
+            // $table->unsignedInteger('package_price');
+            // $table->date('package_start');
+            $table->foreignId('package_id')
+                ->nullable()
+                ->constrained('packages')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')

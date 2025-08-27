@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('routers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
             $table->string('name')->unique();
             $table->string('location');
             $table->ipAddress('ip');
             $table->string('username');
             $table->string('password');
             $table->string('contact')->nullable();
-            $table->enum("type",["Mikrotik","PfSence","Omada"])->nullable();
+            $table->enum("type", ["Mikrotik", "PfSence", "Omada"])->nullable();
             $table->text("description")->nullable();
             $table->text("map_adress")->nullable();
             $table->text("map_long")->nullable();

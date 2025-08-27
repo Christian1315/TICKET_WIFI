@@ -59,8 +59,8 @@ class UserController extends Controller
             "dob" => "required|date",
             "pin" => "required|numeric",
 
-            "router_id" => "required|integer",
-            "package_id" => "required|integer",
+            // "router_id" => "required|integer",
+            // "package_id" => "required|integer",
         ], [
             "name.required" => "Le nom est réquis",
 
@@ -82,23 +82,23 @@ class UserController extends Controller
 
             "pin.numeric" => "Ce champ doit être de format numérique!",
 
-            "router_id.required" => "Ce champ est réquis!",
-            "router_id.integer" => "Ce champ est n'est pas valide!",
+            // "router_id.required" => "Ce champ est réquis!",
+            // "router_id.integer" => "Ce champ est n'est pas valide!",
 
-            "package_id.required" => "Ce champ est réquis!",
-            "package_id.integer" => "Ce champ est n'est pas valide!",
+            // "package_id.required" => "Ce champ est réquis!",
+            // "package_id.integer" => "Ce champ est n'est pas valide!",
         ]);
 
-        $router = Router::find($request->router_id);
-        $package = Package::find($request->package_id);
+        // $router = Router::find($request->router_id);
+        // $package = Package::find($request->package_id);
 
-        if (!$router) {
-            throw new \Exception("Ce router n'existe pas:");
-        }
+        // if (!$router) {
+        //     throw new \Exception("Ce router n'existe pas:");
+        // }
 
-        if (!$package) {
-            throw new \Exception("Ce package n'existe pas:");
-        }
+        // if (!$package) {
+        //     throw new \Exception("Ce package n'existe pas:");
+        // }
 
         // try {
         //     $client = new Client([
@@ -118,6 +118,7 @@ class UserController extends Controller
         //     return back()->withInput();
         // }
 
+        // dd("gogo");
         try {
             DB::beginTransaction();
 
@@ -128,32 +129,31 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
-            $details = new Detail();
-            $details->phone = $request->phone;
-            $details->address = $request->address;
-            $details->dob = $request->dob;
-            $details->pin = $request->pin;
-            $details->router_password = $router->password; // $request->router_password;
-            $details->package_name = $package->name;
-            $details->router_name = $router->name;
-            $details->package_price = $package->price;
-            $details->due = $package->price;
-            $details->status = 'active';
-            $details->package_start = Carbon::now();
-            $details->user_id = $user->id;
-            $details->save();
+            $userDetail = [
+                "phone" => $request->phone,
+                "address" => $request->address,
+                "dob" => $request->dob,
+                "pin" => $request->pin,
+                "due" => $user->due_amount($user->id),
+            ];
 
-            $billing = new Billing();
-            $billing->invoice = $billing->generateRandomNumber();
-            $billing->package_name = $details->package_name;
-            $billing->package_price = $details->package_price;
-            $billing->package_start = $details->package_start;
-            $billing->user_id = $user->id;
-            $billing->save();
+            // $user->detail()->update(Arr::except($validated, ['name', 'email',"password","router_id","package_id"]));
+            // dd($user->detail);
+            $user->detail ?
+                $user->detail()->update($userDetail) : $user->detail()->create($userDetail);
 
+
+            // $billing = new Billing();
+            // $billing->invoice = $billing->generateRandomNumber();
+            // $billing->package_name = $details->package_name;
+            // $billing->package_price = $details->package_price;
+            // $billing->package_start = $details->package_start;
+            // $billing->user_id = $user->id;
+            // $billing->save();
             DB::commit();
             alert()->success("Opération réussie!", "Utilisateur ajouter avec succès");
-            return redirect()->route("users.index");
+            return redirect()->back()
+                ->withInput(); //route("users.index");
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             alert()->error("Opération échouée!", "Erreure de validation!");
@@ -188,19 +188,22 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-
         try {
-            $validated = $request->validate([
+
+            $request->validate([
                 "name" => "required",
                 "email" => ["required", "email", Rule::unique("users")->ignore($user->id)],
-                "password" => "required|min:6|confirmed",
+                // "password" => "required|min:6|confirmed",
                 "address" => "required",
                 "phone" => "required",
                 "dob" => "required|date",
                 "pin" => "required|numeric",
 
-                "router_id" => "required|integer",
-                "package_id" => "required|integer",
+                // "kkiapay_key" => "required|string",
+                // "stripe_key" => "required|string",
+
+                // "router_id" => "required|integer",
+                // "package_id" => "required|integer",
             ], [
                 "name.required" => "Le nom est réquis",
 
@@ -208,9 +211,9 @@ class UserController extends Controller
                 "email.email" => "Le mail n'est pas valide",
                 "email.unique" => "Ce mail existe déjà!",
 
-                "password.required" => "Le mot de passe est réquis!",
-                "password.min" => "6 caractères sont réquis au minimun",
-                "password.confirmed" => "Les mots de passe ne sont pas identiques",
+                // "password.required" => "Le mot de passe est réquis!",
+                // "password.min" => "6 caractères sont réquis au minimun",
+                // "password.confirmed" => "Les mots de passe ne sont pas identiques",
 
                 "address.required" => "L'adresse est réquise!",
 
@@ -222,48 +225,67 @@ class UserController extends Controller
 
                 "pin.numeric" => "Ce champ doit être de format numérique!",
 
-                "router_id.required" => "Ce champ est réquis!",
-                "router_id.integer" => "Ce champ est n'est pas valide!",
+                // "router_id.required" => "Ce champ est réquis!",
+                // "router_id.integer" => "Ce champ est n'est pas valide!",
 
-                "package_id.required" => "Ce champ est réquis!",
-                "package_id.integer" => "Ce champ est n'est pas valide!",
+                // "package_id.required" => "Ce champ est réquis!",
+                // "package_id.integer" => "Ce champ est n'est pas valide!",
             ]);
+
             DB::beginTransaction();
 
-            $validated["password"] = Hash::make($request->password);
-            $user->update($validated);
+            // $validated["password"] = Hash::make($request->password);
 
-            $router = Router::find($validated["router_id"]);
-            $package = Package::find($validated["package_id"]);
+            $userData = [
+                "name" => $request->name ?? $user->name,
+                "email" => $request->email ?? $user->email,
+                "password" => $request->password ?
+                    Hash::make($request->password) : $user->password,
+            ];
+            $user->update($userData);
 
-            if (!$router) {
-                throw new \Exception("Ce router n'existe pas:");
-            }
+            // $router = Router::find($validated["router_id"]);
+            // $package = Package::find($validated["package_id"]);
 
-            if (!$package) {
-                throw new \Exception("Ce package n'existe pas:");
-            }
+            // if (!$router) {
+            //     throw new \Exception("Ce router n'existe pas:");
+            // }
 
-            $validated["router_password"] = $router->password; // $request->router_password;
-            $validated["package_name"] = $package->name;
-            $validated["router_name"] = $router->name;
-            $validated["package_price"] = $package->price;
-            $validated["due"] = $package->price;
-            $validated["status"] = 'active';
-            $validated["package_start"] = Carbon::now();
-            $validated["phone"] = $request->phone;
-            $validated["address"] = $request->address;
-            $validated["dob"] = $request->dob;
-            $validated["pin"] = $request->pin;
+            // if (!$package) {
+            //     throw new \Exception("Ce package n'existe pas:");
+            // }
 
-            $user->detail()->update(Arr::except($validated, ['name', 'email',"password","router_id","package_id"]));
+            // $validated["router_password"] = $router->password; // $request->router_password;
+            // $validated["package_name"] = $package->name;
+            // $validated["router_name"] = $router->name;
+            // $validated["package_price"] = $package->price;
+            // $validated["due"] = $package->price;
+            // $validated["status"] = 'active';
+            // $validated["package_start"] = Carbon::now();
+
+            $userDetail = [
+                "phone" => $request->phone ?? $user->phone,
+                "address" => $request->address ?? $user->address,
+                "dob" => $request->dob ?? $user->dob,
+                "pin" => $request->pin ?? $user->pin,
+                "due" => $user->due_amount($user->id),
+                "kkiapay_key" => $request->kkiapay_key ?? $user->kkiapay_key,
+                "stripe_key" => $request->stripe_key ?? $user->stripe_key,
+            ];
+
+            // $user->detail()->update(Arr::except($validated, ['name', 'email',"password","router_id","package_id"]));
+            // dd($user->detail);
+            $user->detail ?
+                $user->detail()->update($userDetail) : $user->detail()->create($userDetail);
 
             DB::commit();
-            alert()->success("Opération réussie!", "Utilisateur modifié avec succès");
-            return redirect()->route("users.index"); //->with("success", __("User added successfully"));
+            alert()->success("Opération réussie!", "Compte modifié avec succès");
+            return redirect()->back(); //->with("success", __("User added successfully"));
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollBack();
             alert()->error("Opération échouée!", "Erreure de validation!");
+            Log::debug("Erreure de validation ", ["errors" => $e->errors()]);
+
             return back()
                 ->withErrors($e->errors())
                 ->withInput();

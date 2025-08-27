@@ -13,22 +13,24 @@ return new class extends Migration
     {
         Schema::create('details', function (Blueprint $table) {
             $table->id();
-            $table->string('router_name');
-            $table->string('address');
-            $table->string('phone');
-            $table->date('dob');
-            $table->string('pin')->nullable();
-            $table->string('router_password');
-            $table->string('package_name');
-            $table->unsignedInteger('package_price');
-            $table->date('package_start');
-            $table->unsignedInteger('due');
-            $table->string('status')->default('active');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+            // $table->string('router_name');
+            $table->string('address');
+            $table->string('phone');
+            $table->date('dob');
+            $table->string('pin')->nullable();
+            // $table->string('router_password');
+            // $table->string('package_name');
+            // $table->unsignedInteger('package_price');
+            // $table->date('package_start');
+            $table->unsignedInteger('due');
+            $table->string('status')->default('active');
+            $table->text('kkiapay_key')->nullable();
+            $table->text('stripe_key')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

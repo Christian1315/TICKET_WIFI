@@ -120,16 +120,14 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <x-input-label for="map" :value="__('Emplacement de la zone sur le map')" class="mt-4"><span class="text-danger"><i class="bi bi-geo-alt-fill"></i></span></x-input-label>
-
-                                    <div id="map" class="mt-4" style="height: 400px;">
-                                        <x-maps-leaflet :zoomLevel="4"></x-maps-leaflet>
-                                    </div>
+                                    <x-maps-leaflet :zoomLevel="4" style="height: 400px;"></x-maps-leaflet>
+                                    <!-- <div id="map" class="mt-4" style="height: 400px;">
+                                    </div> -->
                                     <input type="hidden" name="map_lat" id="latitude">
                                     <input type="hidden" name="map_long" id="longitude">
                                 </div>
                             </div>
                         </div>
-
 
                         <div class="flex justify-content-center items-center gap-4 mt-4">
                             <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
@@ -142,37 +140,32 @@
         </div>
     </div>
 
-    @push("scripts")
-    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
-    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
-
-
+    @push('scripts')
+    @verbatim
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let map = L.map('map').setView([0, 0], 4);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
-            }).addTo(map);
-
+        document.addEventListener("leaflet:load", function(event) {
+            const map = event.detail.map; // on récupère la carte
             let marker;
 
-            map.on('click', function(e) {
+            // Sur clic dans la carte
+            map.on("click", function(e) {
                 const lat = e.latlng.lat;
                 const lng = e.latlng.lng;
 
-                // Mettre à jour les champs cachés
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
+                // on met à jour les inputs cachés
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
 
-                // Ajouter un marqueur ou le déplacer
+                // si un marqueur existe déjà on le supprime
                 if (marker) {
-                    marker.setLatLng(e.latlng);
-                } else {
-                    marker = L.marker(e.latlng).addTo(map);
+                    map.removeLayer(marker);
                 }
+
+                // on ajoute un nouveau marqueur
+                marker = L.marker([lat, lng]).addTo(map);
             });
         });
     </script>
+    @endverbatim
     @endpush
 </x-app-layout>

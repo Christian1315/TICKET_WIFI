@@ -12,11 +12,11 @@
     </thead>
 
     <tbody class="table-body">
-        @foreach($user->billing as $bill)
+        @foreach($billings as $bill)
         <tr>
             <td>{{$loop->iteration}}</td>
             <td>REF_{{$bill->invoice}}</td>
-            <td class="text-center">{{$user->detail?->package_name}}</td>
+            <td class="text-center">{{$bill->package_name}}</td>
             <td class="text-center">{{$bill->package_price}}</td>
             <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($bill->package_start)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
             <td class="text-center">

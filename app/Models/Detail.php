@@ -30,7 +30,9 @@ class Detail extends Model
         'due',
         'status',
         'router_name',
-        'deleted_at'
+        'deleted_at',
+        'kkiapay_key',
+        'stripe_key'
     ];
 
     public function user(){

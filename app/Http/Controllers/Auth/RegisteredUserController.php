@@ -82,15 +82,15 @@ class RegisteredUserController extends Controller
 
             Log::debug("Data of register", ["data" => $user]);
 
-            SendNotificationViaMail(
-                $data,
-                new SendRegisterNotification($data)
-            );
+            // SendNotificationViaMail(
+            //     $data,
+            //     new SendRegisterNotification($data)
+            // );
 
             Log::debug("Data of register", ["data" => $user]);
             // Auth::login($user);
 
-            alert()->success("Succès", "Compte crée avec succès Vos identifiants vous sont envoyés par mail! Connectez-vous maintenant!");
+            alert()->success("Succès", "Compte crée avec succès | Vos identifiants vous sont envoyés par mail! Connectez-vous maintenant!");
             DB::commit();
             return redirect('/login')
                 ->with("register_success", "Compte crée avec succès. Voici vos accès: Identifiant: $user->email | Mot de passe : $request->password ");

@@ -34,7 +34,11 @@
                                     <select name="router_id" value="{{old('router_id')}}" id="router_id" class="block w-full rounded-md border border-gray-300">
                                         <option value="">{{ __('Choississez un router') }}</option>
                                         @foreach ($routers as $router)
-                                        <option @selected($package->router_id==$router->id) value="{{ $router->id }}">{{ $router->name }}</option>
+                                        <option 
+                                        value="{{ $router->id }}"
+                                        @selected($package->router_id==$router->id) 
+                                        @disabled($router->user_id!=Auth::id())
+                                        >{{ $router->name }}</option>
                                         @endforeach
                                     </select>
 

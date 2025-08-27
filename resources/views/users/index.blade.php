@@ -42,12 +42,11 @@
                                 <table id="example1" class="table table-bordered table-striped table-sm">
                                     <thead class="text-white text-center bg-gradient-gray-dark">
                                         <tr>
-                                            <th>N°</th>
                                             <th>Nom & Prénom</th>
                                             <th>Email</th>
-                                            <th>Router</th>
-                                            <th>Package</th>
-                                            <th>Date début</th>
+                                            <!-- <th>Router</th> -->
+                                            <!-- <th>Package</th> -->
+                                            <!-- <th>Date début</th> -->
                                             <th>Statut</th>
                                             <th>Dette</th>
                                             <th>Inscris-le</th>
@@ -58,12 +57,11 @@
                                     <tbody class="table-body">
                                         @foreach($users as $user)
                                         <tr>
-                                            <td>{{$loop->iteration}}</td>
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
-                                            <td class="text-center">{{$user->detail?->router_name}}</td>
-                                            <td class="text-center">{{$user->detail?->package_name}}</td>
-                                            <td class="text-center"><span class="badge bg-light border text-dark"> {{$user->detail?\Carbon\carbon::parse($user->detail->package_start)->locale('fr')->isoFormat('D MMMM YYYY'):'---'}}</span></td>
+                                            <!-- <td class="text-center">{{$user->detail?->router_name}}</td> -->
+                                            <!-- <td class="text-center">{{$user->detail?->package_name}}</td> -->
+                                            <!-- <td class="text-center"><span class="badge bg-light border text-dark"> {{$user->detail?\Carbon\carbon::parse($user->detail->package_start)->locale('fr')->isoFormat('D MMMM YYYY'):'---'}}</span></td> -->
                                             <td class="text-center">@if($user->detail)<span class="badge bg-{{$user->detail->status?'orange':'danger'}} border"> {{$user->detail->status}}</span> @else <span class="badge bg-danger">Désactivé</span> @endif</td>
                                             <td><span class="badge bg-light border text-dark">{{number_format($user->due_amount($user->id),2,"."," ")}} ({{config('app.currency')}}) </span></td>
 

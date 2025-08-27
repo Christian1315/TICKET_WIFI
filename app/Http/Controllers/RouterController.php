@@ -19,15 +19,16 @@ class RouterController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->isAdmin()) {
-            redirect('/');
-        }
-
         $title = 'Supprimer le router!';
         $text = "Etes-vous sûr de supprimer ce router?";
         confirmDelete($title, $text);
 
-        $routers = Router::orderBy("name", "asc")->get();
+        $user = auth()->user();
+        if ($user->isUser()) {
+            $routers = $user->routers->load("user");
+        }else {
+            $routers = Router::with("user")->orderBy("name", "asc")->get();
+        }
         return view("router.index", compact("routers"));
     }
 
@@ -36,10 +37,6 @@ class RouterController extends Controller
      */
     public function create()
     {
-        if (!auth()->user()->isAdmin()) {
-            return redirect('/');
-        }
-
         return view('router.create');
     }
 
@@ -88,9 +85,12 @@ class RouterController extends Controller
 
             DB::beginTransaction();
 
-            $router = new Router();
-            $router->fill($validated);
-            $router->save();
+            auth()->user()
+                ->routers()->create($validated);
+
+            // $router = new Router();
+            // $router->fill($validated);
+            // $router->save();
 
             alert()->success("Opération réussie!", "Router crée avec succès!");
             DB::commit();
@@ -121,9 +121,6 @@ class RouterController extends Controller
      */
     public function edit(Router $router)
     {
-        if (!auth()->user()->isAdmin()) {
-            return redirect('/');
-        }
         return view('router.edit', compact('router'));
     }
 

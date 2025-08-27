@@ -17,9 +17,10 @@ class BillingController extends Controller
     {
         $user = auth()->user();
         if (!$user->isAdmin()) {
-            $billings = $user->billing;
+            $billings = $user->billing
+                ->load(["user", "payment"]);
         } else {
-            $billings = Billing::with(["user","payment"])->get();
+            $billings = Billing::with(["user", "payment"])->get();
         }
         return view('billing.index', compact("billings"));
     }
@@ -28,14 +29,14 @@ class BillingController extends Controller
     {
         if (!auth()->user()->isAdmin()) {
             alert()->info("Accès refusé!", "Vous n'avez pas accès à ce panel!");
-            return redirect('/');
+            return redirect()->back();
         }
 
         $users = User::where('role', 'user')
             ->with('detail')
             ->whereHas('detail', function (Builder $query) {
                 $query->where('status', 'active');
-            })->orderBy('name')->get();
+            })->latest()->get();
 
         return view('billing.create', compact('users'));
     }
@@ -45,9 +46,20 @@ class BillingController extends Controller
         try {
             DB::beginTransaction();
 
-            if (!$request->checked) {
+            $request->validate([
+                "users" => "required|array",
+                "users*id" => "required|integer",
+                "users*checked" => "required",
+                "users*price" => "required",
+            ]);
+
+            if (!$request->users) {
                 alert()->info("Opération bloquée!", "Veuillez selectionnez au moins un utiisateur");
                 return back();
+            }
+
+            foreach ($request->users as $key => $value) {
+                # code...
             }
 
             if (is_array($request->user_id) || is_object($request->user_id)) {

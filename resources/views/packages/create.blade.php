@@ -40,7 +40,11 @@
                                     <select name="router_id" value="{{old('router_id')}}" id="router_id" required class="block w-full rounded-md border border-gray-300">
                                         <option value="">{{ __('Choisissez un router') }}</option>
                                         @foreach ($routers as $router)
-                                        <option @selected($router->id==old('router_id')) value="{{ $router->id }}">{{ $router->name }}</option>
+                                        <option
+                                            value="{{ $router->id }}"
+                                            @selected($router->id==old('router_id'))
+                                            @disabled($router->user_id!=Auth::id())
+                                            >{{ $router->name }}</option>
                                         @endforeach
                                     </select>
 
@@ -75,7 +79,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <x-input-label for="description" :value="__('Description du tarif')"></x-input-label>
-                                    <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description')" placeholder="Ex: Tarif standard" ></x-text-input>
+                                    <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description')" placeholder="Ex: Tarif standard"></x-text-input>
 
                                     @error("description")
                                     <span class="text-orange">{{ $message }}</span>

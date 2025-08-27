@@ -16,16 +16,16 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4 mt-6">
                         <div class="border-l-2 bg-blue-50 border-blue-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Current Package') }}</h2>
+                            <h2 class="text-l font-bold">{{ __('Package (Tarif) actuel') }}</h2>
                             <p class="text-xl mt-2 font-bold">{{ $user->detail?->package_name }}</p>
                         </div>
                         <div class="border-l-2 bg-blue-50 border-blue-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Package Start') }}</h2>
-                            <p class="text-xl mt-2 font-bold">{{ $user->detail?->package_start }}</p>
+                            <h2 class="text-l font-bold">{{ __('Date de début') }}</h2>
+                            <p class="text-xl mt-2 font-bold">{{ \Carbon\Carbon::parse($user->detail?->package_start)->locale("fr")->isoFormat("D MMMM YYYY") }}</p>
                         </div>
                         <div class="border-l-2 bg-blue-50 border-blue-500 p-4">
-                            <h2 class="text-l font-bold">{{ __('Current Due') }}</h2>
-                            <p class="text-xl mt-2 font-bold">{{ $user->due_amount($user->id) }}</p>
+                            <h2 class="text-l font-bold">{{ __('Impayés') }}</h2>
+                            <p class="text-xl mt-2 font-bold">{{ $user->due_amount($user->id) .' '. env("CURRENCY") }}</p>
                         </div>
                     </div>
                 </div>

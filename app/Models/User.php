@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +18,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, Billable,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, Billable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -61,28 +62,50 @@ class User extends Authenticatable
         return $this->role == 'user';
     }
 
-    public function due_amount($id){
-        $user = self::where('id', $id)->firstOrFail();
+    public function due_amount($id)
+    {
+        $user = self::where('id', $id)->first();
 
-        $bill = Billing::where('user_id', $user->id)->sum('package_price');
+        if (!$user) {
+            alert()->info("Le compte dont vous essayez de récupérer la dette n'existe pas!");
+            return back();
+        }
+
+        $bill = Billing::where('user_id', $user->id)->get()
+            ->sum(fn($billing) => $billing->package?->price ?? 0);
+
         $pay = Payment::where('user_id', $user->id)->sum('package_price');
 
         return $bill - $pay;
     }
 
-    public function detail() {
+    public function detail()
+    {
         return $this->hasOne(Detail::class);
     }
 
-    public function billing() {
+    public function billing()
+    {
         return $this->hasMany(Billing::class);
     }
 
-    public function payment() {
+    public function payment()
+    {
         return $this->hasMany(Payment::class);
     }
 
-    public function tickets() {
+    public function tickets()
+    {
         return $this->hasMany(Ticket::class);
+    }
+
+    public function routers(): HasMany
+    {
+        return $this->hasMany(Router::class);
+    }
+
+    public function packages(): HasMany
+    {
+        return $this->hasMany(Package::class);
     }
 }

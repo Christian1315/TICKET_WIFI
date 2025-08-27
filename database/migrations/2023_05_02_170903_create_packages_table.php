@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained("users")
+                ->onUpdate("CASCADE")
+                ->onDelete('CASCADE');
             $table->string('name')->unique();
             $table->unsignedInteger('price');
             $table->foreignId('router_id')

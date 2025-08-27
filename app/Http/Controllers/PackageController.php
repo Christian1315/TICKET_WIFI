@@ -6,6 +6,7 @@ use App\Models\Package;
 use App\Models\Router;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use RouterOS\Query;
 use RouterOS\Client;
@@ -18,27 +19,25 @@ class PackageController extends Controller
         $text = "Etes-vous sûr de supprimer ce package?";
         confirmDelete($title, $text);
 
-        if (auth()->user()->isUser()) {
-            $user = auth()->user();
-            $router_name = $user->detail->router_name;
-            $router = Router::with("packages")->where("name", $router_name)->firstOrFail();
-            $packages = Package::with("router")->where('router_id', $router->id)->orderBy('name')->get();
-            return view('packages.index', compact('packages'));
+        $user = auth()->user();
+        if ($user->isUser()) {
+            $packages = $user->packages; //Package::with("router")->where('router_id', $router->id)->orderBy('name')->get();
         }
 
         if (auth()->user()->isAdmin()) {
-            $packages = Package::with("router")->orderBy('name')->get();
-            return view('packages.index', compact('packages'));
+            $packages = Package::with("router","user")->orderBy('name')->get();
         }
+        return view('packages.index', compact('packages'));
     }
 
     public function create()
     {
-        if (!auth()->user()->isAdmin()) {
-            return redirect('/');
+        $user = auth()->user();
+        if ($user->isUser()) {
+            $routers = $user->routers->load("user");
+        } else {
+            $routers = Router::with("user", "packages")->orderBy("name", "asc")->get();
         }
-
-        $routers = Router::with("packages")->orderBy('name')->get();
 
         if ($routers->isEmpty()) {
             alert()->error("Opération échouée!", "Veuillez bien ajouter d'abord un router!");
@@ -93,10 +92,12 @@ class PackageController extends Controller
             // } catch (\Exception $e) {
             //     throw new \Exception("Echec de connexion au router", 1);
             // }
+            auth()->user()
+                ->packages()->create($validated);
 
-            $package = new Package();
-            $package->fill($validated);
-            $package->save();
+            // $package = new Package();
+            // $package->fill($validated);
+            // $package->save();
 
             DB::commit();
             alert()->success("Opération réussie!", "Package crée avec succès!");
@@ -105,6 +106,8 @@ class PackageController extends Controller
         } catch (\Illuminate\Validation\ValidationException $e) {
             DB::rollback();
 
+            Log::debug("Erreure de validation", ["errors" => $e->errors()]);
+            
             alert()->error("Opération échouée!", "Erreure de validation");
             return back()->withErrors($e->errors())
                 ->withInput();
@@ -119,20 +122,14 @@ class PackageController extends Controller
 
     public function show(Package $package)
     {
-        if (!auth()->user()->isAdmin()) {
-            return redirect('/');
-        }
-        $routers = Router::all();
+        $routers = Router::with("user", "packages")->get();
 
-        return view('packages.show', compact('package','routers'));
+        return view('packages.show', compact('package', 'routers'));
     }
 
     public function edit(Package $package)
     {
-        if (!auth()->user()->isAdmin()) {
-            return redirect('/');
-        }
-        $routers = Router::all();
+        $routers = Router::with("user", "packages")->get();
         return view('packages.edit', compact('package', 'routers'));
     }
 
@@ -177,7 +174,7 @@ class PackageController extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             if (!$package) {
                 alert()->info("Information", "Ce package n'existe pas.");
                 return back();

@@ -38,7 +38,7 @@
                                     <tr>
                                         <th class="border border-slate-300 text-left">{{ __('Selectionner') }}</th>
                                         <th class="border border-slate-300 text-left">{{ __('Utilisateur') }}</th>
-                                        <th class="border border-slate-300 text-left">{{ __('Tarif(package)') }}</th>
+                                        <!-- <th class="border border-slate-300 text-left">{{ __('Tarif(package)') }}</th> -->
                                         <th class="border border-slate-300 text-left">{{ __('Prix') }}</th>
                                     </tr>
                                 </thead>
@@ -46,12 +46,14 @@
                                     @foreach($users as $user)
                                     <tr>
                                         <td class="border border-slate-300 p-2">
-                                            <input type="checkbox" class="rounded" name="checked[]" value="{{ $user->id }}">
+                                            <input type="checkbox" class="rounded" name="users[$user->id][checked]" value="{{ $user->id }}">
                                         </td>
                                         <td class="border border-slate-300 p-2">{{ $user->name }}</td>
-                                        <td class="border border-slate-300 p-2">{{ $user->detail->package_name }}</td>
-                                        <td class="border border-slate-300 p-2">{{ $user->detail->package_price }}</td>
-                                        <input type="hidden" name="user_id[]" value="{{ $user->id }}">
+                                        <!-- <td class="border border-slate-300 p-2">{{ $user->detail->package_name }}</td> -->
+                                        <td class="border border-slate-300 p-2">
+                                            <input type="number" name="users[$user->id][price]" class="form-control" placeholder="Ex: 75000">
+                                        </td>
+                                        <input type="hidden" name="users_id[]" value="{{ $user->id }}">
                                     </tr>
                                     @endforeach
                                 </tbody>

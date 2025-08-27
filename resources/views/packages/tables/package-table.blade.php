@@ -6,7 +6,7 @@
             <th>Nom</th>
             <th>Prix ({{env('CURRENCY')}})</th>
             <th>Crée le</th>
-            <th>Modifiée le</th>
+            <th>Crée par</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -19,7 +19,7 @@
             <td>{{$package->name}}</td>
             <td>{{$package->price}}</td>
             <td class="text-center"><span class="badge bg-light text-dark border">{{\Carbon\carbon::parse($package->created_at)->locale("fr")->isoFormat("D MMMM YYYY")}}</span></td>
-            <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($package->updated_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
+            <td class="text-center"><span class="badge bg-light border text-dark"> {{$package->user?->name}}</span></td>
 
             <td class="text-center">
                 <div name="btn-group" role="group">

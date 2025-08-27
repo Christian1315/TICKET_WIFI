@@ -26,6 +26,8 @@
                         @csrf
                         @method('patch')
 
+                        <h5 class="">Crée par <strong class="text-orange">{{$router->user?->name}}</strong> </h5>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">

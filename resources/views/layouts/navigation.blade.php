@@ -1,15 +1,21 @@
 <nav x-data="{ open: false }" class="navbar-fixed bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div class="flex justify-between h-16" style="align-items: center!important;">
+            <div class="">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex ">
                     <a href="{{ route('dashboard') }}" class="font-bold">
                         <img src="{{asset('images/logo.png')}}" class="img-fluid" alt="log" style="width: 100px;height:auto">
                     </a>
                 </div>
             </div>
+
+            @if(!auth()->user()->detail)
+            <div class="text-center">
+                <marquee width="400" class="text-orange">Les Informations de votre compte sont incomplètes! Nous vous invitons à le faire le plus tôt possible!</marquee>
+            </div>
+            @endif
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">

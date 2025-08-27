@@ -9,11 +9,13 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                             <i class="bi bi-receipt"></i> {{ __('Facturation') }}
                         </h2>
+                        @if(auth()->user()->isAdmin())
                         <div class="flex items-center">
                             <a href="{{ route('billing.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
                                 <i class="bi bi-person-plus"></i> &nbsp; {{ __('Ajouter') }}
                             </a>
                         </div>
+                        @endif
                     </div>
                     <div>
                         @if (auth()->user()->isAdmin())

@@ -19,11 +19,11 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                             <i class="bi bi-router"></i> &nbsp; {{ __('Routers Mikrotik') }}
                         </h2>
-                        @if (auth()->user()->isAdmin())
+                        <!-- if (auth()->user()->isAdmin()) -->
                         <a href="{{ route('router.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
                             <i class="bi bi-person-plus"></i> &nbsp; {{ __('Create') }}
                         </a>
-                        @endif
+                        <!-- endif -->
                     </div>
 
                     <div class="card">
@@ -53,9 +53,8 @@
                                         <td class="text-center">{{$router->username}}</td>
                                         <td class="text-center">{{$router->password}}</td>
                                         <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($router->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
-
                                         <td class="text-center">
-                                            <div name="btn-group" role="group">
+                                            <div name="btn-group-sm" role="group">
                                                 <!-- Update -->
                                                 <a href="{{route('router.edit', $router->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> Modifier</a>
                                                 <!-- Show -->

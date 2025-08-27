@@ -14,7 +14,8 @@ class PaymentController extends Controller
     {
         $user = auth()->user();
         if ($user->isUser()) {
-            $payments = $user->payment;
+            $payments = $user->payment
+                ->load(["user", "billing"]);
         } else {
             $payments = Payment::with(["user", "billing"])->get();
         }

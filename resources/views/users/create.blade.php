@@ -96,7 +96,7 @@
                         </div>
                         <br>
 
-                        <div class="row">
+                        <!-- <div class="row">
                             <div>
                                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100"><i class="bi bi-box-arrow-right"></i> {{ __('Souscription') }}</h2>
                                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ __("Détails de souscription") }}</p>
@@ -122,20 +122,19 @@
                                 <div class="mb-3">
                                     <x-input-label for="package_id" :value="__('Choix du tarif(package)')" class=""> <span class="text-danger">*</span> </x-input-label>
                                     <select name="package_id" value="{{old('package_id')}}" id="package_id" required class="block w-full rounded-md border border-gray-300">
-                                        <!-- js -->
                                     </select>
 
                                     @error("package_id")
                                     <span class="text-orange">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-                                <div class="flex justify-content-center items-center gap-4 mt-4">
-                                    <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
-                                        <i class="bi bi-check-circle"></i> &nbsp; {{ __('Enregistrer') }}
-                                    </button>
-                                </div>
                             </div>
+                        </div> -->
+
+                        <div class="flex justify-content-center items-center gap-4 mt-4">
+                            <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
+                                <i class="bi bi-check-circle"></i> &nbsp; {{ __('Enregistrer') }}
+                            </button>
                         </div>
                     </form>
                 </div>
