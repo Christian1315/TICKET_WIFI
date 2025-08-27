@@ -26,18 +26,13 @@ class PaymentController extends Controller
 
     public function create($param)
     {
-        if (auth()->user()->isUser()) {
-            $bill = Billing::find($param);
+        $bill = Billing::find($param);
 
-            if (!$bill) {
-                alert()->error("Opération échouée!", "Cette facture n'existe pas!");
-                return back();
-            }
-            return view('payments.create', compact('bill'));
+        if (!$bill) {
+            alert()->error("Opération échouée!", "Cette facture n'existe pas!");
+            return back();
         }
-
-        alert()->error("Opération échouée!", "Vous n'êtes pas autorisé.e à éffectuer cette opération");
-        return redirect()->back();
+        return view('payments.create', compact('bill'));
     }
 
     public function store(Request $request)
@@ -87,7 +82,7 @@ class PaymentController extends Controller
             $payment->user_id = $bill->user_id;
             $payment->billing_id = $bill->id;
             $payment->invoice = $bill->invoice;
-            $payment->package_price = $bill->package_price;
+            $payment->package_price = $bill->price;
             $payment->payment_method = 'Kkiapay'; // $request->payment_method;
             $payment->save();
 
@@ -97,7 +92,7 @@ class PaymentController extends Controller
             DB::commit();
             alert()->success("Opération réussie!", "Paiement éffectué avec succès!");
             // retour à l'édition du user
-            return redirect()->route("users.show", $bill->user_id);
+            return redirect()->route("payment.index"); // redirect()->route("users.show", $bill->user_id);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::debug("Erreure survenue lors du payement de la facture : REF_$bill->invoice : " . $e->getMessage());

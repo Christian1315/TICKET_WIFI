@@ -27,11 +27,6 @@ class BillingController extends Controller
 
     public function create()
     {
-        if (!auth()->user()->isAdmin()) {
-            alert()->info("Accès refusé!", "Vous n'avez pas accès à ce panel!");
-            return redirect()->back();
-        }
-
         $users = User::where('role', 'user')
             ->with('detail')
             ->whereHas('detail', function (Builder $query) {
@@ -46,32 +41,27 @@ class BillingController extends Controller
         try {
             DB::beginTransaction();
 
-            $request->validate([
-                "users" => "required|array",
-                "users*id" => "required|integer",
-                "users*checked" => "required",
-                "users*price" => "required",
-            ]);
+            // $request->validate([
+            //     "users" => "required|array",
+            //     "users*id" => "required|integer",
+            //     "users*checked" => "required",
+            //     "users*price" => "required",
+            // ]);
+
 
             if (!$request->users) {
                 alert()->info("Opération bloquée!", "Veuillez selectionnez au moins un utiisateur");
                 return back();
             }
+            // dd($request->users);
 
-            foreach ($request->users as $key => $value) {
-                # code...
-            }
-
-            if (is_array($request->user_id) || is_object($request->user_id)) {
-                foreach ($request->user_id as $key => $val) {
-                    $billing = new Billing();
-                    if (is_array($request->checked) && in_array($val, $request->checked, true)) {
-                        $user = User::where('id', $val)->first();
+            if (is_array($request->users) || is_object($request->users)) {
+                foreach ($request->users as $val) {
+                    if (isset($val["checked"]) && isset($val["checked"])=="on") {
+                        $billing = new Billing();
                         $billing->invoice = $billing->generateRandomNumber();
-                        $billing->package_name = $user->detail->package_name;
-                        $billing->package_price = $user->detail->package_price;
-                        $billing->package_start = Carbon::now();
-                        $billing->user_id = $user->id;
+                        $billing->user_id = $val["user_id"];
+                        $billing->price = $val["price"];
                         $billing->save();
                     }
                 }

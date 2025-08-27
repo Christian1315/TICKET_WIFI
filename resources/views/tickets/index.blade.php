@@ -9,11 +9,11 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                             <i class="bi bi-ticket-detailed"></i> &nbsp; {{ __('Tickets') }}
                         </h2>
-                        @if (!auth()->user()->isUser())
+                        <!-- if (!auth()->user()->isUser()) -->
                         <a href="{{ route('ticket.create') }}" class="ml-2 inline-flex items-center px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
                             <i class="bi bi-person-plus"></i> &nbsp; {{ __('Ajouter') }}
                         </a>
-                        @endif
+                        <!-- endif -->
                     </div>
                     <div>
                         <!-- livewire:ticket-table /> -->

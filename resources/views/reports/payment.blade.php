@@ -59,7 +59,7 @@
     <tr>
         <th>{{ __('Facture') }}</th>
         <th>{{ __('Utilisateur') }}</th>
-        <th>{{ __('Tarif(package)') }}</th>
+        <!-- <th>{{ __('Tarif(package)') }}</th> -->
         <th>{{ __('Prix') }} {{config('app.currency')}}</th>
         <th>{{ __('Méthode de paiement') }}</th>
         <th>{{ __('Date') }}</th>
@@ -70,8 +70,8 @@
         <tr>
             <td>{{ $payment->invoice }}</td>
             <td>{{ $payment->user?->name }}</td>
-            <td>{{ $payment->billing?->package_name }}</td>
-            <td>{{ $payment->billing?->package_price }} </td>
+            <!-- <td>{{ $payment->billing?->package_name }}</td> -->
+            <td>{{ number_format($payment->package_price,2,","," ") }} </td>
             <td>{{ $payment->payment_method }}</td>
             <td>{{ date('Y-m-d', strtotime($payment->created_at)) }}</td>
         </tr>

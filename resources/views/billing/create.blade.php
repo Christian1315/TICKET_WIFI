@@ -46,14 +46,14 @@
                                     @foreach($users as $user)
                                     <tr>
                                         <td class="border border-slate-300 p-2">
-                                            <input type="checkbox" class="rounded" name="users[$user->id][checked]" value="{{ $user->id }}">
+                                            <input type="checkbox" class="rounded" name="users[{{$user->id}}][checked]">
                                         </td>
                                         <td class="border border-slate-300 p-2">{{ $user->name }}</td>
                                         <!-- <td class="border border-slate-300 p-2">{{ $user->detail->package_name }}</td> -->
                                         <td class="border border-slate-300 p-2">
-                                            <input type="number" name="users[$user->id][price]" class="form-control" placeholder="Ex: 75000">
+                                            <input type="number" name="users[{{$user->id}}][price]" class="form-control" placeholder="Ex: 75000">
                                         </td>
-                                        <input type="hidden" name="users_id[]" value="{{ $user->id }}">
+                                        <input type="hidden" name="users[{{$user->id}}][user_id]" value="{{ $user->id }}">
                                     </tr>
                                     @endforeach
                                 </tbody>

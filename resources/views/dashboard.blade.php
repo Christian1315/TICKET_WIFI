@@ -10,19 +10,19 @@
                     </h2>
                     <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 mb-6">
                         <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
-                            <p class="text-2xl mt-2 font-bold">{{ $totalBills .' '. config('app.currency') }}</p>
+                            <p class="text-2xl mt-2 font-bold"> <strong class="text-orange">{{number_format($totalBills,2,","," ")}} </strong> {{config('app.currency') }}</p>
                             <h2 class="text-l">{{ __('Total des factures') }}</h2>
                         </div>
                         <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
-                            <p class="text-2xl mt-2 font-bold">{{ $totalPayments .' '. config('app.currency') }}</p>
+                            <p class="text-2xl mt-2 font-bold"><strong class="text-orange">{{number_format($totalPayments,2,","," ")}} </strong> {{config('app.currency') }}</p>
                             <h2 class="text-l">{{ __('Total des paiements') }}</h2>
                         </div>
                         <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
-                            <p class="text-2xl mt-2 font-bold">{{ $billsThisMonth .' '. config('app.currency') }}</p>
+                            <p class="text-2xl mt-2 font-bold"><strong class="text-orange">{{number_format($billsThisMonth,2,","," ")}} </strong> {{ config('app.currency') }}</p>
                             <h2 class="text-l">{{ __('Factures de ce mois-ci') }}</h2>
                         </div>
                         <div class="shadow border border-gray-200 p-4 rounded flex flex-col items-center justify-center">
-                            <p class="text-2xl mt-2 font-bold">{{ $paymentsThisMonth .' '. config('app.currency') }}</p>
+                            <p class="text-2xl mt-2 font-bold"><strong class="text-orange">{{number_format($paymentsThisMonth,2,","," ")}} </strong> {{config('app.currency') }}</p>
                             <h2 class="text-l">{{ __('Paiements ce mois-ci') }}</h2>
                         </div>
                     </div>

@@ -22,11 +22,11 @@
                             <i class="bi bi-wallet2"></i> &nbsp; {{ __('Paiements') }}
                         </h2>
                         <div class="flex items-center">
-                            @if (auth()->user()->isAdmin())
+                            <!-- if (auth()->user()->isAdmin()) -->
                             <a href="{{ route('payment.download') }}" class="text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
                                 <i class="bi bi-cloud-download"></i> &nbsp; {{ __('Télécharger') }}
                             </a>
-                            @endif
+                            <!-- endif -->
                         </div>
                     </div>
                     <div>

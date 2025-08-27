@@ -72,48 +72,34 @@
                 </nav>
             </div>
         </div>
-
-        <!-- HEADER -->
-        <div class="row" id="header">
-            <div class="col-md-12 content-blok">
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <div class="content p-2 bg-layer">
-                            <h1 class="text-white title animate__animated  animate__fadeInDown">BIENVENUE SUR TICKETWIFI</h1>
-                            <p class="description">La plateforme qui vous permet d'automatiser la vente de vos tickets wifizone via des moyens de paiement mobile money et cartes bancaires</p>
-                        </div>
-
-                        <!-- Créer un compte -->
-                        <div class="text-center">
-                            <a href="{{route('register')}}" class="btn btn-lg bg-orange btn-hover animate__animated  animate__fadeInUp"><i class="bi bi-person-plus"></i> Créer un compte</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Section1 -->
     <div class="container section" id="about">
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="title"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Qu'est-ce que ticketwifi?</h3>
-                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <h3 class="title text-center"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Récupérer un ticket</h3>
+                <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
                     Ipsam, </p>
 
-                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
-                    Ipsam, </p>
+                <form action="{{route('getTicket')}}" method="POST">
+                    @csrf
+                    <div class="mb-3 rounded p-3 shadow">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <input type="text" name="numero" value="{{old('numero')}}" class="form-control" placeholder="Ex : 7645879">
+                                </div>
+                                @error("numero")
+                                <div class="text-danger">{{$message}}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-send-check-fill"></i> Envoyer</button>
+                    </div>
+                </form>
 
-                <p class="">Les moyens de paiement autorisé:</p>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 1</li>
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 2</li>
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 3</li>
-                </ul>
-            </div>
-            <div class="col-md-6 about-section-img">
-                <!--  -->
+
             </div>
         </div>
     </div>

@@ -72,7 +72,7 @@ class User extends Authenticatable
         }
 
         $bill = Billing::where('user_id', $user->id)->get()
-            ->sum(fn($billing) => $billing->package?->price ?? 0);
+            ->sum(fn($billing) => $billing->price ?? 0);
 
         $pay = Payment::where('user_id', $user->id)->sum('package_price');
 

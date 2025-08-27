@@ -1,4 +1,4 @@
-<x-app-layout>    
+<x-app-layout>
     <x-slot name="title">Payement | Créer</x-slot>
 
     <div class="py-6">
@@ -17,7 +17,7 @@
 
                     <!-- Retour sur liste -->
                     <div class="flex justify-content-center mt-3">
-                        <a href="{{route('users.show',$bill->user_id)}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
+                        <a href="{{ route('billing.index')}}" class="text-center ml-2 px-4 py-2 bg-light btn-hover shadow rounded-md font-semibold text-xs text-dark rounded uppercase">
                             <i class="bi bi-arrow-left-circle"></i> &nbsp; {{ __('Retour') }}
                         </a>
                     </div>
@@ -28,10 +28,19 @@
 
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-8">
-                                <h2 class="text-lg font-medium text-gray-900">{{ __('Paiement de la facture')}} <span class="badge bg-light text-dark border">REF_{{ $bill->invoice }}</span> valant la somme de <span class="badge bg-primary text-white">{{ $bill->package_price .' '.env('CURRENCY')}} </span></h2>
+                                <h2 class="text-lg font-medium text-gray-900">{{ __('Paiement de la facture')}} <span class="badge bg-light text-dark border">REF_{{ $bill->invoice }}</span> valant la somme de <span class="badge bg-primary text-white">{{ number_format($bill->price,2,","," ") .' '.env('CURRENCY')}} </span></h2>
                                 <p class="mt-1 text-sm text-gray-600">{{ __("Paiement disponible uniquement pour kkiapay") }}</p>
+                                <br>
+                                @if(!auth()->user()->detail)
+                                <p class="mt-1 text-sm text-gray-600">{{ __("Votre clé Kkiapay n'est pas configué, vous ne pouvez éffectuer cette transaction! Veuillez configurez votre profil pour continuer!") }}</p>
+                                @endif
+
+                                @if($bill->payment)
+                                <p class="mt-1 text-sm text-gray-600">{{ __("Cette facture a déjà été payée!") }}</p>
+                                @endif
+
                                 <input type="hidden" name="bill" value="{{ $bill->id }}">
-                                <input type="hidden" name="amount" value="{{ $bill->package_price }}">
+                                <input type="hidden" name="amount" value="{{ $bill->price }}">
                                 <input type="hidden" name="payment_method" id="payment_method" value="">
                                 <div id="card-element"></div>
                                 <div id="card-errors" role="alert"></div>
@@ -50,9 +59,10 @@
                                         theme="#0095ff"
                                         callback="{{route('payment.handlePayementAfterProcess',$bill->id)}}" /> -->
 
+                                    @if(auth()->user()->detail && !$bill->payment)
                                     <script
-                                        amount="{{$bill->package_price}}"
-                                        key="{{env('KKIAPAY_KAY')}}"
+                                        amount="{{$bill->price}}"
+                                        key="{{auth()->user()->detail?auth()->user()->detail->kkiapay_key:''}}"
                                         sandbox="true"
                                         position="right"
                                         theme="#0095ff"
@@ -63,6 +73,7 @@
                                     <button type="button" class="kkiapay-button w-100 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
                                         <i class="bi bi-check-circle"></i> &nbsp; {{ __('Payer maintenant') }}
                                     </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>

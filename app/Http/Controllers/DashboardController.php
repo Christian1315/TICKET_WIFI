@@ -21,7 +21,7 @@ class DashboardController extends Controller
         if (auth()->user()->isAdmin()) {
             $totalPackages = Package::count();
             $totalBills = Billing::with("package")->get()
-                ->sum(fn($billing) => $billing->package?->price ?? 0);
+                ->sum(fn($billing) => $billing->price ?? 0);
             $totalPayments  = Payment::sum('package_price');
             $totalUsers = User::where('role', 'user')->count();
             $openTickets = Ticket::where('status', 'Open')->count();
@@ -30,13 +30,13 @@ class DashboardController extends Controller
             $recentTickets = Ticket::latest()->take(5)->get();
             $paymentsThisMonth = Payment::whereMonth('created_at', now()->month)->sum('package_price');
             $billsThisMonth = Billing::whereMonth('created_at', now()->month)->get()
-                ->sum(fn($billing) => $billing->package?->price ?? 0);
+                ->sum(fn($billing) => $billing->price ?? 0);
 
             $paymentsThisYear = Payment::whereYear('created_at', now()->year)->get()
-                ->sum(fn($billing) => $billing->package?->price ?? 0);
+                ->sum(fn($billing) => $billing->price ?? 0);
 
             $billsThisYear = Billing::whereYear('created_at', now()->year)->get()
-                ->sum(fn($billing) => $billing->package?->price ?? 0);
+                ->sum(fn($billing) => $billing->price ?? 0);
 
             $usersWithDueCount = User::with('detail')->where('role', 'user')->get()
                 ->filter(function ($user) {
@@ -53,14 +53,14 @@ class DashboardController extends Controller
                 ->get()->groupBy(function ($billing) {
                     return $billing->created_at->format('F');
                 })->map(function ($billings) {
-                    return $billings->sum(fn($billing) => $billing->package?->price ?? 0);
+                    return $billings->sum(fn($billing) => $billing->price ?? 0);
                 });
 
             $paymentData = Payment::whereYear('created_at', Carbon::now()->year)
                 ->get()->groupBy(function ($payment) {
                     return $payment->created_at->format('F');
                 })->map(function ($payments) {
-                    return $payments->sum(fn($billing) => $billing->package?->price ?? 0);
+                    return $payments->sum(fn($billing) => $billing->price ?? 0);
                 });
 
             // Fetch the daily billing and payment data for the current month
@@ -70,10 +70,10 @@ class DashboardController extends Controller
 
             for ($day = 1; $day <= $daysInMonth; $day++) {
                 $dailyBillingAmount = Billing::whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
-                    ->sum(fn($billing) => $billing->package?->price ?? 0);
+                    ->sum(fn($billing) => $billing->price ?? 0);
 
                 $dailyPaymentAmount = Payment::whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
-                    ->sum(fn($billing) => $billing->package?->price ?? 0);
+                    ->sum(fn($billing) => $billing->price ?? 0);
 
                 $dailyBillingData[] = $dailyBillingAmount;
                 $dailyPaymentData[] = $dailyPaymentAmount;
@@ -86,7 +86,7 @@ class DashboardController extends Controller
                 "tickets"
             ]);
 
-            $totalPackages = $user->routers->flatMap->packages->count(); // Package::count();
+            $totalPackages = $user->packages->count(); // Package::count();
 
             $totalBills = $user->billing
                 ->sum(fn($billing) => $billing->package?->price ?? 0);

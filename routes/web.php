@@ -27,12 +27,12 @@ use Illuminate\Support\Facades\Route;
 
 /** REDIRECT TO HOMECONTROLLER*/
 Route::get("/", HomeController::class);
-Route::post("/", [HomeController::class,"contactMe"]);
+Route::post("/", [HomeController::class, "contactMe"]);
 
 /** */
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
-    
+
     Route::get('/administration', function () {
         return view('administration');
     })->name('administration');
@@ -41,7 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class);
     Route::resource('/billing', BillingController::class);
     Route::resource('/payment', PaymentController::class)->only(['index', 'store']);
+
     Route::resource('/ticket', TicketController::class);
+    Route::match(["GET", "POST"], '/get-ticket', [TicketController::class, "getTicket"])->name("getTicket");
+
     Route::resource('/router', RouterController::class);
 
     Route::get('/payment/create/{param}', [PaymentController::class, 'create'])->name('payment.create');

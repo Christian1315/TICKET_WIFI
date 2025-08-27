@@ -24,6 +24,11 @@ class TicketController extends Controller
         return view('tickets.index', compact("tickets"));
     }
 
+    public function getTicket(Request $request) {
+        return view('get_ticket');
+        
+    }
+
     public function create()
     {
         return view('tickets.create');

@@ -17,6 +17,8 @@ return new class extends Migration
             // $table->string('package_name');
             // $table->unsignedInteger('package_price');
             // $table->date('package_start');
+            $table->unsignedInteger('price');
+
             $table->foreignId('package_id')
                 ->nullable()
                 ->constrained('packages')

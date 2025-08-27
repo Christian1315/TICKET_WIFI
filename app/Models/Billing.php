@@ -24,7 +24,8 @@ class Billing extends Model
         // 'package_start',
         'package_id',
         'user_id',
-        'deleted_at'
+        'deleted_at',
+        "price"
     ];
 
     public function user()
@@ -40,6 +41,14 @@ class Billing extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class, "package_id");
+    }
+
+    /**
+     * Reste à payer sur une facture
+     */
+    public function resteToPay()
+    {
+        return $this->price - ($this->payment ? $this->payment->package_price : 0);
     }
 
     public function generateRandomNumber()
