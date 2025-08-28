@@ -20,7 +20,7 @@ class InvoiceDownload extends Controller
         }
 
         if (Company::doesntExist()) {
-            alert()->info("Opération bloquée!", "L'entreprise FAI n'existe pas encore! Veuillez la configurer!");
+            alert()->info("Opération bloquée!", "L'entreprise FAI n'existe pas encore! Veuillez contactez l'administrateur pour effectuer la configuration!");
             return redirect()->back(); //->with('error', 'Insert ISP information first');
         }
 

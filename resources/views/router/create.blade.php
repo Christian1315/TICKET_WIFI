@@ -124,12 +124,19 @@
                                         <div class="mb-3">
 
                                             {{-- IMPORTANT: préciser une hauteur sinon la carte n’apparaît pas --}}
-                                          
+
                                             <!-- Div pour la carte -->
                                             <div id="map" style="height: 500px; width: 100%;"></div>
 
-                                            <input type="text" name="map_lat" id="latitude">
-                                            <input type="text" name="map_long" id="longitude">
+                                            <input type="text" name="map_lat" id="latitude" value="{{old('map_lat')}}">
+                                            @error("map_lat")
+                                            <span class="text-orange">{{$message}}</span>
+                                            @enderror
+
+                                            <input type="text" name="map_long" id="longitude" value="{{old('map_long')}}">
+                                            @error("map_long")
+                                            <span class="text-orange">{{$message}}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -158,7 +165,7 @@
     <!-- JS Leaflet et Leaflet Draw -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
-    
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -216,6 +223,6 @@
             });
 
         });
-        </script>
+    </script>
     @endpush
 </x-app-layout>

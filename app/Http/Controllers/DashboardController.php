@@ -13,10 +13,6 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        // if (auth()->user()->isUser()) {
-        //     $user = User::with('detail')->where('id', auth()->id())->firstOrFail();
-        //     return view('dashboard2', compact('user'));
-        // }
 
         if (auth()->user()->isAdmin()) {
             $totalPackages = Package::count();
@@ -81,11 +77,6 @@ class DashboardController extends Controller
         } else {
             $user = auth()->user()
                 ->load([
-                    // 'detail',
-                    // "billing",
-                    // "routers",
-                    // "tickets",
-
                     'detail',
                     'billing', // Charger la relation billing
                     'routers',
@@ -93,7 +84,6 @@ class DashboardController extends Controller
                     'payment' // Charger la relation payment
                 ]);
 
-            // return response()->json($user);
 
             $totalPackages = $user->packages->count(); // Package::count();
 
@@ -105,29 +95,57 @@ class DashboardController extends Controller
             $recentUsers = [];
             $recentPayments = [];
             $recentTickets = [];
-            $paymentsThisMonth = $user->payment()->whereMonth('created_at', now()->month)->sum('package_price'); // Payment::whereMonth('created_at', now()->month)->sum('package_price');
-            $billsThisMonth = $user->billing()->whereMonth('created_at', now()->month)->get()
-                ->sum("price");
 
-            $paymentsThisYear = $user->payment()->whereYear('created_at', now()->year)->sum("package_price"); //Payment::whereYear('created_at', now()->year)->get()->sum(fn($billing) => $billing->package?->price ?? 0);
+            // $paymentsThisMonth = $user->payment()->whereMonth('created_at', now()->month)->sum('package_price'); // Payment::whereMonth('created_at', now()->month)->sum('package_price');
+            // $billsThisMonth = $user->billing()->whereMonth('created_at', now()->month)->get()
+            //     ->sum("price");
 
-            $billsThisYear = $user->billing()->whereYear('created_at', now()->year)->get()
-                ->sum("price");
+            $paymentsThisMonth = $user->payment
+                ->where('created_at', '>=', now()->startOfMonth())
+                ->where('created_at', '<=', now()->endOfMonth())
+                ->sum('package_price');
+            $billsThisMonth = $user->billing
+                ->where('created_at', '>=', now()->startOfMonth())
+                ->where('created_at', '<=', now()->endOfMonth())
+                ->sum('price');
+
+            // $paymentsThisYear = $user->payment()->whereYear('created_at', now()->year)->sum("package_price"); //Payment::whereYear('created_at', now()->year)->get()->sum(fn($billing) => $billing->package?->price ?? 0);
+            $paymentsThisYear = $user->payment
+                ->where('created_at', '>=', now()->startOfYear())
+                ->where('created_at', '<=', now()->endOfYear())
+                ->sum('package_price');
+
+
+            // $billsThisYear = $user->billing()->whereYear('created_at', now()->year)->get()
+            //     ->sum("price");
+
+            $billsThisYear = $user->billing
+                ->where('created_at', '>=', now()->startOfYear())
+                ->where('created_at', '<=', now()->endOfYear())
+                ->sum('price');
 
             $usersWithDueCount = 0;
 
             $usersWithDueList = 0;
 
             // Fetch the monthly billing and payment data
-            $billingData = $user->billing()->whereYear('created_at', Carbon::now()->year)
-                ->get()->groupBy(function ($billing) {
+            $billingData = $user->billing
+                // ->whereYear('created_at', Carbon::now()->year)
+                ->where('created_at', '>=', now()->startOfYear())
+                ->where('created_at', '<=', now()->endOfYear())
+                // ->get()
+                ->groupBy(function ($billing) {
                     return $billing->created_at->format('F');
                 })->map(function ($billings) {
                     return $billings->sum("price");
                 });
 
-            $paymentData = $user->payment()->whereYear('created_at', Carbon::now()->year)
-                ->get()->groupBy(function ($payment) {
+            $paymentData = $user->payment
+                // ->whereYear('created_at', Carbon::now()->year)
+                ->where('created_at', '>=', now()->startOfYear())
+                ->where('created_at', '<=', now()->endOfYear())
+                // ->get()
+                ->groupBy(function ($payment) {
                     return $payment->created_at->format('F');
                 })->map(function ($payments) {
                     return $payments->sum(fn($billing) => $billing->price ?? 0);
@@ -139,10 +157,16 @@ class DashboardController extends Controller
             $dailyPaymentData = [];
 
             for ($day = 1; $day <= $daysInMonth; $day++) {
-                $dailyBillingAmount = $user->billing()->whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
+                $dailyBillingAmount = $user->billing
+                    // ->whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
+                    ->where('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)
+                    // ->get()
                     ->sum("price");
 
-                $dailyPaymentAmount = $user->payment()->whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
+                $dailyPaymentAmount = $user->payment
+                    // ->whereDate('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)->get()
+                    ->where('created_at', Carbon::now()->year . '-' . Carbon::now()->month . '-' . $day)
+                    // ->get()
                     ->sum("package_price");
 
                 $dailyBillingData[] = $dailyBillingAmount;

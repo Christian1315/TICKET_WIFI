@@ -54,7 +54,7 @@
                                     @if($admin->detail && !$bill->payment)
                                     <script
                                         amount="{{$bill->price}}"
-                                        key="{{auth()->user()->detail?auth()->user()->detail->kkiapay_key:''}}"
+                                        key="{{$admin->detail?$admin->detail->kkiapay_key:''}}"
                                         sandbox="true"
                                         position="right"
                                         theme="#0095ff"

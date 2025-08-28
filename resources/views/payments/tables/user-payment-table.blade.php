@@ -3,7 +3,8 @@
         <tr>
             <th>N°</th>
             <th>Reference</th>
-            <th>Tarif (package)</th>
+            <th>Utilisateur</th>
+            <!-- <th>Tarif (package)</th> -->
             <th>Prix tarif ({{env("CURRENCY")}})</th>
             <th>Method de payment</th>
             <th>Date de payment</th>
@@ -15,7 +16,8 @@
         <tr>
             <td>{{$loop->iteration}}</td>
             <td>REF_{{$payment->invoice}}</td>
-            <td class="text-center">{{$payment->billing?->package_name}}</td>
+            <td> <span class="badge bg-light text-dark border">{{$payment->user?->name}}</span></td>
+            <!-- <td class="text-center">{{$payment->billing?->package_name}}</td> -->
             <td class="text-center">{{$payment->package_price}}</td>
             <td class="text-center">
                 <span class="badge bg-light text-primary border">{{$payment->payment_method}}</span>

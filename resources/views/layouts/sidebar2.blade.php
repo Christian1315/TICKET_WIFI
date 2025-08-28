@@ -15,6 +15,10 @@
             request()->routeIs('packages.show') || 
             request()->routeIs('packages.edit')">{{ __('Tarifs') }} (Packages)</x-sidebar-item>
 
+            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index') ||
+            request()->routeIs('ticket.create') ||
+            request()->routeIs('ticket.show')">{{ __('Ticket') }}</x-sidebar-item>
+
             @if(auth()->user()->isAdmin())
             <x-sidebar-item class="shadow" :href="route('users.index')" :active="request()->routeIs('users.index') || 
             request()->routeIs('users.create') ||
@@ -28,9 +32,7 @@
             request()->routeIs('billing.create') || 
             request()->routeIs('payment.create')">{{ __('Facturation') }}</x-sidebar-item>
             <x-sidebar-item class="shadow" :href="route('payment.index')" :active="request()->routeIs('payment.index')">{{ __('Payment') }}</x-sidebar-item>
-            <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index') ||
-            request()->routeIs('ticket.create') ||
-            request()->routeIs('ticket.show')">{{ __('Ticket') }}</x-sidebar-item>
+
         </div>
     </nav>
 </div>

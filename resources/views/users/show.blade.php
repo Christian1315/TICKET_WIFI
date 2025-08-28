@@ -72,8 +72,8 @@
                                         <tr>
                                             <th>N°</th>
                                             <th>Reference</th>
-                                            <th>Nom tarif</th>
-                                            <th>Prix tarif({{env("CURRENCY")}})</th>
+                                            <!-- <th>Nom tarif</th> -->
+                                            <!-- <th>Prix tarif({{env("CURRENCY")}})</th> -->
                                             <th>Début tarif</th>
                                             <th>Method de paiement</th>
                                             <th>Date de paiement</th>
@@ -85,8 +85,8 @@
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>REF_{{$bill->invoice}}</td>
-                                            <td class="text-center">{{$user->detail?->package_name}}</td>
-                                            <td class="text-center">{{$bill->package_price}}</td>
+                                            <!-- <td class="text-center">{{$user->detail?->package_name}}</td> -->
+                                            <!-- <td class="text-center">{{$bill->package_price}}</td> -->
                                             <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($bill->package_start)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
                                             <td class="text-center">
                                                 @if($bill->payment)

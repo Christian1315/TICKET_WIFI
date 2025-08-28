@@ -89,7 +89,7 @@ class PaymentController extends Controller
             /**
              * Notifier que les ticket asoociés à cette facture sont payés
              */
-            $bill->tickets
+            $bill->tickets()
                 ->update(["percent_paid" => true]);
 
             Log::debug("Transaction ID de la facture REF_$bill->invoice : ($request->transaction_id)");
