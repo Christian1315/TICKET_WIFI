@@ -19,6 +19,11 @@
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- CSS Leaflet et Leaflet Draw -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
 </head>
 
 <body class="home-body antialiased bg-dots-darker bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900">
@@ -85,9 +90,7 @@
                 <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
                     Ipsam, </p>
 
-                <x-maps-leaflet :zoomLevel="4" style="height: 400px;"></x-maps-leaflet>
-                <!-- <div id="map" class="mt-4" style="height: 400px;">
-                                    </div> -->
+                <div id="map" style="height: 400px; width: 100%;" class="shadow border rounded"></div>
             </div>
         </div>
     </div>
@@ -188,30 +191,90 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 
-    @verbatim
+
+
+    <!-- JS Leaflet et Leaflet Draw -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
     <script>
-        document.addEventListener("leaflet:load", function(event) {
-            const map = event.detail.map; // on récupère la carte
-            let marker;
+        document.addEventListener("DOMContentLoaded", function() {
 
-            // Sur clic dans la carte
-            map.on("click", function(e) {
-                const lat = e.latlng.lat;
-                const lng = e.latlng.lng;
+            const routers = @json($routers);
 
-                // on met à jour les inputs cachés
-                document.getElementById("latitude").value = lat;
-                document.getElementById("longitude").value = lng;
+            console.log(routers)
 
-                // si un marqueur existe déjà on le supprime
-                if (marker) {
-                    map.removeLayer(marker);
+            // Initialiser la carte avec un zoom par défaut plus large
+            const map = L.map('map').setView([6.370293, 2.391236], 9);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            const markersGroup = L.featureGroup().addTo(map);
+
+            routers.forEach(router => {
+                if (router.map_lat && router.map_long) {
+                    const marker = L.marker([parseFloat(router.map_lat), parseFloat(router.map_long)])
+                        .addTo(markersGroup);
+
+                    // Ajouter le popup avec le nom et l’emplacement
+                    marker.bindPopup(`<strong>${router.name}</strong><br> <em> ${router.description??''} </em> <br> <strong>Zone:</strong> <em> ${router.location??''} </em> <br> Contactez-le <strong class='text-orange'> ${router.contact} </strong>`);
+
+                    // Ouvrir le popup par défaut pour le premier router seulement
+                    // if (markersGroup.getLayers().length === 1) {
+                    // marker.openPopup();
+                    // }
+                    marker.openPopup();
+                }
+            });
+
+            // Ajuster la vue seulement si on a plusieurs marqueurs
+            if (markersGroup.getLayers().length > 1) {
+                map.fitBounds(markersGroup.getBounds().pad(0.2));
+            }
+
+            // Contrôles de dessin
+            const drawnItems = new L.FeatureGroup().addTo(map);
+            const drawControl = new L.Control.Draw({
+                draw: {
+                    polygon: true,
+                    rectangle: true,
+                    circle: true,
+                    marker: false,
+                    polyline: false,
+                    circlemarker: false
+                },
+                edit: {
+                    featureGroup: drawnItems
+                }
+            });
+            map.addControl(drawControl);
+
+            map.on(L.Draw.Event.CREATED, function(e) {
+                const layer = e.layer;
+                drawnItems.clearLayers();
+                drawnItems.addLayer(layer);
+
+                let lat = null;
+                let lng = null;
+
+                if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+                    const bounds = layer.getBounds();
+                    lat = bounds.getCenter().lat;
+                    lng = bounds.getCenter().lng;
+                } else if (layer instanceof L.Circle) {
+                    const center = layer.getLatLng();
+                    lat = center.lat;
+                    lng = center.lng;
                 }
 
-                // on ajoute un nouveau marqueur
-                marker = L.marker([lat, lng]).addTo(map);
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
             });
+
         });
     </script>
-    @endverbatim
+
 </body>

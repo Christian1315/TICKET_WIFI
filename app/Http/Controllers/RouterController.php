@@ -35,7 +35,21 @@ class RouterController extends Controller
 
     public function routerLocalization(Request $request)
     {
-        return view("router_localisation");
+        $routers = Router::with("user")->get()
+            ->map(function ($router) {
+                return (object) [
+                    "id" => $router->id,
+                    "name" => $router->name,
+                    "map_lat" => $router->map_lat,
+                    "map_long" => $router->map_long,
+                    "contact" => $router->contact,
+                    "description" => $router->description,
+                    "location" => $router->location,
+                ];
+            });
+
+        // return $routers;
+        return view("router_localisation", compact("routers"));
     }
 
     /**

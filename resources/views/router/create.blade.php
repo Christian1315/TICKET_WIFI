@@ -120,11 +120,18 @@
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <x-input-label for="map" :value="__('Emplacement de la zone sur le map')" class="mt-4"><span class="text-danger"><i class="bi bi-geo-alt-fill"></i></span></x-input-label>
-                                    <x-maps-leaflet :zoomLevel="4" style="height: 400px;"></x-maps-leaflet>
-                                    <!-- <div id="map" class="mt-4" style="height: 400px;">
-                                    </div> -->
-                                    <input type="hidden" name="map_lat" id="latitude">
-                                    <input type="hidden" name="map_long" id="longitude">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+
+                                            {{-- IMPORTANT: préciser une hauteur sinon la carte n’apparaît pas --}}
+                                          
+                                            <!-- Div pour la carte -->
+                                            <div id="map" style="height: 500px; width: 100%;"></div>
+
+                                            <input type="text" name="map_lat" id="latitude">
+                                            <input type="text" name="map_long" id="longitude">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -140,32 +147,75 @@
         </div>
     </div>
 
+    @push("styles")
+    <!-- CSS Leaflet et Leaflet Draw -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+    @endpush
+
     @push('scripts')
-    @verbatim
+    <!-- JS Leaflet et Leaflet Draw -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    
     <script>
-        document.addEventListener("leaflet:load", function(event) {
-            const map = event.detail.map; // on récupère la carte
-            let marker;
+        document.addEventListener("DOMContentLoaded", function() {
 
-            // Sur clic dans la carte
-            map.on("click", function(e) {
-                const lat = e.latlng.lat;
-                const lng = e.latlng.lng;
+            const map = L.map('map').setView([6.370293, 2.391236], 10);
 
-                // on met à jour les inputs cachés
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            const drawnItems = new L.FeatureGroup();
+            map.addLayer(drawnItems);
+
+            const drawControl = new L.Control.Draw({
+                draw: {
+                    polygon: true,
+                    rectangle: true,
+                    circle: true,
+                    marker: false,
+                    polyline: false,
+                    circlemarker: false
+                },
+                edit: {
+                    featureGroup: drawnItems
+                }
+            });
+            map.addControl(drawControl);
+
+            map.on(L.Draw.Event.CREATED, function(e) {
+                const layer = e.layer;
+
+                // Supprime l’ancienne zone
+                drawnItems.clearLayers();
+                drawnItems.addLayer(layer);
+
+                let lat = null;
+                let lng = null;
+
+                if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+                    // Calculer le centre du polygone/rectangle
+                    const bounds = layer.getBounds();
+                    lat = bounds.getCenter().lat;
+                    lng = bounds.getCenter().lng;
+                } else if (layer instanceof L.Circle) {
+                    const center = layer.getLatLng();
+                    lat = center.lat;
+                    lng = center.lng;
+                }
+
+                // Stocker dans les inputs
                 document.getElementById("latitude").value = lat;
                 document.getElementById("longitude").value = lng;
 
-                // si un marqueur existe déjà on le supprime
-                if (marker) {
-                    map.removeLayer(marker);
-                }
-
-                // on ajoute un nouveau marqueur
-                marker = L.marker([lat, lng]).addTo(map);
+                console.log("Latitude :", lat, "Longitude :", lng);
             });
+
         });
-    </script>
-    @endverbatim
+        </script>
     @endpush
 </x-app-layout>

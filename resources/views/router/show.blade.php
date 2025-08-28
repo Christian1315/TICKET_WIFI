@@ -61,7 +61,7 @@
                                 <div class="mb-3">
                                     <x-input-label for="contact" :value="__('Contact whatsapp du client')" class="mt-4"><span class="text-danger">*</span></x-input-label>
                                     <x-text-input id="contact" readonly name="contact" type="tel" class="mt-1 block w-full" :value="old('contact')??$router->contact" required placeholder="+2290156453423"></x-text-input>
-                                   
+
                                 </div>
                             </div>
 
@@ -85,13 +85,10 @@
                                 <div class="mb-3">
                                     <x-input-label for="map" :value="__('Emplacement de la zone sur le map')" class="mt-4"><span class="text-danger"><i class="bi bi-geo-alt-fill"></i></span></x-input-label>
 
-                                    <x-maps-leaflet
-                                        :zoomLevel="4"
-                                        :center="['lat' => $router->map_lat, 'lng' => $router->map_long]"
-                                        :markers="[['lat' => $router->map_lat, 'long' => $router->map_long]]"
-                                        :options="['scrollWheelZoom' => true, 'dragging' => true]"></x-maps-leaflet>
-                                    <input type="hidden" name="map_lat" id="latitude" value="{{$router->map_lat}}">
-                                    <input type="hidden" name="map_long" id="longitude" value="{{$router->map_long}}">
+                                    <div id="map" style="height: 500px; width: 100%;"></div>
+
+                                    <input type="text" name="map_lat" id="latitude" value="{{$router->map_lat}}">
+                                    <input type="text" name="map_long" id="longitude" value="{{$router->map_long}}">
                                 </div>
                             </div>
                             @endif
@@ -102,44 +99,87 @@
         </div>
     </div>
 
-    @push("scripts")
+    @push("styles")
+    <!-- CSS Leaflet et Leaflet Draw -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+    @endpush
+
+    @push('scripts')
+    <!-- JS Leaflet et Leaflet Draw -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialisation avec coordonnées du router ou par défaut
-            let lat = {
-                {
-                    $router - > map_lat ?? 0
-                }
-            };
-            let lng = {
-                {
-                    $router - > map_long ?? 0
-                }
-            };
 
-            let map = L.map('map').setView([lat, lng], 6);
+            // Récupérer les coordonnées du router depuis tes inputs
+            const latInput = document.getElementById("latitude");
+            const lngInput = document.getElementById("longitude");
+            const latVal = parseFloat(latInput.value);
+            const lngVal = parseFloat(lngInput.value);
+
+            // Centrer la carte sur le router si les coordonnées existent
+            const map = L.map('map').setView(
+                latVal && lngVal ? [latVal, lngVal] : [6.370293, 2.391236],
+                latVal && lngVal ? 13 : 10
+            );
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 18,
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            // Afficher un marker existant si dispo
-            let marker = L.marker([lat, lng]).addTo(map);
+            const drawnItems = new L.FeatureGroup();
+            map.addLayer(drawnItems);
 
-            map.on('click', function(e) {
-                const lat = e.latlng.lat;
-                const lng = e.latlng.lng;
+            // Si le router a déjà des coordonnées, ajouter un marqueur
+            if (latVal && lngVal) {
+                const marker = L.marker([latVal, lngVal]).addTo(drawnItems);
+                marker.bindPopup("Emplacement actuel du router ({{$router->name}})").openPopup();
+            }
 
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
-
-                // Déplacer ou créer le marker
-                if (marker) {
-                    marker.setLatLng(e.latlng);
-                } else {
-                    marker = L.marker(e.latlng).addTo(map);
+            const drawControl = new L.Control.Draw({
+                draw: {
+                    polygon: true,
+                    rectangle: true,
+                    circle: true,
+                    marker: false,
+                    polyline: false,
+                    circlemarker: false
+                },
+                edit: {
+                    featureGroup: drawnItems
                 }
             });
+            // map.addControl(drawControl);
+
+            // Dessiner une zone
+            map.on(L.Draw.Event.CREATED, function(e) {
+                const layer = e.layer;
+
+                drawnItems.clearLayers(); // Supprimer l’ancienne zone
+                drawnItems.addLayer(layer);
+
+                let lat = null;
+                let lng = null;
+
+                if (layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+                    const bounds = layer.getBounds();
+                    lat = bounds.getCenter().lat;
+                    lng = bounds.getCenter().lng;
+                } else if (layer instanceof L.Circle) {
+                    const center = layer.getLatLng();
+                    lat = center.lat;
+                    lng = center.lng;
+                }
+
+                latInput.value = lat;
+                lngInput.value = lng;
+
+                console.log("Latitude :", lat, "Longitude :", lng);
+            });
+
         });
     </script>
     @endpush
