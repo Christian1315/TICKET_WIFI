@@ -26,8 +26,10 @@ use App\Http\Controllers\UserEnable;
 use Illuminate\Support\Facades\Route;
 
 /** REDIRECT TO HOMECONTROLLER*/
-Route::get("/", HomeController::class);
+Route::get("/", HomeController::class)->name("home");
 Route::post("/", [HomeController::class, "contactMe"]);
+Route::match(["GET", "POST"], '/get-ticket', [TicketController::class, "getTicket"])->name("getTicket");
+Route::get('/get-localization', [RouterController::class, "routerLocalization"])->name("routerLocalization");
 
 /** */
 Route::middleware('auth')->group(function () {
@@ -43,7 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/payment', PaymentController::class)->only(['index', 'store']);
 
     Route::resource('/ticket', TicketController::class);
-    Route::match(["GET", "POST"], '/get-ticket', [TicketController::class, "getTicket"])->name("getTicket");
 
     Route::resource('/router', RouterController::class);
 

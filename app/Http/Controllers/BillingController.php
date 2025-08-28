@@ -28,7 +28,7 @@ class BillingController extends Controller
     public function create()
     {
         $users = User::where('role', 'user')
-            ->with('detail')
+            ->with('detail','tickets')
             ->whereHas('detail', function (Builder $query) {
                 $query->where('status', 'active');
             })->latest()->get();

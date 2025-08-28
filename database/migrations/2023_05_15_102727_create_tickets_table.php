@@ -13,16 +13,23 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('number')->unique();
-            $table->string('subject');
-            $table->longText('message');
-            $table->string('status');
-            $table->string('priority');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+            $table->foreignId('package_id')
+                ->nullable()
+                ->constrained('packages')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+            $table->string('number')->unique();
+            $table->string('subject');
+            $table->longText('message');
+            $table->longText('ticket_file')->nullable();
+            $table->string('status');
+            $table->string('priority');
+            $table->boolean('downloaded')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

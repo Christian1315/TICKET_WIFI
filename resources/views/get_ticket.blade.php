@@ -45,7 +45,7 @@
                             <div>
                                 <ul class="navbar-nav align-items-center">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                                        <a class="nav-link" aria-current="page" href="/">Accueil</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#about">A propos</a>
@@ -54,7 +54,10 @@
                                         <a class="nav-link" href="#contact">Contact</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('getTicket')}}">Récupérer mon ticket</a>
+                                        <a class="nav-link" href="{{route('routerLocalization')}}">Localisation de wifizone</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="{{route('getTicket')}}">Récupérer mon ticket</a>
                                     </li>
                                     <li class="nav-item">
                                         @if (Route::has('login'))
@@ -88,14 +91,14 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <input type="text" name="numero" value="{{old('numero')}}" class="form-control" placeholder="Ex : 7645879">
+                                    <input type="number" name="number" value="{{old('number')}}" required class="form-control" placeholder="Ex : 7645879">
                                 </div>
-                                @error("numero")
+                                @error("number")
                                 <div class="text-danger">{{$message}}</div>
                                 @enderror
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-send-check-fill"></i> Envoyer</button>
+                        <button type="submit" class="btn btn-lg btn-hover bg-orange w-100"><i class="bi bi-download"></i> Télecharger</button>
                     </div>
                 </form>
 

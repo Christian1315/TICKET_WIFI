@@ -45,7 +45,7 @@
                             <div>
                                 <ul class="navbar-nav align-items-center">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="/">Accueil</a>
+                                        <a class="nav-link" aria-current="page" href="/">Accueil</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="#about">A propos</a>
@@ -54,7 +54,7 @@
                                         <a class="nav-link" href="#contact">Contact</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="{{route('routerLocalization')}}">Localisation de wifizone</a>
+                                        <a class="nav-link active" href="{{route('routerLocalization')}}">Localisation de wifizone</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('getTicket')}}">Récupérer mon ticket</a>
@@ -75,48 +75,19 @@
                 </nav>
             </div>
         </div>
-
-        <!-- HEADER -->
-        <div class="row" id="header">
-            <div class="col-md-12 content-blok">
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <div class="content p-2 bg-layer">
-                            <h1 class="text-white title animate__animated  animate__fadeInDown">BIENVENUE SUR TICKETWIFI</h1>
-                            <p class="description">La plateforme qui vous permet d'automatiser la vente de vos tickets wifizone via des moyens de paiement mobile money et cartes bancaires</p>
-                        </div>
-
-                        <!-- Créer un compte -->
-                        <div class="text-center">
-                            <a href="{{route('register')}}" class="btn btn-lg bg-orange btn-hover animate__animated  animate__fadeInUp"><i class="bi bi-person-plus"></i> Créer un compte</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Section1 -->
     <div class="container section" id="about">
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="title"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Qu'est-ce que ticketwifi?</h3>
-                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <h3 class="title text-center"> <img src="{{asset('images/wifi.png')}}" alt="wifi" class="img-fluid"> Réperage des wifizones</h3>
+                <p class="text-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
                     Ipsam, </p>
 
-                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus autem, error qui corporis dolorum repudiandae architecto facere laborum accusantium vitae praesentium iste, ratione, laudantium quibusdam possimus quidem. Veritatis, quae.
-                    Ipsam, </p>
-
-                <p class="">Les moyens de paiement autorisé:</p>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 1</li>
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 2</li>
-                    <li class="list-group-item"><i class="bi bi-check2-circle"></i> Payement 3</li>
-                </ul>
-            </div>
-            <div class="col-md-6 about-section-img">
-                <!--  -->
+                <x-maps-leaflet :zoomLevel="4" style="height: 400px;"></x-maps-leaflet>
+                <!-- <div id="map" class="mt-4" style="height: 400px;">
+                                    </div> -->
             </div>
         </div>
     </div>
@@ -216,4 +187,31 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+
+    @verbatim
+    <script>
+        document.addEventListener("leaflet:load", function(event) {
+            const map = event.detail.map; // on récupère la carte
+            let marker;
+
+            // Sur clic dans la carte
+            map.on("click", function(e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+
+                // on met à jour les inputs cachés
+                document.getElementById("latitude").value = lat;
+                document.getElementById("longitude").value = lng;
+
+                // si un marqueur existe déjà on le supprime
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+
+                // on ajoute un nouveau marqueur
+                marker = L.marker([lat, lng]).addTo(map);
+            });
+        });
+    </script>
+    @endverbatim
 </body>

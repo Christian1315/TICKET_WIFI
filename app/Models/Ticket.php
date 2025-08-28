@@ -8,9 +8,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-    protected $fillable = ['subject', 'message', 'status', 'priority', 'user_id', 'number','deleted_at'];
+    protected $fillable = [
+        'subject',
+        'message',
+        'status',
+        'priority',
+        'user_id',
+        'number',
+        'deleted_at',
+        'ticket_file',
+        'package_id',
+        'downloaded'
+    ];
 
     public function comments()
     {
@@ -22,7 +33,13 @@ class Ticket extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function generateRandomNumber() {
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
+
+    public function generateRandomNumber()
+    {
         try {
             $number = random_int(100000, 999999);
         } catch (\Exception $e) {

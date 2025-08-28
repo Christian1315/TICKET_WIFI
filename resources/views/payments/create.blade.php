@@ -31,8 +31,12 @@
                                 <h2 class="text-lg font-medium text-gray-900">{{ __('Paiement de la facture')}} <span class="badge bg-light text-dark border">REF_{{ $bill->invoice }}</span> valant la somme de <span class="badge bg-primary text-white">{{ number_format($bill->price,2,","," ") .' '.env('CURRENCY')}} </span></h2>
                                 <p class="mt-1 text-sm text-gray-600">{{ __("Paiement disponible uniquement pour kkiapay") }}</p>
                                 <br>
-                                @if(!auth()->user()->detail)
-                                <p class="mt-1 text-sm text-gray-600">{{ __("Votre clé Kkiapay n'est pas configué, vous ne pouvez éffectuer cette transaction! Veuillez configurez votre profil pour continuer!") }}</p>
+                                @php
+                                    $admin = \App\Models\User::find(1);
+                                @endphp
+                                
+                                @if(!$admin->detail)
+                                <p class="mt-1 text-sm text-gray-600">{{ __("La clé Kkiapay n'est pas configué, vous ne pouvez éffectuer cette transaction! Veuillez contacter l'administrateur pour l'urgence avant de continuer!") }}</p>
                                 @endif
 
                                 @if($bill->payment)
@@ -44,22 +48,10 @@
                                 <input type="hidden" name="payment_method" id="payment_method" value="">
                                 <div id="card-element"></div>
                                 <div id="card-errors" role="alert"></div>
-                                <!-- <div class="flex items-center gap-4 mt-6">
-                                    <x-primary-button>{{ __('Payer maintenant') }}</x-primary-button>
-                                </div> -->
                                 <div class="flex justify-content-center items-center gap-4 mt-4">
-                                    <!-- <button type="submit" class="w-50 text-center ml-2 px-4 py-2 bg-blue btn-hover shadow rounded-md font-semibold text-xs text-white rounded uppercase">
-                                        <i class="bi bi-check-circle"></i> &nbsp; {{ __('Payer maintenant') }}
-                                    </button> -->
-                                    <!-- <kkiapay-widget
-                                        amount="{{$bill->package_price}}"
-                                        key="{{env('KKIAPAY_KAY')}}"
-                                        sandbox="true"
-                                        position="right"
-                                        theme="#0095ff"
-                                        callback="{{route('payment.handlePayementAfterProcess',$bill->id)}}" /> -->
-
-                                    @if(auth()->user()->detail && !$bill->payment)
+                                  
+                                    
+                                    @if($admin->detail && !$bill->payment)
                                     <script
                                         amount="{{$bill->price}}"
                                         key="{{auth()->user()->detail?auth()->user()->detail->kkiapay_key:''}}"

@@ -23,7 +23,9 @@
                                     <th>Numéro</th>
                                     <th>Sujet</th>
                                     <th>Statut</th>
-                                    <th>Priorité</th>
+                                    <th>Vendu</th>
+                                    <th>Tarif(package)</th>
+                                    <th>Prix ({{env("CURRENCY")}}) </th>
                                     <th>Crée par</th>
                                     <th>Crée le</th>
                                     <th>Action</th>
@@ -36,11 +38,14 @@
                                     <td>{{$ticket->number}}</td>
                                     <td>{{$ticket->subject}}</td>
                                     <td> <span class="badge text-white bg-{{$ticket->status=='Open'?'success':'danger'}} text-dark border">{{$ticket->status}}</span></td>
-                                    <td class="text-center">{{$ticket->priority}}</td>
+                                    <td> <span class="badge text-white bg-{{$ticket->downloaded?'success':'danger'}} text-dark border">{{$ticket->downloaded?'Oui':"Non"}}</span></td>
+                                    <td class="text-center">{{$ticket->package?->name}}</td>
+                                    <td class="text-center"><span class="badge bg-light border text-dark"> {{number_format($ticket->package?->price,2,","," ")}}</span></td>
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{$ticket->user?->name}}</span></td>
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($ticket->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
+                                            <a target="_blank" href="{{$ticket->ticket_file}}" title="Voir le ticket" class="btn btn-sm border text-white btn-hover bg-orange"><i class="bi bi-filetype-pdf"></i> Voir</a>
                                             <a href="{{route('ticket.show', $ticket->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark btn-hover"><i class="bi bi-eye"></i> Détail</a>
                                         </div>
                                     </td>

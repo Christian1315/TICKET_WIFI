@@ -15,7 +15,7 @@
                         <i class="bi bi-node-plus"></i> &nbsp; {{ __('Ajouter un Ticket') }}
                     </h2>
 
-                    <form method="post" action="{{ route('ticket.store') }}" class="space-y-6">
+                    <form method="post" action="{{ route('ticket.store') }}" class="space-y-6" enctype="multipart/form-data">
                         @csrf
 
                         <div>
@@ -35,12 +35,26 @@
                         <div class="alert alert-warning border-left border-bold">
                             <i class="bi bi-info-circle"></i> Les champs portant le signe (<span class="text-danger">*</span>) sont réquis!
                         </div>
-                        
+
                         <div class="row">
                             <div class="">
                                 <x-input-label for="subject" :value="__('Sujet')"> <span class="text-danger">*</span> </x-input-label>
                                 <x-text-input id="subject" name="subject" type="text" class="mt-1 block w-full" :value="old('subject')" required placeholder="Ex: Ticket 1"></x-text-input>
                                 @error("subject")
+                                <span class="text-orange">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <x-input-label for="package_id" :value="__('Tarif (Package)')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                <select name="package_id" id="package_id" class="mt-1 block w-full rounded-md border border-gray-300" required>
+                                    @foreach($packages as $package)
+                                    <option
+                                        @disabled($package->user_id!=Auth::id())
+                                        @selected(old('package_id')==$package->id) value="{{$package->id}}">{{$package->name}}</option>
+                                    @endforeach
+                                </select>
+                                @error("package_id")
                                 <span class="text-orange">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -53,6 +67,14 @@
                                     <option @selected(old('priority')=='Faible' ) value="Faible">{{ __('Faible') }}</option>
                                 </select>
                                 @error("priority")
+                                <span class="text-orange">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="my-3">
+                                <x-input-label for="ticket_file" :value="__('Télecharger le ticket')"> <span class="text-danger">*</span> </x-input-label>
+                                <x-text-input id="ticket_file" name="ticket_file" type="file" class="mt-1 block w-full form-control" :value="old('ticket_file')" required></x-text-input>
+                                @error("ticket_file")
                                 <span class="text-orange">{{ $message }}</span>
                                 @enderror
                             </div>

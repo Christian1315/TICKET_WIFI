@@ -26,10 +26,16 @@ class RouterController extends Controller
         $user = auth()->user();
         if ($user->isUser()) {
             $routers = $user->routers->load("user");
-        }else {
+        } else {
             $routers = Router::with("user")->orderBy("name", "asc")->get();
         }
         return view("router.index", compact("routers"));
+    }
+
+
+    public function routerLocalization(Request $request)
+    {
+        return view("router_localisation");
     }
 
     /**

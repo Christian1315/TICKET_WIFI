@@ -39,11 +39,17 @@
                                         <th class="border border-slate-300 text-left">{{ __('Selectionner') }}</th>
                                         <th class="border border-slate-300 text-left">{{ __('Utilisateur') }}</th>
                                         <!-- <th class="border border-slate-300 text-left">{{ __('Tarif(package)') }}</th> -->
-                                        <th class="border border-slate-300 text-left">{{ __('Prix') }}</th>
+                                        <th class="border border-slate-300 text-left">{{ __('Prix') }} {{env("CURRENCY")}}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
+                                    @php
+                                        $ticketSelledPrice = $user->tickets->where("downloaded",true)
+                                                                        ->sum(fn($ticket)=>$ticket->package->price);
+
+                                        $priceToPay = $ticketSelledPrice*env("PERCENT_PER_TICKET")/100;
+                                    @endphp
                                     <tr>
                                         <td class="border border-slate-300 p-2">
                                             <input type="checkbox" class="rounded" name="users[{{$user->id}}][checked]">
@@ -51,7 +57,7 @@
                                         <td class="border border-slate-300 p-2">{{ $user->name }}</td>
                                         <!-- <td class="border border-slate-300 p-2">{{ $user->detail->package_name }}</td> -->
                                         <td class="border border-slate-300 p-2">
-                                            <input type="number" name="users[{{$user->id}}][price]" class="form-control" placeholder="Ex: 75000">
+                                            <input type="number" name="users[{{$user->id}}][price]" readonly class="form-control" value="{{$priceToPay}}">
                                         </td>
                                         <input type="hidden" name="users[{{$user->id}}][user_id]" value="{{ $user->id }}">
                                     </tr>
