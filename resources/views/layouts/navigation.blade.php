@@ -70,15 +70,50 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Tableau de bord') }}
-            </x-responsive-nav-link>
+            
+            <nav class="border rounded p-3" style="height:100px!important;overflow-y: scroll!important;">
+                <div x-data="{ open: false }">
+                    
+                    <x-sidebar-item class="shadow" :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Tableau de bord') }}</x-sidebar-item>
+                    <!-- if(auth()->user()->isAdmin()) -->
+                    <x-sidebar-item class="shadow" :href="route('router.index')" :active="request()->routeIs('router.index') || 
+            request()->routeIs('router.create') || 
+            request()->routeIs('router.show') || 
+            request()->routeIs('router.edit')">{{ __('Mes wifi zone') }} (Routers) </x-sidebar-item>
+                    <!-- endif -->
+
+                    <x-sidebar-item class="shadow" :href="route('packages.index')" :active="request()->routeIs('packages.index') || 
+            request()->routeIs('packages.create') || 
+            request()->routeIs('packages.show') || 
+            request()->routeIs('packages.edit')">{{ __('Tarifs') }} (Packages)</x-sidebar-item>
+
+                    <x-sidebar-item class="shadow" :href="route('ticket.index')" :active="request()->routeIs('ticket.index') ||
+            request()->routeIs('ticket.create') ||
+            request()->routeIs('ticket.show')">{{ __('Ticket') }}</x-sidebar-item>
+
+                    @if(auth()->user()->isAdmin())
+                    <x-sidebar-item class="shadow" :href="route('users.index')" :active="request()->routeIs('users.index') || 
+            request()->routeIs('users.create') ||
+            request()->routeIs('users.edit') || 
+            request()->routeIs('users.show') ||
+            request()->routeIs('payment.create')">{{ __('Users') }}</x-sidebar-item>
+                    <x-sidebar-item class="shadow" :href="route('company.edit')" :active="request()->routeIs('company.edit')">{{ __('FAI') }}</x-sidebar-item>
+                    @endif
+
+                    <x-sidebar-item class="shadow" :href="route('billing.index')" :active="request()->routeIs('billing.index') ||
+            request()->routeIs('billing.create') || 
+            request()->routeIs('payment.create')">{{ __('Facturation') }}</x-sidebar-item>
+                    <x-sidebar-item class="shadow" :href="route('payment.index')" :active="request()->routeIs('payment.index')">{{ __('Payment') }}</x-sidebar-item>
+
+                </div>
+            </nav>
         </div>
 
+
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
+        <div class="pt-4 pb-1 border-t border-gray-200 bg-secondary">
+            <div class="mt-3 space-y-1 ">
+                <x-responsive-nav-link class="text-white" :href="route('profile.edit')">
                     <i class="bi bi-person-circle"></i> {{ __('Mon Compte') }}
                 </x-responsive-nav-link>
 
@@ -86,7 +121,7 @@
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
+                    <x-responsive-nav-link class="text-white" :href="route('logout')"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         <i class="bi bi-person-fill-slash"></i> {{ __('Déconnexion') }}

@@ -48,10 +48,10 @@
                                         <a class="nav-link active" aria-current="page" href="/">Accueil</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#about">A propos</a>
+                                        <a class="nav-link" href="{{env('APP_URL')}}#about">A propos</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="#contact">Contact</a>
+                                        <a class="nav-link" href="{{env('APP_URL')}}#contact">Contact</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="{{route('routerLocalization')}}">Localisation de wifizone</a>
