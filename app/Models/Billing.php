@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -25,7 +26,7 @@ class Billing extends Model
         'package_id',
         'user_id',
         'deleted_at',
-        "price"
+        "price",
     ];
 
     public function user()
@@ -41,6 +42,11 @@ class Billing extends Model
     public function package(): BelongsTo
     {
         return $this->belongsTo(Package::class, "package_id");
+    }
+
+    public function tickets():HasMany
+    {
+        return  $this->hasMany(Ticket::class);
     }
 
     /**

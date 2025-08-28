@@ -23,13 +23,23 @@ return new class extends Migration
                 ->constrained('packages')
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
+
+            $table->foreignId('billing_id')
+                ->nullable()
+                ->constrained('billings')
+                ->onUpdate("CASCADE")
+                ->onDelete("CASCADE");
+                
             $table->string('number')->unique();
             $table->string('subject');
             $table->longText('message');
             $table->longText('ticket_file')->nullable();
             $table->string('status');
             $table->string('priority');
+
             $table->boolean('downloaded')->default(false);
+            $table->boolean('percent_paid')->default(false);
+
             $table->softDeletes();
             $table->timestamps();
         });

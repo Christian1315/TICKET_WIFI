@@ -22,11 +22,13 @@
                                 <tr>
                                     <th>Numéro</th>
                                     <th>Sujet</th>
+                                    <th>Facture</th>
                                     <th>Statut</th>
                                     <th>Vendu</th>
+                                    <th>Payé %</th>
                                     <th>Tarif(package)</th>
                                     <th>Prix ({{env("CURRENCY")}}) </th>
-                                    <th>Crée par</th>
+                                    <!-- <th>Crée par</th> -->
                                     <th>Crée le</th>
                                     <th>Action</th>
                                 </tr>
@@ -37,11 +39,13 @@
                                 <tr>
                                     <td>{{$ticket->number}}</td>
                                     <td>{{$ticket->subject}}</td>
+                                    <td class="text-center">@if($ticket->billing)REF_{{$ticket->billing?->invoice}} @else --- @endif</td>
                                     <td> <span class="badge text-white bg-{{$ticket->status=='Open'?'success':'danger'}} text-dark border">{{$ticket->status}}</span></td>
                                     <td> <span class="badge text-white bg-{{$ticket->downloaded?'success':'danger'}} text-dark border">{{$ticket->downloaded?'Oui':"Non"}}</span></td>
+                                    <td> <span class="badge text-white bg-{{$ticket->percent_paid?'success':'danger'}} text-dark border">{{$ticket->percent_paid?'Oui':"Non"}}</span></td>
                                     <td class="text-center">{{$ticket->package?->name}}</td>
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{number_format($ticket->package?->price,2,","," ")}}</span></td>
-                                    <td class="text-center"><span class="badge bg-light border text-dark"> {{$ticket->user?->name}}</span></td>
+                                    <!-- <td class="text-center"><span class="badge bg-light border text-dark"> {{$ticket->user?->name}}</span></td> -->
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($ticket->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">

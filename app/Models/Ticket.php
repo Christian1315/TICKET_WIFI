@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
@@ -20,8 +21,16 @@ class Ticket extends Model
         'deleted_at',
         'ticket_file',
         'package_id',
-        'downloaded'
+
+        'downloaded', //ticket vendu ou pas
+        'billing_id', //facture auquelle appartient ce ticket
+        "percent_paid", //pourcentage payé sur ticket ou pas
     ];
+
+    public function billing(): BelongsTo
+    {
+        return $this->belongsTo(Billing::class, "billing_id");
+    }
 
     public function comments()
     {

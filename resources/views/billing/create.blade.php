@@ -44,11 +44,18 @@
                                 </thead>
                                 <tbody>
                                     @foreach($users as $user)
+                                    <!-- On prend juste les tickets
+                                     vendue 
+                                     , et qui n'appartiennent à aucune facture
+                                      -->
                                     @php
-                                        $ticketSelledPrice = $user->tickets->where("downloaded",true)
-                                                                        ->sum(fn($ticket)=>$ticket->package->price);
+                                    $ticketSelledAndNotFactured = $user->tickets
+                                        ->where("downloaded",true)
+                                        ->whereNull("billing_id");
 
-                                        $priceToPay = $ticketSelledPrice*env("PERCENT_PER_TICKET")/100;
+                                    $priceToPay = $ticketSelledAndNotFactured
+                                                    ->sum(fn($ticket)=>$ticket->package->price)
+                                                    *env("PERCENT_PER_TICKET")/100;
                                     @endphp
                                     <tr>
                                         <td class="border border-slate-300 p-2">
@@ -59,7 +66,8 @@
                                         <td class="border border-slate-300 p-2">
                                             <input type="number" name="users[{{$user->id}}][price]" readonly class="form-control" value="{{$priceToPay}}">
                                         </td>
-                                        <input type="hidden" name="users[{{$user->id}}][user_id]" value="{{ $user->id }}">
+                                        <input type="hidden" name="users[{{$user->id}}][user_id]" class="form-control" value="{{$user->id}}">
+                                        <input type="hidden" name="users[{{$user->id}}][ticket_ids]" value="{{ $ticketSelledAndNotFactured->pluck('id') }}">
                                     </tr>
                                     @endforeach
                                 </tbody>

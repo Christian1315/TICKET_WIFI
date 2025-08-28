@@ -18,9 +18,9 @@ class TicketController extends Controller
         $user = auth()->user();
         if ($user->isUser()) {
             $tickets = $user->tickets
-                ->load("user","package"); // Ticket::query()->where('user_id', auth()->id());
+                ->load("user", "package","billing"); // Ticket::query()->where('user_id', auth()->id());
         } else {
-            $tickets = Ticket::with("user","package")->get(); // Ticket::query()->where('user_id', auth()->id());
+            $tickets = Ticket::with("user", "package","billing")->get(); // Ticket::query()->where('user_id', auth()->id());
         }
 
         return view('tickets.index', compact("tickets"));
@@ -41,6 +41,11 @@ class TicketController extends Controller
 
             if ($ticket->downloaded) {
                 alert()->info("Accès réfusé!", "Ce ticket a déjà été télechargé une fois!");
+                return back()->withInput();
+            }
+
+            if ($ticket->status == "Close") {
+                alert()->info("Accès réfusé!", "Ce ticket a été fermé!");
                 return back()->withInput();
             }
 

@@ -5,8 +5,8 @@
             <th>Reference</th>
             <!-- <th>Tarif (package)</th> -->
             <th>Prix ({{env("CURRENCY")}})</th>
-            <!-- <th>Début tarif</th> -->
             <th>Payement</th>
+            <th>Tickets</th>
             <th>Date de Payement</th>
         </tr>
     </thead>
@@ -25,6 +25,13 @@
                 @else
                 <a href="{{route('payment.create',$bill->id)}}" class="btn btn-sm btn-primary text-dark border text-white"><i class="bi bi-wallet2"></i> &nbsp;Payer la facture</a>
                 @endif
+            </td>
+            <td>
+                <div class="border rounded w-100" style="height:50px!important;overflow-y:scroll">
+                    @foreach($bill->tickets as $tciket)
+                    <span class="badge bg-light text-dark border">{{$tciket->number}}</span><br>
+                    @endforeach
+                </div>
             </td>
             <td class="text-center"><span class="badge bg-light border text-dark"> {{$bill->payment?\Carbon\carbon::parse($bill->payment->created_at)->locale('fr')->isoFormat('D MMMM YYYY'):'---'}}</span></td>
         </tr>

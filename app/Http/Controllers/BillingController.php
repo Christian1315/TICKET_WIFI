@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Billing;
+use App\Models\Ticket;
 use App\Models\User;
 use Carbon\Carbon;
+use Flare;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -18,9 +20,9 @@ class BillingController extends Controller
         $user = auth()->user();
         if (!$user->isAdmin()) {
             $billings = $user->billing
-                ->load(["user", "payment"]);
+                ->load(["user", "payment","tickets"]);
         } else {
-            $billings = Billing::with(["user", "payment"])->get();
+            $billings = Billing::with(["user", "payment","tickets"])->get();
         }
         return view('billing.index', compact("billings"));
     }
@@ -28,7 +30,7 @@ class BillingController extends Controller
     public function create()
     {
         $users = User::where('role', 'user')
-            ->with('detail','tickets')
+            ->with('detail', 'tickets.package')
             ->whereHas('detail', function (Builder $query) {
                 $query->where('status', 'active');
             })->latest()->get();
@@ -48,7 +50,6 @@ class BillingController extends Controller
             //     "users*price" => "required",
             // ]);
 
-
             if (!$request->users) {
                 alert()->info("Opération bloquée!", "Veuillez selectionnez au moins un utiisateur");
                 return back();
@@ -57,12 +58,27 @@ class BillingController extends Controller
 
             if (is_array($request->users) || is_object($request->users)) {
                 foreach ($request->users as $val) {
-                    if (isset($val["checked"]) && isset($val["checked"])=="on") {
+
+                    if (isset($val["checked"]) && isset($val["checked"]) == "on" && $val["ticket_ids"]) {
+                        if ($val["price"]==0) {
+                            continue;
+                        }
+
                         $billing = new Billing();
                         $billing->invoice = $billing->generateRandomNumber();
                         $billing->user_id = $val["user_id"];
                         $billing->price = $val["price"];
                         $billing->save();
+
+                        foreach (json_decode($val["ticket_ids"], true)  as $ticketId) {
+                            $ticket = Ticket::find($ticketId);
+                            if (!$ticket) {
+                                throw new \Exception("Ce ticket n'existe pas!");
+                            }
+
+                            /**Attachement du ticket à la facture générée */
+                            $ticket->update(["billing_id" => $billing->id]);
+                        }
                     }
                 }
             }
@@ -73,7 +89,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::debug("Erreure de generation de facture " . $e->getMessage());
-            alert()->error("Opération échouée!", "Erreure de generation de facture!");
+            alert()->error("Opération échouée!", "Erreure de generation de facture! ".$e->getMessage());
             return back();
         }
     }
