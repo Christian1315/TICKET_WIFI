@@ -120,7 +120,7 @@
                 </div>
                 <br><br>
                 <div class="row">
-                    <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="col-md-4 mb-2 d-flex flex-column justify-content-center align-items-center">
                         <ol class="list-group list-group-numbered">
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="ms-2 me-auto">
@@ -148,7 +148,7 @@
                     <div class="col-md-8">
                         <form action="/" method="POST">
                             @csrf
-                            <div class="mb-3 rounded p-3 shadow">
+                            <div class="mb-3 rounded shadow">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="mb-3">

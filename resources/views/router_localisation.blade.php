@@ -108,7 +108,7 @@
                 </div>
                 <br><br>
                 <div class="row">
-                    <div class="col-md-4 d-flex flex-column justify-content-center align-items-center">
+                    <div class="col-md-4 mb-2 d-flex flex-column justify-content-center align-items-center">
                         <ol class="list-group list-group-numbered">
                             <li class="list-group-item d-flex justify-content-between align-items-start">
                                 <div class="ms-2 me-auto">
@@ -136,7 +136,7 @@
                     <div class="col-md-8">
                         <form action="/" method="POST">
                             @csrf
-                            <div class="mb-3 rounded p-3 shadow">
+                            <div class="mb-3 rounded shadow">
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -188,7 +188,6 @@
         </div>
         <p class="text-center">@Copyright <strong class="badge bg-light text-blue border">{{date("Y")}}</strong> | Tous droits réservés | Réalisé par <strong class="badge bg-light text-blue border">Code4Christ</strong> </p>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 
 
