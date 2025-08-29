@@ -7,7 +7,7 @@
             <x-sidebar-item class="shadow" :href="route('router.index')" :active="request()->routeIs('router.index') || 
             request()->routeIs('router.create') || 
             request()->routeIs('router.show') || 
-            request()->routeIs('router.edit')"><i class="bi bi-router"></i> {{ __('Mes wifi zone') }} (Routers) </x-sidebar-item>
+            request()->routeIs('router.edit')"><i class="bi bi-router"></i> {{ __('Wifi zone') }} (Routers) </x-sidebar-item>
             <!-- endif -->
 
             <x-sidebar-item class="shadow" :href="route('packages.index')" :active="request()->routeIs('packages.index') || 
