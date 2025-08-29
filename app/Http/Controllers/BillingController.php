@@ -48,8 +48,9 @@ class BillingController extends Controller
                 return back();
             }
 
-            $userChecked = collect($request->users)->filter(fn($user) => isset($user["checked"]));
-            // dd($userChecked->isEmpty());
+            $userChecked = collect($request->users)
+                ->filter(fn($user) => isset($user["checked"]));
+
             if ($userChecked->isEmpty()) {
                 throw new \Exception("Aucun utilisateur n'a été selectionné");
             }
