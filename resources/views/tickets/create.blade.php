@@ -37,6 +37,14 @@
                         </div>
 
                         <div class="row">
+                            <div class="mb-3">
+                                <x-input-label for="type_id" :value="__('Type d\'opération')" class="mt-4"><span class="text-danger">*</span></x-input-label>
+                                <select id="type_id" class="mt-1 block w-full rounded-md border border-gray-300" required>
+                                    <option value="uploader">Uploader un ticket</option>
+                                    <option value="generer">Génerer un ticket</option>
+                                </select>
+                            </div>
+
                             <div class="">
                                 <x-input-label for="subject" :value="__('Sujet')"> <span class="text-danger">*</span> </x-input-label>
                                 <x-text-input id="subject" name="subject" type="text" class="mt-1 block w-full" :value="old('subject')" required placeholder="Ex: Ticket 1"></x-text-input>
@@ -71,9 +79,9 @@
                                 @enderror
                             </div>
 
-                            <div class="my-3">
-                                <x-input-label for="ticket_file" :value="__('Télecharger le ticket')"> <span class="text-danger">*</span> </x-input-label>
-                                <x-text-input id="ticket_file" name="ticket_file" type="file" class="mt-1 block w-full form-control" :value="old('ticket_file')" required></x-text-input>
+                            <div class="my-3" id="ticket_file">
+                                <x-input-label for="ticket_file" :value="__('Uploader le ticket')"> <span class="text-danger">*</span> </x-input-label>
+                                <x-text-input id="ticket_file" name="ticket_file" type="file" class="mt-1 block w-full form-control" :value="old('ticket_file')"></x-text-input>
                                 @error("ticket_file")
                                 <span class="text-orange">{{ $message }}</span>
                                 @enderror
@@ -98,4 +106,22 @@
             </div>
         </div>
     </div>
+
+
+    @push("scripts")
+    <script>
+        $(document).ready(function() {
+            $("#type_id").on("select2:select", function(e) {
+                const selected = $(this).find(':selected')
+                // alert(e.params.data.id)
+
+                if (e.params.data.id == "generer") {
+                    $("#ticket_file").addClass("d-none")
+                }else{
+                    $("#ticket_file").removeClass("d-none");
+                }
+            })
+        })
+    </script>
+    @endpush
 </x-app-layout>

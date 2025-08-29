@@ -107,12 +107,12 @@ class UserController extends Controller
         //         "pass" => $router->password,
         //     ]);
 
-        //     $query = new Query("/ppp/secret/add");
-        //     $query->equal("name", $request->name);
-        //     $query->equal("password", $request->router_password);
-        //     $query->equal("service", 'any');
-        //     $query->equal("profile", $package->name);
-        //     $client->query($query)->read();
+        // $query = new Query("/ppp/secret/add");
+        // $query->equal("name", $request->name);
+        // $query->equal("password", $request->router_password);
+        // $query->equal("service", 'any');
+        // $query->equal("profile", $package->name);
+        // $client->query($query)->read();
         // } catch (\Exception $e) {
         //     alert()->error("Opération échouée!", "Echec de connexion au mikrotik");
         //     return back()->withInput();
@@ -138,18 +138,9 @@ class UserController extends Controller
             ];
 
             // $user->detail()->update(Arr::except($validated, ['name', 'email',"password","router_id","package_id"]));
-            // dd($user->detail);
             $user->detail ?
                 $user->detail()->update($userDetail) : $user->detail()->create($userDetail);
 
-
-            // $billing = new Billing();
-            // $billing->invoice = $billing->generateRandomNumber();
-            // $billing->package_name = $details->package_name;
-            // $billing->package_price = $details->package_price;
-            // $billing->package_start = $details->package_start;
-            // $billing->user_id = $user->id;
-            // $billing->save();
             DB::commit();
             alert()->success("Opération réussie!", "Utilisateur ajouter avec succès");
             return redirect()->back()

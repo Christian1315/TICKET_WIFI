@@ -23,7 +23,25 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDisable;
 use App\Http\Controllers\UserDownload;
 use App\Http\Controllers\UserEnable;
+use App\Notifications\SendRegisterNotification;
 use Illuminate\Support\Facades\Route;
+
+Route::get("/email", function () {
+    $data = [
+        'name' => "Gogo",
+        'email' => "gogochristian009@gmail.com",
+        'password' => "password",
+        "message" => "Compte crée avec succès. Connectez-vous maintenant avec les identifiants ci-joint!",
+        "subject" => "Création de compte"
+    ];
+
+    SendNotificationViaMail(
+        $data,
+        new SendRegisterNotification($data)
+    );
+
+    return "mail envoyé avec succès!";
+});
 
 /** REDIRECT TO HOMECONTROLLER*/
 Route::get("/", HomeController::class)->name("home");

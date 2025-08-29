@@ -18,9 +18,9 @@ class TicketController extends Controller
         $user = auth()->user();
         if ($user->isUser()) {
             $tickets = $user->tickets
-                ->load("user", "package","billing"); // Ticket::query()->where('user_id', auth()->id());
+                ->load("user", "package", "billing"); // Ticket::query()->where('user_id', auth()->id());
         } else {
-            $tickets = Ticket::with("user", "package","billing")->get(); // Ticket::query()->where('user_id', auth()->id());
+            $tickets = Ticket::with("user", "package", "billing")->get(); // Ticket::query()->where('user_id', auth()->id());
         }
 
         return view('tickets.index', compact("tickets"));
@@ -83,7 +83,7 @@ class TicketController extends Controller
                 "message" => "required",
                 "priority" => "required|in:Elevée,Normale,Faible",
                 "package_id" => "required|integer",
-                'ticket_file' => ['required', 'file', 'mimes:pdf'],
+                // 'ticket_file' => ['required', 'file', 'mimes:pdf'],
             ], [
                 "subject.required" => "Champ réquis",
                 "message.required" => "Champ réquis",
@@ -94,14 +94,23 @@ class TicketController extends Controller
                 "package_id.required" => "Champ réquis",
 
                 "ticket_file.required" => "Le fichier est est réquis!",
-                "ticket_file.file" => "Le fichier n'est pas valide",
-                // "ticket_file.file"=>"Le fichier n'est pas valide",
+                // "ticket_file.file" => "Le fichier n'est pas valide",
             ]);
 
-            // TRAITEMENT DU DOCUMENT
-            $ticket_file = $request->file("ticket_file");
-            $ticket_file_name = $ticket_file->getClientOriginalName();
-            $ticket_file->move("tickets/", $ticket_file_name);
+            $ticket_file_name = null;
+            if ($request->hasFile("ticket_file")) {
+                $request->validate([
+                    'ticket_file' => ['required', 'file', 'mimes:pdf'],
+                ], [
+                    "ticket_file.file" => "Le fichier n'est pas valide",
+                ]);
+
+                // TRAITEMENT DU DOCUMENT
+                $ticket_file = $request->file("ticket_file");
+                $ticket_file_name = $ticket_file->getClientOriginalName();
+                $ticket_file->move("tickets/", $ticket_file_name);
+            }
+
 
             $ticket = new Ticket();
             $ticket->subject = $request->subject;
@@ -111,7 +120,7 @@ class TicketController extends Controller
             $ticket->user_id = auth()->id();
             $ticket->package_id = $request->package_id;
             $ticket->number = $ticket->generateRandomNumber();
-            $ticket->ticket_file = asset("tickets/" . $ticket_file_name);
+            $ticket->ticket_file = $ticket_file_name ? asset("tickets/" . $ticket_file_name) : null;
             $ticket->save();
 
             DB::commit();

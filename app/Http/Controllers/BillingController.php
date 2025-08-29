@@ -20,9 +20,9 @@ class BillingController extends Controller
         $user = auth()->user();
         if (!$user->isAdmin()) {
             $billings = $user->billing
-                ->load(["user", "payment","tickets"]);
+                ->load(["user", "payment", "tickets"]);
         } else {
-            $billings = Billing::with(["user", "payment","tickets"])->get();
+            $billings = Billing::with(["user", "payment", "tickets"])->get();
         }
         return view('billing.index', compact("billings"));
     }
@@ -43,24 +43,22 @@ class BillingController extends Controller
         try {
             DB::beginTransaction();
 
-            // $request->validate([
-            //     "users" => "required|array",
-            //     "users*id" => "required|integer",
-            //     "users*checked" => "required",
-            //     "users*price" => "required",
-            // ]);
-
             if (!$request->users) {
                 alert()->info("Opération bloquée!", "Veuillez selectionnez au moins un utiisateur");
                 return back();
             }
-            // dd($request->users);
+
+            $userChecked = collect($request->users)->filter(fn($user) => isset($user["checked"]));
+            // dd($userChecked->isEmpty());
+            if ($userChecked->isEmpty()) {
+                throw new \Exception("Aucun utilisateur n'a été selectionné");
+            }
 
             if (is_array($request->users) || is_object($request->users)) {
                 foreach ($request->users as $val) {
 
                     if (isset($val["checked"]) && isset($val["checked"]) == "on" && $val["ticket_ids"]) {
-                        if ($val["price"]==0) {
+                        if ($val["price"] == 0) {
                             continue;
                         }
 
@@ -89,7 +87,7 @@ class BillingController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::debug("Erreure de generation de facture " . $e->getMessage());
-            alert()->error("Opération échouée!", "Erreure de generation de facture! ".$e->getMessage());
+            alert()->error("Opération échouée!", "Erreure de generation de facture! " . $e->getMessage());
             return back();
         }
     }

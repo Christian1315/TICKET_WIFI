@@ -7,10 +7,13 @@ use App\Http\Requests\UpdateRouterRequest;
 use Illuminate\Http\Request;
 use App\Models\Router;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use RouterOS\Client;
+use RouterOS\Query;
 
 class RouterController extends Controller
 {
@@ -103,18 +106,34 @@ class RouterController extends Controller
                 'map_long.numeric' => "Ce champ doit être de type numérique",
             ]);
 
+            /**
+             * Test de connexion au router
+             */
+            // try {
+            // $client = new Client([
+            //     "host" => $request->ip,
+            //     "user" => $request->username,
+            //     "pass" => $request->password,
+            // ]);
+
+            // $query = new Query("/ppp/secret/add");
+            // $query->equal("name", $request->name);
+            // $query->equal("password", $request->router_password);
+            // $query->equal("service", 'any');
+            // $query->equal("profile", "name");
+            // $client->query($query)->read();
+            // } catch (\Exception $e) {
+            //     throw new \Exception("La connexion à ce router a échouée", 1);
+            // }
+
             DB::beginTransaction();
 
             auth()->user()
                 ->routers()->create($validated);
 
-            // $router = new Router();
-            // $router->fill($validated);
-            // $router->save();
-
             alert()->success("Opération réussie!", "Router crée avec succès!");
             DB::commit();
-            return redirect()->route("router.index"); // redirect('router')->with('success', __('Router successfully added'));
+            return redirect()->route("router.index");
         } catch (ValidationException $e) {
             DB::rollBack();
             alert()->error("Opération échouée!", "Erreure de validation des données");

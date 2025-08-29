@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\SendRegisterNotification;
-use App\Providers\RouteServiceProvider;
 use DB;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+
+use App\Notifications\SendRegisterNotification;
+
 
 class RegisteredUserController extends Controller
 {
@@ -80,18 +80,16 @@ class RegisteredUserController extends Controller
                 "subject" => "Création de compte"
             ];
 
-            Log::debug("Data of register", ["data" => $user]);
-
-            // SendNotificationViaMail(
-            //     $data,
-            //     new SendRegisterNotification($data)
-            // );
+            SendNotificationViaMail(
+                $data,
+                new SendRegisterNotification($data)
+            );
 
             Log::debug("Data of register", ["data" => $user]);
             // Auth::login($user);
 
-            alert()->success("Succès", "Compte crée avec succès | Vos identifiants vous sont envoyés par mail! Connectez-vous maintenant!");
             DB::commit();
+            alert()->success("Succès", "Compte crée avec succès | Vos identifiants vous sont envoyés par mail! Connectez-vous maintenant!");
             return redirect('/login')
                 ->with("register_success", "Compte crée avec succès. Voici vos accès: Identifiant: $user->email | Mot de passe : $request->password ");
         } catch (\Exception $e) {

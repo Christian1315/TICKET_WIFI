@@ -23,7 +23,8 @@
 
                             <!-- Info -->
                             <div class="alert alert-warning border-left border-bold">
-                                <i class="bi bi-info-circle"></i> Les champs portant le signe (<span class="text-danger">*</span>) sont réquis!
+                                <i class="bi bi-info-circle"></i> Seuls les utilisateurs ayant remplit leurs profiles appraîtront ici! <br>
+                                Les utilisateurs n'ayant pas de tickets vendus, ne pourront pas être selectionner pour <em class="text-danger">génerer une facture</em>
                             </div>
 
                             <!-- Retour sur liste -->
@@ -59,7 +60,7 @@
                                     @endphp
                                     <tr>
                                         <td class="border border-slate-300 p-2">
-                                            <input type="checkbox" class="rounded" name="users[{{$user->id}}][checked]">
+                                            <input type="checkbox" @disabled($priceToPay==0) class="rounded" name="users[{{$user->id}}][checked]">
                                         </td>
                                         <td class="border border-slate-300 p-2">{{ $user->name }}</td>
                                         <!-- <td class="border border-slate-300 p-2">{{ $user->detail->package_name }}</td> -->
