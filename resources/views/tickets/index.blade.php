@@ -49,10 +49,8 @@
                                     <td class="text-center"><span class="badge bg-light border text-dark"> {{\Carbon\carbon::parse($ticket->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}}</span></td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            @if($ticket->ticket_file)
+                                            @if(Auth::user()->isAdmin() && $ticket->ticket_file)
                                             <a target="_blank" href="{{$ticket->ticket_file}}" title="Voir le ticket" class="btn btn-sm border text-white btn-hover bg-orange"><i class="bi bi-filetype-pdf"></i> Voir</a>
-                                            @else
-                                            --
                                             @endif
                                             <a href="{{route('ticket.show', $ticket->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark btn-hover"><i class="bi bi-eye"></i> Détail</a>
                                         </div>

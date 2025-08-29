@@ -109,21 +109,22 @@ class RouterController extends Controller
             /**
              * Test de connexion au router
              */
-            // try {
-            // $client = new Client([
-            //     "host" => $request->ip,
-            //     "user" => $request->username,
-            //     "pass" => $request->password,
-            // ]);
 
-            // $query = new Query("/ppp/secret/add");
-            // $query->equal("name", $request->name);
-            // $query->equal("password", $request->router_password);
-            // $query->equal("service", 'any');
-            // $query->equal("profile", "name");
-            // $client->query($query)->read();
+            // try {
+            //     $client = new Client([
+            //         "host" => $request->ip,
+            //         "user" => $request->username,
+            //         "pass" => $request->password,
+            //     ]);
+
+            //     $query = new Query("/ppp/secret/add");
+            //     $query->equal("name", $request->name);
+            //     $query->equal("password", $request->router_password);
+            //     $query->equal("service", 'any');
+            //     $query->equal("profile", "name");
+            //     $client->query($query)->read();
             // } catch (\Exception $e) {
-            //     throw new \Exception("La connexion à ce router a échouée", 1);
+            //     throw new \Exception("Erreure de connexion à ce router a échouée " . $e->getMessage());
             // }
 
             DB::beginTransaction();
@@ -136,13 +137,14 @@ class RouterController extends Controller
             return redirect()->route("router.index");
         } catch (ValidationException $e) {
             DB::rollBack();
+            Log::debug("Erreure de validation", ["error" => $e->getMessage()]);
             alert()->error("Opération échouée!", "Erreure de validation des données");
             return back()->withErrors($e->errors())
                 ->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::debug("Erreure lors de la création du router", ["error" => $e->getMessage()]);
-            alert()->error("Opération échouée!", "Erreure lors de la création du router ");
+            alert()->error("Opération échouée!", "Erreure lors de la création du router :" . $e->getMessage());
             return back()->withInput();
         }
     }
