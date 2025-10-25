@@ -15,12 +15,12 @@ class UserEnable extends Controller
         try {
             DB::beginTransaction();
 
-            $router_name = $user->detail->router_name;
-            $router = Router::firstWhere("name", $router_name);
+            // $router_name = $user->detail->router_name;
+            // $router = Router::firstWhere("name", $router_name);
 
-            if (!$router) {
-                throw new \Exception("Ce router n'existe pas!");
-            }
+            // if (!$router) {
+            //     throw new \Exception("Ce router n'existe pas!");
+            // }
 
             // try {
             //     $client = new Client([

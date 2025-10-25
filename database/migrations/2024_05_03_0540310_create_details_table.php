@@ -19,15 +19,15 @@ return new class extends Migration
                 ->onUpdate("CASCADE")
                 ->onDelete("CASCADE");
             // $table->string('router_name');
-            $table->string('address');
-            $table->string('phone');
-            $table->date('dob');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->date('dob')->nullable();
             $table->string('pin')->nullable();
             // $table->string('router_password');
             // $table->string('package_name');
             // $table->unsignedInteger('package_price');
             // $table->date('package_start');
-            $table->unsignedInteger('due');
+            $table->decimal('due',20,2)->nullable();
             $table->string('status')->default('active');
             $table->text('kkiapay_key')->nullable();
             $table->text('stripe_key')->nullable();

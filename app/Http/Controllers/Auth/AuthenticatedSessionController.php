@@ -30,9 +30,9 @@ class AuthenticatedSessionController extends Controller
 
             $user = User::firstWhere(["email" => $request->email]);
             /**On verifie si le user est connecté a un compte actif ou pas */
-            if ($user) {
-                if ($user->detail && $user->detail->status != "active") {
-                    alert()->error("Votre compte a été désactivé!");
+            if ($user && $user->id != 1) {
+                if (!$user->detail || $user->detail?->status != "active") {
+                    alert()->error("Votre compte n'est pas actif! Contactez l'administrateur pour que cela soit fait!");
                     return back()->withInput();
                 }
             }

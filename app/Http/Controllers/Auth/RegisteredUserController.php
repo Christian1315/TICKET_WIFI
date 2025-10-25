@@ -80,10 +80,12 @@ class RegisteredUserController extends Controller
                 "subject" => "Création de compte"
             ];
 
-            SendNotificationViaMail(
-                $data,
-                new SendRegisterNotification($data)
-            );
+            // SendNotificationViaMail(
+            //     $data,
+            //     new SendRegisterNotification($data)
+            // );
+
+            $user->detail()->create(['status'=>'active']);
 
             Log::debug("Data of register", ["data" => $user]);
             // Auth::login($user);

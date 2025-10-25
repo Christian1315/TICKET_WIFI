@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Router;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use RouterOS\Client;
 use RouterOS\Query;
 
@@ -15,12 +16,13 @@ class UserDisable extends Controller
         try {
             DB::beginTransaction();
 
-            $router_name = $user->detail->router_name;
-            $router = Router::firstWhere("name", $router_name);
+            // $router_name = $user->detail?->router_name;
 
-            if (!$router) {
-                throw new \Exception("Ce router n'existe pas!");
-            }
+            // $router = Router::firstWhere("name", $router_name);
+
+            // if (!$router) {
+            //     throw new \Exception("Ce router n'existe pas!");
+            // }
 
             // try {
             //     $client = new Client([
@@ -37,11 +39,12 @@ class UserDisable extends Controller
 
             DB::commit();
             $user->detail->update(["status" => 'inactive']);
-            alert()->success("Opération réussie!","Compte désactivé avec succès!");
+            alert()->success("Opération réussie!", "Compte désactivé avec succès!");
             return back(); //->with("success", __("User disabled successfully"));
         } catch (\Exception $e) {
             DB::rollBack();
-            alert()->error("Opération échouée!","Erreure lors de la désactivation du compte");
+            Log::debug("Erreure lors de la désactivation du compte", ["error" => $e->getMessage()]);
+            alert()->error("Opération échouée!", "Erreure lors de la désactivation du compte : ".$e->getMessage());
             return back();
         }
     }

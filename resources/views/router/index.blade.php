@@ -56,11 +56,11 @@
                                         <td class="text-center">
                                             <div name="btn-group-sm" role="group">
                                                 <!-- Update -->
-                                                <a href="{{route('router.edit', $router->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> Modifier</a>
+                                                <a href="{{route('router.edit', $router->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> </a>
                                                 <!-- Show -->
-                                                <a href="{{route('router.show', $router->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark"><i class="bi bi-eye"></i> Détail</a>
+                                                <a href="{{route('router.show', $router->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark"><i class="bi bi-eye"></i> </a>
                                                 <!-- Form delete -->
-                                                <a href="{{route('router.destroy', $router->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> Supprimer</a>
+                                                <a href="{{route('router.destroy', $router->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> </a>
                                             </div>
                                         </td>
                                     </tr>

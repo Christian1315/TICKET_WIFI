@@ -118,7 +118,6 @@ class UserController extends Controller
         //     return back()->withInput();
         // }
 
-        // dd("gogo");
         try {
             DB::beginTransaction();
 
@@ -142,7 +141,7 @@ class UserController extends Controller
                 $user->detail()->update($userDetail) : $user->detail()->create($userDetail);
 
             DB::commit();
-            alert()->success("Opération réussie!", "Utilisateur ajouter avec succès");
+            alert()->success("Opération réussie!", "Utilisateur ajouté.e avec succès");
             return redirect()->back()
                 ->withInput(); //route("users.index");
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -235,6 +234,7 @@ class UserController extends Controller
             ];
             $user->update($userData);
 
+
             // $router = Router::find($validated["router_id"]);
             // $package = Package::find($validated["package_id"]);
 
@@ -260,6 +260,7 @@ class UserController extends Controller
                 "dob" => $request->dob ?? $user->dob,
                 "pin" => $request->pin ?? $user->pin,
                 "due" => $user->due_amount($user->id),
+                "status" => 'active',
                 "kkiapay_key" => $request->kkiapay_key ?? $user->kkiapay_key,
                 "stripe_key" => $request->stripe_key ?? $user->stripe_key,
             ];

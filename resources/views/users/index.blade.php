@@ -59,36 +59,31 @@
                                         <tr>
                                             <td>{{$user->name}}</td>
                                             <td>{{$user->email}}</td>
-                                            <!-- <td class="text-center">{{$user->detail?->router_name}}</td> -->
-                                            <!-- <td class="text-center">{{$user->detail?->package_name}}</td> -->
-                                            <!-- <td class="text-center"><span class="badge bg-light border text-dark"> {{$user->detail?\Carbon\carbon::parse($user->detail->package_start)->locale('fr')->isoFormat('D MMMM YYYY'):'---'}}</span></td> -->
-                                            <td class="text-center">@if($user->detail)<span class="badge bg-{{$user->detail->status?'orange':'danger'}} border"> {{$user->detail->status}}</span> @else <span class="badge bg-danger">Désactivé</span> @endif</td>
+                                            <td class="text-center">@if($user->detail)<span class="badge bg-{{$user->detail->status?'orange':'danger'}} border"> {{$user->detail?->status}}</span> @else <span class="badge bg-danger">Désactivé</span> @endif</td>
                                             <td><span class="badge bg-light border text-dark">{{number_format($user->due_amount($user->id),2,"."," ")}} ({{config('app.currency')}}) </span></td>
 
                                             <td class="text-center"><span class="badge bg-light border text-dark">{{\Carbon\carbon::parse($user->created_at)->locale('fr')->isoFormat('D MMMM YYYY')}} </span></td>
 
                                             <td class="text-center">
-                                                @if($user->detail)
+                                                
                                                 <div name="btn-group" role="group">
-                                                    <form action="{{$user->detail->status=='active'? route('user.disable',$user->id):route('user.enable',$user->id) }}" method="post" id="userStatutHandle_{{$user->id}}">
+                                                    <form action="{{$user->detail?->status=='active'? route('user.disable',$user->id):route('user.enable',$user->id) }}" method="post" id="userStatutHandle_{{$user->id}}">
                                                         @csrf
                                                         @method("PATCH")
                                                     </form>
                                                     <!--  -->
-                                                    <!-- <button type="button" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-shield-x"></i> &nbsp;{{$user->detail->status? __('Désactiver'):__('Activer') }}</button> -->
-                                                    <a class="btn btn-sm bg-orange text-white btn-hover"
-                                                        onclick="document.getElementById('userStatutHandle_{{$user->id}}').submit()"><i class="bi bi-shield-x"></i> &nbsp;{{$user->detail->status=='active'? __('Désactiver'):__('Activer') }}</a>
-
+                                                    @if($user->detail)
+                                                    <a class="btn btn-sm bg-{{$user->detail?->status!='active'?'success':'danger'}} text-white btn-hover"
+                                                        onclick="document.getElementById('userStatutHandle_{{$user->id}}').submit()"><i class="bi bi-{{$user->detail?->status!='active'?'check-circle-fill':'shield-x'}}"></i></a>
+                                                    @endif
                                                     <!-- Update -->
-                                                    <a href="{{route('users.edit', $user->id)}}" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-pencil"></i> Modifier</a>
+                                                    <a href="{{route('users.edit', $user->id)}}" class="btn btn-sm bg-orange text-white btn-hover"><i class="bi bi-pencil"></i> </a>
                                                     <!-- Show -->
-                                                    <a href="{{route('users.show', $user->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark btn-hover"><i class="bi bi-eye"></i> Détail</a>
+                                                    <a href="{{route('users.show', $user->id)}}" title="Détail" class="btn btn-sm bg-light border text-dark btn-hover"><i class="bi bi-eye"></i> </a>
                                                     <!-- Form delete -->
                                                     <!-- <a href="{{route('users.destroy', $user->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> Supprimer</a> -->
                                                 </div>
-                                                @else
-                                                ---
-                                                @endif
+                                               
                                             </td>
                                         </tr>
                                         @endforeach

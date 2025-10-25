@@ -13,7 +13,6 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-
         if (auth()->user()->isAdmin()) {
             $totalPackages = Package::count();
             $totalBills = Billing::with("package")->get()

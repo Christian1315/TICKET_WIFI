@@ -105,7 +105,6 @@
     <!-- overlayScrollbars -->
     <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 
-
     <!-- Select2 -->
     <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
@@ -137,7 +136,5 @@
 
     <!-- Kkiappay -->
     <script src="https://cdn.kkiapay.me/k.js"></script>
-
 </body>
-
 </html>

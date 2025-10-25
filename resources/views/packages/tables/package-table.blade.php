@@ -24,11 +24,11 @@
             <td class="text-center">
                 <div name="btn-group" role="group">
                     <!-- Update -->
-                    <a href="{{route('packages.edit', $package->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> Modifier</a>
+                    <a href="{{route('packages.edit', $package->id)}}" class="btn btn-sm bg-orange text-dark"><i class="bi bi-pencil"></i> </a>
                     <!-- Show -->
-                    <a href="{{route('packages.show', $package->id)}}" class="btn btn-sm btn-light border text-dark"><i class="bi bi-eye"></i> Détail</a>
+                    <a href="{{route('packages.show', $package->id)}}" class="btn btn-sm btn-light border text-dark"><i class="bi bi-eye"></i> </a>
                     <!-- Form delete -->
-                    <a href="{{route('packages.destroy', $package->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> Supprimer</a>
+                    <a href="{{route('packages.destroy', $package->id)}}" class="btn btn-sm btn-danger text-white" data-confirm-delete="true"><i class="bi bi-trash3"></i> </a>
                 </div>
             </td>
         </tr>
